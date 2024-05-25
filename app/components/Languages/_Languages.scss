@@ -1,0 +1,38 @@
+@use '../../styles/index' as *;
+
+.Rating {
+    @include flex-center-v;
+    column-gap: 4px;
+
+    &_Square {
+        @include box(30px, 6px);
+        background-color: #8a8a8a58;
+
+        &-isFilled {
+            background-color: rgb(33, 71, 97);
+        }
+    }
+}
+
+.Languages {
+    @include flex-column;
+    row-gap: 12px;
+
+    &_Item {
+        @include flex-column;
+        row-gap: 3px;
+    }
+
+    &_ItemRow {
+        @include flex-center-v;
+        column-gap: 12px;
+    }
+
+    &_Name {
+        font-weight: bold;
+    }
+
+    &_LevelName {
+        color: #8a8a8a;
+    }
+}

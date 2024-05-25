@@ -1,0 +1,45 @@
+@use '../../styles/index' as *;
+
+.Link {
+    padding: 4px;
+    color: $primary;
+    cursor: pointer;
+    @include text-body;
+
+    &:focus-visible {
+        border-radius: 8px;
+        border-color: transparent !important;
+        box-shadow: gold 0 0 4px 2px;
+    }
+
+    @mixin activated {
+        &:active, &.active, &:hover {
+            @content;
+        }
+    }
+
+    @include activated {
+        color: $primary;
+    }
+
+    &-silent {
+        color: $neutral-contrast;
+    }
+
+    &-withBorder {
+        border-block-end: 2px solid transparent;
+
+        @include activated {
+            border-color: $primary;
+        }
+    }
+
+    &-withIcon {
+        @include flex-center-column;
+        row-gap: 4px;
+
+        .Icon {
+            @include box(24px);
+        }
+    }
+}

@@ -1,0 +1,50 @@
+@use '../../styles/index' as *;
+
+.LanguageSwitch {
+    @include flex-center-v;
+    width: fit-content;
+    background-color: $neutral;
+    border-radius: 8px;
+    border: 2px solid #e6e7ed;
+    overflow: hidden;
+
+    &_FlagSlider {
+        @include box(25px);
+        overflow: hidden;
+    }
+
+    &_FlagSliderTrack {
+        --active-lang-order: 0;
+
+        @include flex-center-column;
+        transform: translateY(calc(-25px * var(--active-lang-order)));
+        transition: transform 0.5s ease-in-out;
+    }
+
+    &_Icon {
+        @include box(25px);
+        @include flex-center;
+
+        svg {
+            @include box(75%);
+        }
+    }
+
+    &_Links {
+        display: flex;
+    }
+
+    &_Link {
+        @include box(40px, 25px);
+        @include text-body;
+        @include flex-center;
+        background-color: $neutral;
+        color: rgba($neutral-contrast, 0.87);
+        z-index: z-index('header');
+
+        &-isActive {
+            background-color: rgba(0, 0, 0, 0.08);
+            color: $neutral-contrast;
+        }
+    }
+}

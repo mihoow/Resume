@@ -1,0 +1,158 @@
+@mixin ellipsis-at-line($number-of-lines: 1) {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    @supports (-webkit-line-clamp: $number-of-lines) {
+        white-space: initial;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: $number-of-lines;
+    }
+}
+
+@mixin hide-scrollbar {
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-center-column {
+    @include flex-center();
+    flex-direction: column;
+}
+
+@mixin flex-center-v {
+    display: flex;
+    align-items: center;
+}
+
+@mixin flex-center-h {
+    display: flex;
+    justify-content: center;
+}
+
+@mixin center {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@function z-index($key) {
+    $z-indexes: (
+        "notification",
+        "modal",
+        "header",
+        "popup",
+        "sticky",
+        "casual"
+    );
+
+    @if index($z-indexes, $key) {
+        @return (length($z-indexes) - index($z-indexes, $key)) + 1;
+    } @else {
+        @warn 'There is no item #{$key} in the list of z-indexes';
+        @return null;
+    }
+}
+
+@mixin position(
+    $position: relative,
+    $top: null,
+    $right: null,
+    $bottom: null,
+    $left: null,
+    $z-index: initial
+) {
+    position: $position;
+    inset-block-start: $top;
+    inset-block-end: $bottom;
+    inset-inline-start: $left;
+    inset-inline-end: $right;
+    z-index: $z-index;
+}
+
+@mixin box($width, $height: $width) {
+    width: $width;
+    height: $height;
+}
+
+@mixin font-size($font-size, $line-height: normal, $letter-spacing: normal) {
+    font-size: $font-size * 1px;
+
+    @if $line-height == normal {
+        line-height: normal;
+    } @else {
+        line-height: $line-height / $font-size;
+    }
+
+    @if $letter-spacing == normal {
+        letter-spacing: normal;
+    } @else {
+        letter-spacing: #{$letter-spacing / $font-size}em;
+    }
+}
+
+@mixin hoverable {
+    @media (hover: hover) and (pointer: fine) {
+        @content;
+    }
+}
+
+@mixin hover {
+    @include hoverable {
+        &:hover:not(:disabled) {
+            @content;
+        }
+    }
+}
+
+@mixin keyboard-focus {
+    &:focus-visible {
+        box-shadow: gold 0 0 4px 2px;
+    }
+}
+
+@mixin shadow {
+    box-shadow: 0px -5px 6px #0E1F3514,
+        0px -5px 12px #0E1F351F,
+        0px -14px 24px #0E1F3514;
+}
+
+@mixin match-mods($first-mod, $mods...) {
+    $other-selector: '';
+
+    @each $mod in $mods {
+       $other-selector: $other-selector + #{&}-#{$mod};
+    }
+
+    &-#{$first-mod}#{$other-selector} {
+        @content;
+    }
+}
+
+@mixin print {
+    @media print {
+        @content;
+    }
+}
+
+@mixin not-print {
+    @media not print {
+        @content;
+    }
+}

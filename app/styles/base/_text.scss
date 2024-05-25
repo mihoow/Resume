@@ -1,0 +1,29 @@
+@use './util' as *;
+
+@mixin text-heading {
+    @include font-size(40, 48);
+    font-weight: 600;
+}
+
+@mixin text-subheading {
+    @include font-size(28, 32);
+    font-weight: 600;
+}
+
+@mixin text-body {
+    @include font-size(16, 24);
+}
+
+@mixin text-body-bold {
+    @include text-body();
+    font-weight: 600;
+}
+
+@mixin text-caption {
+    @include font-size(14, 20);
+}
+
+@mixin text-caption-bold {
+    @include text-caption();
+    font-weight: 600;
+}

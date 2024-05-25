@@ -1,0 +1,33 @@
+@use '../../styles/index' as *;
+
+.Certificates {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+
+    &-isBig {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    &_Item {
+        .Link {
+            display: flex;
+            column-gap: 4px;
+
+            &::before {
+                content: '';
+                display: block;
+                margin-block: 4px;
+                width: 1px;
+                height: 100%;
+                border-block: 4px solid transparent;
+                border-inline-start: 6px solid #fff !important;
+
+                @include print {
+                    border-inline-color: $neutral-contrast;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,73 @@
+@use '../../styles/index' as *;
+
+.ContactItem {
+    padding: 8px 12px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid $neutral;
+
+    &_Title {
+        padding-inline: 6px;
+        position: absolute;
+        inset-block-end: 100%;
+        inset-inline-start: 6px;
+        background-color: rgb(33, 71, 97);
+        line-height: 1;
+        font-weight: bold;
+    }
+
+    .CopyToClipboard {
+        visibility: hidden;
+
+        &_Icon {
+            color: $neutral;
+
+            &-isCopied {
+                color: $primary !important;
+            }
+        }
+    }
+
+    &:hover,
+    &:focus-within {
+        .CopyToClipboard {
+            visibility: visible;
+        }
+    }
+}
+
+.SocialLink {
+    @include flex-center-v;
+    column-gap: 8px;
+    @include font-size(12, 16);
+
+    &_Icon {
+        @include box(16px);
+        color: $neutral;
+    }
+
+    &:hover {
+        &,
+        &_Icon {
+            color: $primary;
+        }
+    }
+}
+
+.Contacts {
+    margin-block-start: 32px;
+    @include flex-column;
+    row-gap: 20px;
+
+    &_ContactList {
+        @include flex-column;
+        row-gap: 28px;
+    }
+
+    &_SocialLinks {
+        @include flex-column;
+        row-gap: 10px;
+    }
+}

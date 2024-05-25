@@ -1,0 +1,150 @@
+@use '../../styles/index' as *;
+
+@forward '../A4/A4';
+@forward '../Languages/Languages';
+@forward '../Stack/Stack';
+
+.SubsectionSubject {
+    font-weight: bold;
+
+    &.Link {
+        padding: 0;
+
+        .Link_Text {
+            @include font-size(12, 16);
+        }
+    }
+}
+
+.SubsectionLabels {
+    margin-block-start: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+
+    &_Label {
+        font-weight: bold;
+
+        &::before {
+            content: '|';
+            display: inline-block;
+            position: relative;
+            inset-inline-start: -6px;
+        }
+
+        &:first-child {
+            &::before {
+                display: none;
+            }
+        }
+    }
+}
+
+.Subsection {
+    &_Title {
+        font-weight: bold;
+    }
+
+    &_Description {
+        margin-block-start: 6px;
+    }
+
+    &_ListTitle {
+        display: inline-block;
+        margin-block: 6px 3px;
+
+        & + .Subsection_List {
+            margin-block-start: 0;
+        }
+    }
+
+    &_List {
+        margin-block-start: 6px;
+        margin-inline-start: 24px;
+        list-style: disc;
+    }
+
+    &_Item {
+        margin-block-end: 3px;
+
+        &:last-child {
+            margin-block-end: 0;
+        }
+    }
+
+    &_ItemTitle {
+        font-weight: bold;
+    }
+}
+
+.Section {
+    &_Title {
+        margin-block-end: 12px;
+        @include flex-center-v;
+        gap: 12px;
+        @include text-body-bold;
+        text-transform: uppercase;
+        color: rgb(33, 71, 97);
+
+        &::before {
+            content: '';
+            @include box(24px);
+            background-color: rgb(33, 71, 97);
+            border-radius: 50%;
+        }
+    }
+}
+
+.Main {
+    @include flex-column;
+
+    .A4  {
+        padding: 30px;
+    }
+
+    .Link {
+        &_Text {
+            @include print {
+                color: $neutral-contrast !important;
+            }
+        }
+    }
+
+    &_Header {
+        margin-block-end: 24px;
+    }
+
+    &_NameSurname {
+        @include font-size(45, 42);
+        font-weight: 700;
+    }
+
+    &_Name,
+    &_Surname {
+        display: block;
+    }
+
+    &_Surname {
+        text-transform: uppercase;
+        color: rgb(33, 71, 97);
+    }
+
+    &_Position {
+        display: inline-block;
+        margin-block-start: 10px;
+        @include text-body;
+        text-transform: uppercase;
+        color: #8a8a8a;
+    }
+
+    &_AboutMe {
+        margin-block-start: 16px;
+        @include text-body;
+    }
+
+    &_Categories {
+        flex-grow: 1;
+        @include flex-column;
+        row-gap: 32px;
+    }
+}

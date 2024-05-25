@@ -1,0 +1,85 @@
+@use '../../styles/index' as *;
+
+@forward '../A4/A4';
+@forward '../Certificates/Certificates';
+@forward '../Contacts/Contacts';
+
+.AsideListLayout {
+    &_Title {
+        margin-block-end: 5px;
+        @include text-body-bold;
+    }
+}
+
+.AsideList {
+    &_List {
+        list-style: disc;
+    }
+
+    &_Item {
+        margin-inline-start: 18px;
+    }
+}
+
+.Aside {
+    @include flex-column;
+    background-color: rgb(33, 71, 97);
+    color: $neutral;
+
+    .A4 {
+        padding-block: 30px 20px;
+
+        &:first-child {
+            padding-block-start: 20px;
+        }
+    }
+
+    &_ImageWrapper {
+        width: 100%;
+        @include flex-center;
+
+        img {
+            width: 6cm;
+            border-radius: 8px;
+            background-color: $neutral;
+            object-fit: cover;
+            border: 1px solid $neutral-contrast;
+        }
+    }
+
+    &_Content,
+    &_PrintNote {
+        padding-inline: 0.5cm 12px;
+    }
+
+    &_Content {
+        flex-grow: 1;
+        @include flex-column;
+        row-gap: 30px;
+        position: relative;
+    }
+
+    &_PrintNote {
+        visibility: hidden;
+        margin-block-end: 24px;
+        position: absolute;
+        inset-block-end: 0;
+        inset-inline-start: 0;
+
+        @include print {
+            visibility: visible;
+        }
+
+        span {
+            font-weight: bold;
+        }
+    }
+
+    .Link {
+        color: $neutral;
+
+        @include hover {
+            color: $primary;
+        }
+    }
+}

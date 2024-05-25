@@ -1,0 +1,75 @@
+@use '../../styles/index' as *;
+
+@forward '../ResumeAside/Aside';
+@forward '../ResumeMain/Main';
+
+.Resume {
+    width: 21cm;
+    min-height: 29.7cm;
+    display: flex;
+    background-color: $neutral;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid $neutral-contrast;
+
+    @media (max-width: 1023px) {
+        width: calc(100vw - 16px);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        @include hide-scrollbar;
+    }
+
+    @include print {
+        width: 100%;
+        border: none;
+        overflow-x: initial;
+    }
+
+    &_Aside,
+    &_Main {
+        scroll-snap-align: start;
+    }
+
+    &_Aside {
+        flex-shrink: 0;
+        width: 7cm;
+    }
+
+    &_Main {
+        flex-grow: 1;
+
+        @media (max-width: 1023px) {
+            width: calc(100vw - 16px);
+            flex-shrink: 0;
+
+            @include print {
+                flex-shrink: 1;
+                width: auto;
+            }
+        }
+
+        .A4 {
+            @media (max-width: 1023px) {
+                padding-inline: 15px;
+
+                @include print {
+                    padding-inline: 30px;
+                }
+            }
+        }
+    }
+
+    &,
+    .Link_Text {
+        @include font-size(12, 16);
+    }
+
+    .Link {
+        padding: 0;
+
+        @include hover {
+            text-decoration: underline;
+        }
+    }
+
+}

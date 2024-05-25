@@ -1,0 +1,50 @@
+@use '../../styles/index' as *;
+
+.Stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &_Level {
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset-inline-start: -8px;
+            inset-block: 0;
+            width: 1px;
+            background-color: transparent;
+            border-radius: 50px;
+            box-shadow: -4px 0 3px #214761;
+        }
+    }
+
+    &_Rating {
+        margin-block-end: 4px;
+    }
+
+    &_Note {
+        margin-block-end: 8px;
+
+        > span {
+            display: block;
+        }
+    }
+
+    &_Note {
+        color: #8a8a8a;
+    }
+
+    &_ItemsList {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    &_Item {
+        padding: 3px 6px;
+        border: 1px solid #214761;
+        border-radius: 4px;
+    }
+}

@@ -1,0 +1,51 @@
+@use '../../styles/index' as *;
+
+.Media {
+    display: none;
+
+    &-min {
+        &-mobile,
+        &-smallMobile {
+            display: block;
+        }
+
+        &-bigMobile {
+            @media (min-width: 415px) {
+                display: block;
+            }
+        }
+
+        &-tablet {
+            @include tablet {
+                display: block;
+            }
+        }
+
+        &-desktop {
+            @include desktop {
+                display: block;
+            }
+        }
+    }
+
+    &-max {
+        &-smallMobile {
+            @media (min-width: 415px) {
+                display: none;
+            }
+        }
+
+        &-mobile,
+        &-bigMobile {
+            @include tablet {
+                display: none;
+            }
+        }
+
+        &-tablet {
+            @include desktop {
+                display: none;
+            }
+        }
+    }
+}

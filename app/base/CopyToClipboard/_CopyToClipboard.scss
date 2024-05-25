@@ -1,0 +1,32 @@
+@use '../../styles/index' as *;
+
+.CopyToClipboard {
+    cursor: pointer;
+
+    &_Icon {
+        @include box(20px);
+        color: gray;
+
+        .heart {
+            display: none;
+        }
+
+        &-isCopied {
+            color: green !important;
+
+            .heart {
+                display: block;
+            }
+        }
+    }
+
+    &:hover {
+        .CopyToClipboard_Icon {
+            color: $primary;
+
+            .heart {
+                display: block;
+            }
+        }
+    }
+}

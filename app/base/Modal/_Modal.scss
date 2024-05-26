@@ -41,6 +41,10 @@ body {
             color: rgb(17 24 39);
         }
 
+        &:focus {
+            box-shadow: 0 0 0 4px #0e7490;
+        }
+
         svg {
             @include box(20px);
         }
@@ -62,6 +66,7 @@ body {
     padding: 24px;
     display: flex;
     align-items: center;
+    justify-content: end;
     border-radius: 0 0 8px 8px;
     border-top: 2px solid rgb(229, 231, 235);
 

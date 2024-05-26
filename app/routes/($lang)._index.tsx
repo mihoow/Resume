@@ -7,6 +7,12 @@ import bem from 'bem-ts';
 import pageStyles from '../styles/cv.css';
 import { useDebounce } from 'use-debounce';
 
+export const action = () => {
+    return new Promise((resolve) => {
+        setTimeout(() => resolve(null), 2000)
+    })
+}
+
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: pageStyles }];
 
 const __ = bem('CVPage');

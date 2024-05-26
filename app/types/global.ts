@@ -10,3 +10,9 @@ export type GlobalData = {
 export type TFunction<En = string, Pl = string> = (enVersion: En, plVersion?: Pl) => En | Pl;
 
 export type DataFunctionArgs = { t: TFunction; };
+
+export type ModalHandle = {
+    isOpen: boolean;
+    open: VoidFunction;
+    close: VoidFunction;
+}

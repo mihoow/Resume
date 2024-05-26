@@ -9,8 +9,7 @@ export const ModalHeader = component<ComponentProps<'div'>>(
     'ModalHeader',
     function ({ className, children, ...props }) {
         const t = useTranslation();
-
-        const { popup, onClose, headerId } = useContext(ModalContext);
+        const { popup, onClose, headerId, closeRef } = useContext(ModalContext);
 
         return (
             <div
@@ -24,6 +23,7 @@ export const ModalHeader = component<ComponentProps<'div'>>(
                     {children}
                 </h3>
                 <button
+                    ref={closeRef}
                     type='button'
                     aria-label={t('Close', 'Zamknij')}
                     className={this.__('Close')}

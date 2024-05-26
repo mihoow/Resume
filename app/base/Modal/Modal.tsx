@@ -9,7 +9,7 @@ import {
     useInteractions,
     useRole,
 } from '@floating-ui/react';
-import { useId, useMemo } from 'react';
+import { useEffect, useId, useMemo, useRef } from 'react';
 
 import type { ComponentThis } from '~/utils/component';
 import { ModalBody } from './ModalBody';
@@ -41,6 +41,7 @@ function Modal<E extends ElementType = 'div'>(
         ...props
     }: Props<E> & Omit<ComponentPropsWithoutRef<E>, keyof Props<E>>
 ) {
+    const closeRef = useRef<HTMLButtonElement | null>(null);
     const headerId = useId();
     const { context } = useFloating({
         open: show,
@@ -54,9 +55,13 @@ function Modal<E extends ElementType = 'div'>(
     const { getFloatingProps } = useInteractions([click, dismiss, role]);
 
     const memoizedContextValue: ModalContextType = useMemo(
-        () => ({ popup, onClose, headerId }),
+        () => ({ popup, onClose, headerId, closeRef }),
         [popup, onClose, headerId]
     );
+
+    useEffect(() => {
+        console.log('>>', closeRef)
+    }, [])
 
     if (!show) {
         return null;
@@ -71,7 +76,7 @@ function Modal<E extends ElementType = 'div'>(
                     lockScroll
                     className={this.cn(this.__(), className)}
                 >
-                    <FloatingFocusManager context={context}>
+                    <FloatingFocusManager context={context} initialFocus={closeRef}>
                         <DynamicComponent
                             ref={context.refs.setFloating}
                             role='dialog'

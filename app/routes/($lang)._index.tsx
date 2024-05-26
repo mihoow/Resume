@@ -1,5 +1,5 @@
 import Actions from '~/components/Actions/Actions';
-import type { ChangeEvent } from 'react';
+import { type ChangeEvent } from 'react';
 import LanguageSwitch from '~/components/LanguageSwitch/LanguageSwitch';
 import type { LinksFunction } from '@remix-run/node';
 import Resume from '~/components/Resume/Resume';

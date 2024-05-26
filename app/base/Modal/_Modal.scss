@@ -1,0 +1,119 @@
+@use '../../styles/index' as *;
+
+body {
+    padding-right: 0 !important;
+}
+
+.ModalHeader {
+    padding: 20px;
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 2px solid rgb(229, 231, 235);
+
+    &-isPopup {
+        padding: 8px;
+        border-bottom: none;
+    }
+
+    &_Title {
+        font-size: 20px;
+        line-height: 28px;
+        color: rgb(17 24 39);
+        font-weight: 500;
+    }
+
+    &_Close {
+        margin-left: auto;
+        padding: 6px;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 8px;
+        background-color: transparent;
+        color: rgb(156 163 175);
+        font-size: 14px;
+        line-height: 20px;
+        cursor: pointer;
+
+        @include hover {
+            background-color: rgb(229 231 235);
+            color: rgb(17 24 39);
+        }
+
+        svg {
+            @include box(20px);
+        }
+    }
+}
+
+.ModalBody {
+    flex-grow: 1;
+    overflow: auto;
+    padding: 24px;
+
+    &-isPopup {
+        padding-block-start: 0;
+    }
+}
+
+
+.ModalFooter {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    border-radius: 0 0 8px 8px;
+    border-top: 2px solid rgb(229, 231, 235);
+
+    &-isPopup {
+        border: none;
+    }
+
+    & > * + * {
+        margin-left: 8px;
+    }
+}
+
+.Modal {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    z-index: z-index("modal");
+
+    height: 100vh;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(17, 24, 39, 0.5);
+
+    @include tablet {
+        inset: 0;
+        height: 100%;
+    }
+
+    &_Content {
+        position: relative;
+        max-width: 672px;
+        height: 100%;
+        width: 100%;
+        padding: 16px;
+
+        @include tablet {
+            height: auto;
+        }
+    }
+
+    &_InnerContent {
+        position: relative;
+        max-height: 90dvh;
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        border-radius: 8px;
+        background-color: #fff;
+    }
+}

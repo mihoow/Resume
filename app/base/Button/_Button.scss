@@ -1,0 +1,109 @@
+@use '../../styles/index' as *;
+
+.Button {
+    position: relative;
+    padding: 8px 16px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    text-align: center;
+    font-weight: 500;
+    transition: all cubic-bezier(0.4, 0, 0.2, 1) 150ms;
+    border-radius: 8px;
+    cursor: pointer;
+
+    &:focus {
+        z-index: 10;
+        outline: none;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    &-isLoading {
+        cursor: wait;
+    }
+
+    &-default {
+        outline-color: #0e7490;
+        border: 2px solid #e5e7eb;
+        background-color: #fff;
+        color: #111827;
+
+        &:focus {
+            color: #0e7490;
+            box-shadow: 0 0 0 4px #0e7490;
+        }
+
+        @include hover {
+            background-color: #f3f4f6;
+            color: #0e7490;
+            box-shadow: 0 0 10px 2px $neutral-contrast;
+        }
+    }
+
+    &-danger {
+        border: 2px solid transparent;
+        background-color: #b91c1c;
+        color: #fff;
+
+        &:focus {
+            box-shadow: 0 0 0 4px #fca5a5;
+        }
+
+        @include hover {
+            background-color: #991b1b;
+            box-shadow: 0 0 10px 2px $neutral-contrast;
+        }
+    }
+
+    &-submit {
+        border: 2px solid transparent;
+        background-color: #15803d;
+        color: #fff;
+
+        &:focus {
+            color: #0e7490;
+            box-shadow: 0 0 0 4px #86efac;
+        }
+
+        @include hover {
+            background-color: #166534;
+            box-shadow: 0 0 10px 2px $neutral-contrast;
+        }
+    }
+
+    &_Content {
+        display: flex;
+        align-items: stretch;
+        transition: all cubic-bezier(0.4, 0, 0.2, 1) 200ms;
+
+        &-isLoading {
+            padding-inline-start: 48px;
+        }
+    }
+
+    &_SpinnerSlot {
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-start: 16px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    &_Label {
+        margin-inline-start: 8px;
+        @include box(16px);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50px;
+        @include font-size(12, 16);
+        font-weight: 600;
+        background-color: #a5f3fc;
+        color: #155e75;
+    }
+}

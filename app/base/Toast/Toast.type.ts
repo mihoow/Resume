@@ -1,9 +1,12 @@
 export type ToastData = {
     type: 'success' | 'failure';
     message: string;
+    messageBody?: string;
     intent?: string;
     autoClose?: boolean;
 };
+
+export type ToastState = ToastData & { id: string; }
 
 export type ToastsListContextType = {
     showToast: (data: ToastData) => void;

@@ -66,6 +66,7 @@
     max-width: 320px;
     padding: 16px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 12px;
     border-radius: 8px;
@@ -84,7 +85,15 @@
         animation: toast-hide var(--transition-duration) ease-out forwards;
     }
 
-    &_Content {
+    &_Header {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    &_HeaderContent {
         display: flex;
         align-items: center;
         gap: 12px;
@@ -116,6 +125,10 @@
     &_Message {
         @include font-size(14, 20);
         font-weight: 400;
+    }
+
+    &_MessageBody {
+        @include font-size(14,20)
     }
 
     &_ProgressBar {

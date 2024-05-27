@@ -12,7 +12,8 @@ import { useTranslation } from '~/hooks/useTranslation';
 const TRANSITION_DURATION = 300;
 
 type ToastProps = ToastData & {
-    onRemoval?: (data: ToastData) => void;
+    toastId?: string;
+    onRemoval?: (toastId: string) => void;
     isInsideList?: boolean;
 } & Omit<ComponentPropsWithoutRef<'div'>, 'children'>;
 
@@ -35,9 +36,11 @@ export const Toast = component<ToastProps, ToastRef>(
     'Toast',
     function ({
         className,
+        toastId,
         intent,
         type,
         message,
+        messageBody,
         autoClose = false,
         onRemoval,
         isInsideList = false,
@@ -50,15 +53,14 @@ export const Toast = component<ToastProps, ToastRef>(
         const [isRemoved, setIsRemoved] = useState(false);
 
         const handleClose = useCallback(() => {
-            console.log('>>1123')
             setIsClosed(true);
         }, []);
 
         const handleAnimationEnd = ({ animationName, ...e }: AnimationEvent<HTMLSpanElement>) => {
             if (animationName !== 'progress') return;
 
-            handleClose()
-        }
+            handleClose();
+        };
 
         const resetAnimation = useCallback(() => {
             const { current: el } = progressBarRef;
@@ -67,32 +69,30 @@ export const Toast = component<ToastProps, ToastRef>(
 
             // that's the only working way of resetting the animation I could find
             el.classList.remove('playing');
-            el.classList.add('waiting')
+            el.classList.add('waiting');
             setTimeout(() => {
-                el.classList.add('playing')
-                el.classList.remove('waiting')
-            }, 10)
+                el.classList.add('playing');
+                el.classList.remove('waiting');
+            }, 10);
         }, []);
 
         const effectArgs = useMirrorRef({
-            intent,
-            type,
-            message,
+            toastId,
             onRemoval,
-        })
+        });
 
         useEffect(() => {
             if (!isClosed) return;
 
-            const { intent, type, message, onRemoval } = effectArgs.current
+            const {toastId, onRemoval } = effectArgs.current;
 
             timeoutRef.current = setTimeout(() => {
                 setIsRemoved(true);
-                onRemoval?.({ type, message, intent });
+                onRemoval?.(toastId || '');
             }, TRANSITION_DURATION);
 
             return () => clearTimeout(timeoutRef.current);
-        }, [effectArgs, isClosed])
+        }, [effectArgs, isClosed]);
 
         useImperativeHandle(myRef, () => ({ hide: handleClose, resetAnimation }), [handleClose, resetAnimation]);
 
@@ -107,13 +107,16 @@ export const Toast = component<ToastProps, ToastRef>(
                 style={{ '--transition-duration': `${TRANSITION_DURATION}ms` } as CSSProperties}
                 {...props}
             >
-                <div className={this.__('Content')}>
-                    <div className={this.__('IconWrapper', [type])}>
-                        <Icon />
+                <div className={this.__('Header')}>
+                    <div className={this.__('HeaderContent')}>
+                        <div className={this.__('IconWrapper', [type])}>
+                            <Icon />
+                        </div>
+                        <p className={this.__('Message')}>{message}</p>
                     </div>
-                    <p className={this.__('Message')}>{message}</p>
+                    <ToastClose onClose={handleClose} />
                 </div>
-                <ToastClose onClose={handleClose} />
+                {messageBody && <p className={this.__('MessageBody')}>{messageBody}</p>}
                 {autoClose && (
                     <span
                         aria-hidden

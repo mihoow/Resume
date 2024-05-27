@@ -1,11 +1,11 @@
-import type { ToastData, ToastListRef } from './Toast.type';
+import type { ToastData, ToastListRef, ToastState } from './Toast.type';
 import { useImperativeHandle, useRef } from 'react';
 
 import { Toast } from './Toast';
 import { component } from '~/utils/component';
 import { isSameToast } from '~/utils/misc';
 
-export const ToastList = component<{ toasts: ToastData[]; onRemoval: (data: ToastData) => void }, ToastListRef | null>(
+export const ToastList = component<{ toasts: ToastState[]; onRemoval: (toastId: string) => void }, ToastListRef | null>(
     'ToastList',
     function ({ className, toasts, onRemoval, myRef }) {
         const toastsRef = useRef<ToastListRef>([]);
@@ -15,14 +15,16 @@ export const ToastList = component<{ toasts: ToastData[]; onRemoval: (data: Toas
         return (
             <ul className={this.mcn(className)}>
                 {toasts.map((toastData) => {
-                    const { type, message, intent, autoClose } = toastData;
+                    const { id, type, message, messageBody, intent, autoClose } = toastData;
 
                     return (
-                        <li key={message}>
+                        <li key={id}>
                             <Toast
                                 className={this.__('Toast')}
+                                toastId={id}
                                 type={type}
                                 message={message}
+                                messageBody={messageBody}
                                 intent={intent}
                                 autoClose={autoClose}
                                 onRemoval={onRemoval}

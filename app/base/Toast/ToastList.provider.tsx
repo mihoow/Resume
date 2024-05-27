@@ -1,42 +1,44 @@
-import type { ToastData, ToastListRef } from './Toast.type';
+import type { ToastData, ToastListRef, ToastState } from './Toast.type';
 import { isActionData, isSameToast } from '~/utils/misc';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { PropsWithChildren } from 'react';
+import type { ServerMessageKey } from '~/data/serverMessages';
 import { ToastList } from './ToastList';
 import { ToastsListContext } from './ToastList.context';
 import { component } from '~/utils/component';
+import { getServerMessages } from '~/data/serverMessages';
 import { useActionData } from '@remix-run/react';
+import { useData } from '~/hooks/useData';
 
-export const ToastListProvider = component<PropsWithChildren>('ToastListProvider', function ({ className, children }) {
+export const ToastListProvider = component<PropsWithChildren>('ToastListProvider', function ({ children }) {
     const toastListRef = useRef<ToastListRef | null>(null);
     const actionData = useActionData();
-    const [toasts, setToasts] = useState<ToastData[]>([]);
+    const serverMessages = useData(getServerMessages);
+    const [toasts, setToasts] = useState<ToastState[]>([]);
 
     const handleShowToast = useCallback((newToast: ToastData) => {
-        const { intent } = newToast;
+        const { intent, message } = newToast;
 
         setToasts((currToasts) => {
             const isAlreadyThere = currToasts.some((toast) => isSameToast(toast, newToast));
 
             if (isAlreadyThere) {
                 const sameToast = toastListRef.current?.find((toast) => isSameToast(toast, newToast));
-                console.log('>>same', sameToast)
-                sameToast?.resetAnimation()
+                sameToast?.resetAnimation();
 
-                return currToasts
+                return currToasts;
             }
 
             // This is to ensure only one message from a single form
             const filteredToasts = currToasts.filter((toast) => (toast.intent ? toast.intent !== intent : true));
 
-            return [...filteredToasts, newToast];
+            return [...filteredToasts, { ...newToast, id: message }];
         });
     }, []);
 
-    const handleRemoval = useCallback((toastToRemove: ToastData) => {
-        console.log('>>removal', toastToRemove)
-        setToasts((currToasts) => currToasts.filter((toast) => !isSameToast(toast, toastToRemove)));
+    const handleRemoval = useCallback((toastId: string) => {
+        setToasts((currToasts) => currToasts.filter((toast) => toast.id !== toastId));
     }, []);
 
     const handleClearFailureMessages = useCallback((intent: string) => {
@@ -50,11 +52,34 @@ export const ToastListProvider = component<PropsWithChildren>('ToastListProvider
     useEffect(() => {
         if (!isActionData(actionData) || !('message' in actionData)) return;
 
-        const { intent, ok, message = '' } = actionData;
+        const { intent, ok, message = '', messageBody } = actionData;
 
-        handleShowToast({ intent, type: ok ? 'success' : 'failure', message, autoClose: ok });
+        handleShowToast({
+            intent,
+            type: ok ? 'success' : 'failure',
+            message,
+            messageBody,
+            autoClose: ok
+        });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [actionData]);
+
+    const translatedToasts = useMemo(() => {
+        return toasts.map((toast) => {
+            const { message, messageBody } = toast;
+            const toastCopy = { ...toast };
+
+            if (message in serverMessages) {
+                toastCopy.message = serverMessages[message as ServerMessageKey];
+            }
+
+            if (messageBody && messageBody in serverMessages) {
+                toastCopy.messageBody = serverMessages[messageBody as ServerMessageKey];
+            }
+
+            return toastCopy;
+        });
+    }, [toasts, serverMessages]);
 
     return (
         <ToastsListContext.Provider
@@ -63,7 +88,7 @@ export const ToastListProvider = component<PropsWithChildren>('ToastListProvider
             {toasts.length > 0 && (
                 <ToastList
                     myRef={toastListRef}
-                    toasts={toasts}
+                    toasts={translatedToasts}
                     onRemoval={handleRemoval}
                 />
             )}

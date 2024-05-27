@@ -1,3 +1,4 @@
+import { ActionType } from '~/config';
 import { Button } from '~/base/Button/Button';
 import { Form } from '~/base/Forms/Form';
 import { Label } from '~/base/Forms/Label';
@@ -15,7 +16,7 @@ export const AuthModal = component<{ handle: ModalHandle }>('AuthModal', functio
         <Modal
             as={Form}
             method='POST'
-            intent='auth'
+            intent={ActionType.AUTH}
             onSuccess={handle.close}
             show={handle.isOpen}
             onClose={handle.close}

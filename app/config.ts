@@ -1,9 +1,24 @@
 import type { Author } from "./types/resume";
 import type { Locale } from "./types/global";
 
+export enum TimeInSeconds {
+    MS = 1000,
+    SECOND = 1,
+    MINUTE = 60,
+    HOUR = 3600,
+    DAY = 86400,
+    WEEK = 604800,
+    MONTH = 2629746,
+    YEAR = 31556952
+}
+
 export const SUPPORTED_LOCALES: Readonly<Locale[]> = ['en', 'pl'];
 
 export const DEFAULT_LOCALE: Locale = 'en';
+
+export enum ActionType {
+    AUTH = 'auth'
+}
 
 export const AUTHOR: Readonly<Author> = {
     profileImage: '/images/profi-opt.jpg',

@@ -1,3 +1,5 @@
+import type { ServerMessageKey } from "~/data/serverMessages";
+
 export type Locale = 'en' | 'pl';
 
 export type Namespace = 'base' | 'cv';
@@ -19,21 +21,21 @@ export type ModalHandle = {
 export type SuccessActionData = {
     intent: string;
     ok: true;
-    message?: string;
-    messageBody?: string
+    message?: ServerMessageKey;
+    messageBody?: ServerMessageKey
 }
 
 export type ValidationErrorData = {
     intent: string;
     ok: false;
-    validationErrors: Record<string, string>;
+    validationErrors: Record<string, ServerMessageKey>;
 }
 
 export type ServerErrorData = {
     intent: string;
     ok: false;
-    message?: string;
-    messageBody?: string
+    message?: ServerMessageKey;
+    messageBody?: ServerMessageKey
 }
 
 export type ActionData = SuccessActionData | ValidationErrorData | ServerErrorData;

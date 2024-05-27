@@ -8,6 +8,8 @@ import { useContextSelector } from 'use-context-selector';
 import { ToastsListContext } from '../Toast/ToastList.context';
 import { useMirrorRef } from '~/hooks/useMirrorRef';
 import type { ValidationErrorData } from '~/types/global';
+import { useData } from '~/hooks/useData';
+import { getServerMessages } from '~/data/serverMessages';
 
 type Props = {
     intent: string;
@@ -26,11 +28,23 @@ export const Form = component<Props, HTMLFormElement>(
         );
 
         const [validationErrors, setValidationErrors] = useState<ValidationErrorData['validationErrors'] | null>(null);
+        const serverMessages = useData(getServerMessages);
+
+        const translatedValidationErrors = useMemo(() => {
+            if (!validationErrors) return {};
+
+            return Object.entries(validationErrors).reduce<Record<string, string>>((acc, [key, messageKey]) => {
+                return {
+                    ...acc,
+                    [key]: serverMessages[messageKey],
+                };
+            }, {});
+        }, [validationErrors, serverMessages]);
 
         const isSubmitting = state === 'submitting' && formData?.get('intent') === intent;
         const memoizedValue: FormContextType = useMemo(
-            () => ({ intent, isSubmitting, validationErrors: validationErrors || {} }),
-            [intent, isSubmitting, validationErrors]
+            () => ({ intent, isSubmitting, validationErrors: translatedValidationErrors }),
+            [intent, isSubmitting, translatedValidationErrors]
         );
 
         const effectsArgs = useMirrorRef({

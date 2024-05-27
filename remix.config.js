@@ -2,6 +2,6 @@
 export default {
   ignoredRouteFiles: ["**/.*"],
   serverDependenciesToBundle: [
-    /^remix-i18next.*/
+    /^remix-utils.*/,
   ]
 };

@@ -9,7 +9,7 @@ import {
     useInteractions,
     useRole,
 } from '@floating-ui/react';
-import { useEffect, useId, useMemo, useRef } from 'react';
+import { useId, useMemo, useRef } from 'react';
 
 import type { ComponentThis } from '~/utils/component';
 import { ModalBody } from './ModalBody';
@@ -58,10 +58,6 @@ function Modal<E extends ElementType = 'div'>(
         () => ({ popup, onClose, headerId, closeRef }),
         [popup, onClose, headerId]
     );
-
-    useEffect(() => {
-        console.log('>>', closeRef)
-    }, [])
 
     if (!show) {
         return null;

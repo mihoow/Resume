@@ -1,13 +1,10 @@
 import type { ComponentProps, ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 
+import { FormContext } from './Form.context';
 import { component } from '~/utils/component';
+import { useContextSelector } from 'use-context-selector';
 
-type InputColor =
-    | 'gray'
-    | 'info'
-    | 'failure'
-    | 'warning'
-    | 'success';
+type InputColor = 'gray' | 'info' | 'failure' | 'warning' | 'success';
 
 type Props = {
     color?: InputColor;
@@ -19,7 +16,24 @@ type Props = {
 
 export const TextInput = component<Props, HTMLInputElement>(
     'TextInput',
-    function ({ className, color = 'gray', addon, icon: Icon, rightIcon: RightIcon, helperText, myRef, ...inputProps }) {
+    function ({
+        className,
+        color: userColor = 'gray',
+        addon,
+        icon: Icon,
+        rightIcon: RightIcon,
+        helperText: userHelperText,
+        myRef,
+        name,
+        ...inputProps
+    }) {
+        const validationError = useContextSelector(FormContext, ({ validationErrors }) =>
+            name ? validationErrors[name] : null
+        );
+
+        const color = validationError ? 'failure' : userColor;
+        const helperText = validationError || userHelperText;
+
         return (
             <>
                 <div className={this.mcn(className)}>
@@ -41,9 +55,10 @@ export const TextInput = component<Props, HTMLInputElement>(
                                 withAddon: !!addon,
                                 withIcon: !!Icon,
                                 withRightIcon: !!RightIcon,
-                                [color]: true
+                                [color]: true,
                             })}
                             type='text'
+                            name={name}
                             {...inputProps}
                         />
                     </div>

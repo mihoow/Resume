@@ -1,0 +1,169 @@
+@use '../../styles/index' as *;
+
+.ToastClose {
+    margin: -6px;
+    margin-inline-start: auto;
+    padding: 6px;
+    @include box(32px);
+    display: inline-flex;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #9ca3af;
+    cursor: pointer;
+
+    @include hover {
+        background-color: #f3f4f6;
+        color: #111827;
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 2px #d4d4d8;
+    }
+
+    svg {
+        flex-shrink: 0;
+        @include box(20px);
+    }
+}
+
+@keyframes list-toast-show {
+    0% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes toast-hide {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes progress {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.Toast {
+    --transition-duration: 300ms;
+
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #9ca3af;
+    transition: opacity ease-out var(--transition-duration);
+    box-shadow: 0 0 10px 2px $neutral-contrast;
+    animation: toast-show var(--transition-duration) ease-out forwards;
+    overflow-x: hidden;
+
+    &-isInsideList {
+        animation: list-toast-show var(--transition-duration) ease-out forwards;
+    }
+
+    &-isClosed {
+        animation: toast-hide var(--transition-duration) ease-out forwards;
+    }
+
+    &_Content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    &_IconWrapper {
+        flex-shrink: 0;
+        @include box(32px);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+
+        &-success {
+            background-color: #dcfce7;
+            color: #22c55e;
+        }
+
+        &-failure {
+            background-color: #ffedd5;
+            color: #f97316;
+        }
+
+        svg {
+            @include box(20px);
+        }
+    }
+
+    &_Message {
+        @include font-size(14, 20);
+        font-weight: 400;
+    }
+
+    &_ProgressBar {
+        position: absolute;
+        inset-block-end: 0;
+        inset-inline: 0;
+        height: 4px;
+    }
+
+    &_Bar {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        &-success {
+            background-color: #22c55e;
+        }
+
+        &-failure {
+            background-color: #f97316;
+        }
+
+        &.playing {
+            animation: progress 10s linear forwards;
+        }
+
+        &.waiting {
+            transform: translateX(100%);
+        }
+
+        .Toast:hover & {
+            animation-play-state: paused;
+        }
+    }
+}
+
+.ToastList {
+    position: fixed;
+    z-index: 1000;
+    inset-block-start: 32px;
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    min-width: min(315px, calc(100vw - 32px));
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    @include tablet {
+        width: auto;
+    }
+}

@@ -1,8 +1,8 @@
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
 
+import { App } from './components/App';
 import { DEFAULT_LOCALE } from './config';
-import MediaProvider from '~/base/Media/Media.provider';
 import { isSupportedLocale } from './utils/internationalization';
 import rootStyles from '~/styles/root.css';
 import { setup as setupBem } from 'bem-ts';
@@ -43,9 +43,9 @@ export default function Root() {
                 <Links />
             </head>
             <body>
-                <MediaProvider>
+                <App>
                     <Outlet />
-                </MediaProvider>
+                </App>
                 <ScrollRestoration />
                 <Scripts />
                 <LiveReload />

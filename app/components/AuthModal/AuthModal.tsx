@@ -16,6 +16,7 @@ export const AuthModal = component<{ handle: ModalHandle }>('AuthModal', functio
             as={Form}
             method='POST'
             intent='auth'
+            onSuccess={handle.close}
             show={handle.isOpen}
             onClose={handle.close}
             dismissible

@@ -16,11 +16,10 @@ export const AuthModal = component<{ handle: ModalHandle }>('AuthModal', functio
         <Modal
             as={Form}
             method='POST'
-            intent={ActionType.AUTH}
+            intent={ActionType.ADMIN_AUTH}
             onSuccess={handle.close}
             show={handle.isOpen}
             onClose={handle.close}
-            dismissible
             className={this.mcn(className)}
         >
             <Modal.Header>

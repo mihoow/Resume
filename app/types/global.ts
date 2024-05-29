@@ -4,6 +4,18 @@ export type Locale = 'en' | 'pl';
 
 export type Namespace = 'base' | 'cv';
 
+export type DbCompanyData = {
+    expiresAt: Date;
+    code: string;
+    name?: string;
+    password: string;
+}
+
+export type CompanyData = {
+    name?: string;
+    token: string;
+}
+
 export type GlobalData = {
     locale: Locale;
 };

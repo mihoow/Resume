@@ -1,27 +1,33 @@
-import { useMemo, type ComponentPropsWithoutRef, useEffect, useState } from 'react';
-import { Form as RemixForm, useActionData, useNavigation } from '@remix-run/react';
-import { component } from '~/utils/component';
-import type { FormContextType } from './Form.context';
-import { FormContext } from './Form.context';
+import type { ComponentPropsWithoutRef, FormEvent } from 'react';
+import { Form as RemixForm, useNavigation } from '@remix-run/react';
 import { isActionData, isValidationErrorData } from '~/utils/misc';
-import { useContextSelector } from 'use-context-selector';
+import { useEffect, useMemo, useRef, useState } from 'react';
+
+import { FormContext } from './Form.context';
+import type { FormContextType } from './Form.context';
 import { ToastsListContext } from '../Toast/ToastList.context';
-import { useMirrorRef } from '~/hooks/useMirrorRef';
 import type { ValidationErrorData } from '~/types/global';
-import { useData } from '~/hooks/useData';
+import { component } from '~/utils/component';
 import { getServerMessages } from '~/data/serverMessages';
+import { useContextSelector } from 'use-context-selector';
+import { useData } from '~/hooks/useData';
+import { useMirrorRef } from '~/hooks/useMirrorRef';
+import { useMultiSourceActionData } from '~/hooks/useMultiSourceActionData';
 
 type Props = {
     intent: string;
     onSuccess?: VoidFunction;
     onFailure?: VoidFunction;
+    onContextChange?: (ctx: FormContextType) => void;
 } & ComponentPropsWithoutRef<typeof RemixForm>;
 
 export const Form = component<Props, HTMLFormElement>(
     'Form',
-    function ({ className, intent, onSuccess, onFailure, children, myRef, ...props }) {
+    function ({ className, intent, onSuccess, onFailure, onContextChange, children, onSubmit, myRef, ...props }) {
+        const wasSubmittedRef = useRef(false);
+
         const { formData, state } = useNavigation();
-        const actionData = useActionData();
+        const actionData = useMultiSourceActionData();
         const clearFailureMessages = useContextSelector(
             ToastsListContext,
             ({ clearFailureMessages }) => clearFailureMessages
@@ -51,6 +57,7 @@ export const Form = component<Props, HTMLFormElement>(
             intent,
             onSuccess,
             onFailure,
+            onContextChange,
             clearFailureMessages,
         });
 
@@ -61,6 +68,8 @@ export const Form = component<Props, HTMLFormElement>(
         }, [actionData, intent]);
 
         useEffect(() => {
+            if (!wasSubmittedRef.current) return;
+
             const { intent, onSuccess, onFailure } = effectsArgs.current;
 
             if (!isActionData(actionData, intent) || state !== 'idle') return;
@@ -83,11 +92,24 @@ export const Form = component<Props, HTMLFormElement>(
             [effectsArgs]
         );
 
+        useEffect(() => {
+            const { onContextChange } = effectsArgs.current;
+
+            onContextChange?.(memoizedValue)
+        }, [effectsArgs, memoizedValue])
+
+        const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+            onSubmit?.(e)
+
+            wasSubmittedRef.current = true;
+        }
+
         return (
             <FormContext.Provider value={memoizedValue}>
                 <RemixForm
                     ref={myRef}
                     className={this.mcn(className)}
+                    onSubmit={handleSubmit}
                     {...props}
                 >
                     <input

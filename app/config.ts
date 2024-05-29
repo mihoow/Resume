@@ -16,8 +16,12 @@ export const SUPPORTED_LOCALES: Readonly<Locale[]> = ['en', 'pl'];
 
 export const DEFAULT_LOCALE: Locale = 'en';
 
+export const COMPANY_AUTHORIZATION_TIME_MS = TimeInSeconds.MONTH * 1000;
+
 export enum ActionType {
-    AUTH = 'auth'
+    ADMIN_AUTH = 'admin-auth',
+    ADMIN_LOGOUT ='admin-logout',
+    COMPANY_REGISTRATION = 'company-registration'
 }
 
 export const AUTHOR: Readonly<Author> = {

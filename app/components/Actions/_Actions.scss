@@ -1,5 +1,7 @@
 @use '../../styles/index' as *;
 
+@forward '../AdminModal/AdminModal';
+
 .Actions {
     &_ActionBar {
         margin-inline-start: auto;

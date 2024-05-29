@@ -1,0 +1,16 @@
+@use '../../styles/index' as *;
+
+.AdminModal {
+    &_Body {
+        @include flex-column;
+        gap: 18px;
+    }
+
+    &_CodeInput {
+        max-width: 250px;
+    }
+
+    &_Footer {
+        justify-content: space-between;
+    }
+}

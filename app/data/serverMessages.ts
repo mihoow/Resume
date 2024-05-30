@@ -18,6 +18,7 @@ export const getServerMessages = ({ t }: DataFunctionArgs) => ({
     companyCodeInvalidType: 'Company code must be a text value',
     companyCodeInvalidLength: 'Company code needs to be exactly 4 characters long',
     companyNameInvalidType: 'Company name needs to be a text value',
+    notAdmin: 'You are not an admin!',
     duplicatedCompanyCode: 'Company of this code already exists.',
     // globals
     unknownServerError: t(

@@ -72,6 +72,11 @@ export async function authorizeCompany(request: Request, formData: FormData) {
             getCompaniesCollection(),
             getUserSession(request)
         ]);
+
+        if (!userSession.isAdmin) {
+            return action.sendServerError({ message: 'notAdmin' })
+        }
+
         await collection.insertOne(companyData);
 
         const { pathname } = new URL(request.url)

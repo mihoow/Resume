@@ -45,7 +45,11 @@ export function component<
     ) => ReactNode,
     propsAreEqual?: PropsAreEqualFn<P, R>
 ) {
-    const __ = bem(displayName)
+    const __ = bem(displayName, {
+        elementDelimiter: '_',
+        modifierDelimiter: '-',
+        strict: false,
+    })
 
     const ComponentWithUtils = component.bind({
         mcn: (...classes: ClassArg[]) => className(displayName, ...classes),

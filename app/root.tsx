@@ -15,14 +15,7 @@ import { defer } from '@remix-run/node';
 import { isSupportedLocale } from './utils/internationalization';
 import { namedAction } from 'remix-utils/named-action';
 import rootStyles from '~/styles/root.css';
-import { setup as setupBem } from 'bem-ts';
 import { useLocale } from './hooks/useLocale';
-
-setupBem({
-    elementDelimiter: '_',
-    modifierDelimiter: '-',
-    strict: false,
-});
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();

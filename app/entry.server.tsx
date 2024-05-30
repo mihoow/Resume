@@ -4,6 +4,13 @@ import { RemixServer } from '@remix-run/react';
 import { createReadableStreamFromReadable } from '@remix-run/node';
 import isbot from 'isbot';
 import { renderToPipeableStream } from 'react-dom/server';
+import { setup as setupBem } from 'bem-ts';
+
+setupBem({
+    elementDelimiter: '_',
+    modifierDelimiter: '-',
+    strict: false,
+});
 
 const ABORT_DELAY = 15_000;
 

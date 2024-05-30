@@ -12,6 +12,10 @@ export enum TimeInSeconds {
     YEAR = 31556952
 }
 
+export enum Page {
+    RESUME = '/resume'
+}
+
 export const SUPPORTED_LOCALES: Readonly<Locale[]> = ['en', 'pl'];
 
 export const DEFAULT_LOCALE: Locale = 'en';

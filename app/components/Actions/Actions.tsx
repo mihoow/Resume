@@ -4,6 +4,7 @@ import { KeyIcon } from '~/icons/Key';
 import LockIcon from '~/icons/Lock';
 import PrinterIcon from '~/icons/Printer';
 import { component } from '~/utils/component';
+import { useIsAdmin } from '~/hooks/useRootData';
 import { useModalHandle } from '~/hooks/useModalHandle';
 import { useTranslation } from '~/hooks/useTranslation';
 
@@ -52,7 +53,8 @@ const AuthAuthAction = component('AuthModalAction', function ({ className }) {
     );
 });
 
-export default component<{ isAdmin: boolean }>('Actions', function ({ className, isAdmin }) {
+export default component('Actions', function ({ className }) {
+    const isAdmin = useIsAdmin()
     const t = useTranslation();
 
     const handlePrint = () => {

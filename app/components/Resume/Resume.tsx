@@ -4,17 +4,15 @@ import { component } from '~/utils/component';
 
 type Props = {
     companyName: string;
-    isAdmin?: boolean;
 };
 
-export default component<Props>('Resume', function ({ className, companyName, isAdmin = false }) {
+export default component<Props>('Resume', function ({ className, companyName }) {
     return (
         <div className={this.mcn(className)}>
             <Aside className={this.__('Aside')} />
             <Main
                 className={this.__('Main')}
                 companyName={companyName}
-                isAdmin={isAdmin}
             />
         </div>
     );

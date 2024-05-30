@@ -1,101 +1,11 @@
 @use './index' as *;
 
-@forward '../components/LanguageSwitch/LanguageSwitch';
-@forward '../components/FindCompany/FindCompany';
-@forward '../components/Actions/Actions';
 @forward '../components/Resume/Resume';
 
 .CVPage {
-    margin-inline: 16px;
-    width: calc(100% - 32px);
-
-    @include desktop {
-        margin-inline: auto;
-        width: 21cm;
-    }
-
-    &_Header {
-        height: 48px;
-        @include flex-center-v;
-
-        @include desktop {
-            height: 80px;
-        }
-    }
-
-    &_Main {
-        padding-block: 20px;
-
-        @include desktop {
-            padding-block: 30px;
-        }
-
-        @include print {
-            padding-block: 0;
-        }
-    }
-
-    &_CompanySearchSkeleton {
-        height: 44px;
-        --height: 44px;
-        --radius: 8px;
-    }
-
-    &_CompanySearch,
-    &_CompanySearchSkeleton {
-        margin-block-end: 32px;
-        max-width: 400px;
-    }
-
-    &_CompanyInput {
-        width: 70%;
-    }
-
-    &_Actions,
-    &_Resume {
-        margin-inline: auto;
-    }
-
-    &_Actions {
-        padding-inline-end: 16px;
-        width: 100%;
-
-        @include desktop {
-            padding-inline-end: unset;
-            width: 21cm;
-        }
-    }
-
-    &_Resume {
-        @include print {
-            width: 100vw;
-        }
-    }
-
-    .Actions {
-        position: relative;
-
-        &_ActionBar {
-            margin-block-end: 16px;
-
-            @include desktop {
-                flex-direction: column;
-                gap: 24px;
-                position: absolute;
-                inset-inline-start: calc(100% + 16px);
-            }
-        }
-    }
+    margin-inline: auto;
 
     @include print {
-        width: 100%;
-        padding: 0 !important;
-        margin: 0 !important;
-
-        &_Header,
-        &_AdminForm,
-        &_Actions {
-            display: none;
-        }
+        width: 100vw;
     }
 }

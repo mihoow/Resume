@@ -1,3 +1,2 @@
-@use '_index' as *;
-
 @forward './root/index';
+@forward '../components/App/App';

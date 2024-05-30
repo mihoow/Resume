@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import type { CompanyData } from '~/types/global';
 import { KeyIcon } from '~/icons/Key';
@@ -13,7 +13,7 @@ export const FindCompany = component<{ companies: CompanyData[] }>('FindCompany'
     const [searchPhrase, setSearchPhrase] = useState('');
     const [searchResults, setSearchResults] = useState(companies);
 
-    const debouncedUpdateSearchResults = useDebouncedCallback((phrase: string) => {
+    const debouncedUpdateSearchResults = useDebouncedCallback((phrase: string, companies: CompanyData[]) => {
         const adjustedPhrase = phrase.toLowerCase();
         const matchedCompanies = companies.filter(
             ({ code, name }) =>
@@ -24,10 +24,14 @@ export const FindCompany = component<{ companies: CompanyData[] }>('FindCompany'
     }, 300);
 
     useEffect(() => {
-        debouncedUpdateSearchResults(searchPhrase);
+
+    }, [companies])
+
+    useEffect(() => {
+        debouncedUpdateSearchResults(searchPhrase, companies);
 
         return () => debouncedUpdateSearchResults.cancel();
-    }, [searchPhrase, debouncedUpdateSearchResults]);
+    }, [searchPhrase, companies, debouncedUpdateSearchResults]);
 
     return (
         <div className={this.mcn(className)}>

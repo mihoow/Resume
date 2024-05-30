@@ -1,4 +1,4 @@
-import { ActionType, COMPANY_AUTHORIZATION_TIME_MS } from '~/config';
+import { ActionType, COMPANY_AUTHORIZATION_TIME_MS, Page } from '~/config';
 import type { CompanyData, DbCompanyData, ValidationErrorData } from '~/types/global';
 import { createToken, doPasswordsMatch, getToken, readToken } from './authToken.server';
 
@@ -79,11 +79,9 @@ export async function authorizeCompany(request: Request, formData: FormData) {
 
         await collection.insertOne(companyData);
 
-        const { pathname } = new URL(request.url)
-
         return await action.redirectWithSuccessData({
             userSession,
-            url: `${pathname}?token=${token}`
+            url: `${Page.RESUME}?token=${token}`
         });
     } catch (error) {
         console.log(error);
@@ -131,22 +129,18 @@ export async function fetchCompany({ url }: Request): Promise<CompanyData | null
     }
 }
 
-export async function fetchAllCompanies() {
+export async function fetchAllCompanies(): Promise<CompanyData[] | null> {
     try {
         const collection = await getCompaniesCollection();
         const companies = await collection.find<WithId<DbCompanyData>>({}).toArray();
 
         return companies.map(({ code, name, expiresAt, password: encryptedPassword }) => {
-            console.time('token')
-            const token = getToken(code, encryptedPassword)
-            console.timeEnd('token')
-
             return {
                 isExpired: Date.now() > expiresAt.getTime(),
                 code,
                 name,
-                token,
-            }
+                token: getToken(code, encryptedPassword),
+            } satisfies CompanyData
         })
     } catch (error) {
         console.log(error)

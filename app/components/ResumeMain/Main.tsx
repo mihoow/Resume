@@ -119,7 +119,6 @@ const Section = component<
 export default component<{
     className?: string;
     companyName: string;
-    isAdmin: boolean;
 }>('Main', function ({ className, companyName }) {
     const t = useTranslation();
 

@@ -18,10 +18,6 @@ export type CompanyData = {
     token: string;
 }
 
-export type GlobalData = {
-    locale: Locale;
-};
-
 export type TFunction<En = string, Pl = string> = (enVersion: En, plVersion?: Pl) => En | Pl;
 
 export type DataFunctionArgs = { t: TFunction };
@@ -53,3 +49,10 @@ export type ServerErrorData = {
 }
 
 export type ActionData = SuccessActionData | ValidationErrorData | ServerErrorData;
+
+export type RootData = {
+    isAdmin: boolean;
+    company: Promise<CompanyData | null>;
+    allCompanies: Promise<CompanyData[] | null> | null;
+    actionData: ActionData | undefined;
+};

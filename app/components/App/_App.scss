@@ -1,0 +1,85 @@
+@use '../../styles/index' as *;
+
+@forward '../LanguageSwitch/LanguageSwitch';
+@forward '../FindCompany/FindCompany';
+@forward '../Actions/Actions';
+
+.App {
+    width: calc(100% - 32px);
+
+    @include desktop {
+        margin-inline: auto;
+        width: 21cm;
+    }
+
+    &_Header {
+        height: 48px;
+        @include flex-center-v;
+
+        @include desktop {
+            height: 80px;
+        }
+    }
+
+    &_Main {
+        padding-block: 20px;
+
+        @include desktop {
+            padding-block: 30px;
+        }
+
+        @include print {
+            padding-block: 0;
+        }
+    }
+
+    &_CompanySearchSkeleton {
+        height: 44px;
+        --height: 44px;
+        --radius: 8px;
+    }
+
+    &_CompanySearch,
+    &_CompanySearchSkeleton {
+        margin-block-end: 32px;
+        max-width: 400px;
+    }
+
+    &_Actions {
+        margin-inline: auto;
+        padding-inline-end: 16px;
+        width: 100%;
+
+        @include desktop {
+            padding-inline-end: unset;
+            width: 21cm;
+        }
+    }
+
+    .Actions {
+        position: relative;
+
+        &_ActionBar {
+            margin-block-end: 16px;
+
+            @include desktop {
+                flex-direction: column;
+                gap: 24px;
+                position: absolute;
+                inset-inline-start: calc(100% + 16px);
+            }
+        }
+    }
+
+    @include print {
+        width: 100%;
+        padding: 0 !important;
+        margin: 0 !important;
+
+        &_Header,
+        &_AdminForm,
+        &_Actions {
+            display: none;
+        }
+    }
+}

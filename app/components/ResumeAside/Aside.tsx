@@ -3,10 +3,13 @@ import { additionalSkillsData, hobbiesData } from '~/data/resume';
 import A4 from '../A4/A4';
 import Certificates from '../Certificates/Certificates';
 import Contacts from '../Contacts/Contacts';
-import type { PropsWithChildren } from 'react';
+import { Suspense, type PropsWithChildren } from 'react';
 import { component } from '~/utils/component';
 import { useData } from '~/hooks/useData';
 import { useTranslation } from '~/hooks/useTranslation';
+import { useRootData } from '~/hooks/useRootData';
+import { Await } from '@remix-run/react';
+import { Page, WEBSITE_URL } from '~/config';
 
 const AsideListLayout = component<PropsWithChildren<{ title: string }>>(
     'AsideListLayout',
@@ -45,9 +48,10 @@ const AsideList = component<{
 
 export default component('Aside', function ({ className }) {
     const t = useTranslation();
+    const company = useRootData(({ company }) => company);
 
-    const additionalSkills = useData(additionalSkillsData)
-    const hobbies = useData(hobbiesData)
+    const additionalSkills = useData(additionalSkillsData);
+    const hobbies = useData(hobbiesData);
 
     return (
         <aside className={this.mcn(className)}>
@@ -76,12 +80,26 @@ export default component('Aside', function ({ className }) {
                         title={t('Interests', 'Zainteresowania')}
                         items={hobbies}
                     />
-                    <p className={ this.__('PrintNote') }>
-                        { t(
-                            "You might also visit: http://localhost:3000 to see the interactive version of my CV",
-                            "Możecie Państwo także odwiedzić: http://localhost:3000, aby przejrzeć interaktywną wersję mojego CV"
-                        ) }
-                    </p>
+                    <Suspense fallback={null}>
+                        <Await resolve={company}>
+                            {(company) => {
+                                if (!company) return null;
+
+                                const { token } = company
+                                const url = `${WEBSITE_URL}${Page.RESUME}?token=${token}`
+
+                                return (
+                                    <p className={this.__('PrintNote')}>
+                                        {t(
+                                            `You might also visit: ${url} to see the interactive version of my CV`,
+                                            `Możecie Państwo także odwiedzić: ${url}, aby przejrzeć interaktywną wersję mojego CV`
+                                        )}
+                                    </p>
+                                )
+                            }
+                            }
+                        </Await>
+                    </Suspense>
                 </div>
             </A4.Aside>
         </aside>

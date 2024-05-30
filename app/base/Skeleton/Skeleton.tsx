@@ -10,7 +10,7 @@ export const Skeleton = component<Props & Omit<ComponentPropsWithoutRef<'span'>,
     'Skeleton',
     function ({ className, count = 1, ...props }) {
         const totalLines = Math.ceil(count);
-        const fraction = totalLines - count;
+        const fraction = count === totalLines ? 0 : 1 - (totalLines - count);
 
         return (
             <span
@@ -20,19 +20,17 @@ export const Skeleton = component<Props & Omit<ComponentPropsWithoutRef<'span'>,
                 {...props}
             >
                 {Array.from({ length: totalLines }, (_, i) => {
-                    const isLastEl = i === totalLines - 1
+                    const isLastEl = i === totalLines - 1;
                     const width = isLastEl && fraction > 0 ? `${fraction * 100}%` : '100%';
 
                     return (
-                        <Fragment key={i}>
-                            <span
-                                className={this.__('Line')}
-                                style={{ width }}
-                            >
-                                &zwnj;
-                            </span>
-                            <br />
-                        </Fragment>
+                        <span
+                            key={i}
+                            className={this.__('Line')}
+                            style={{ width }}
+                        >
+                            &zwnj;
+                        </span>
                     );
                 })}
             </span>

@@ -6,11 +6,16 @@
     display: flex;
     flex-direction: column;
 
-    &_Footer {
+    &_Footer,
+    &_FooterSkeleton {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
         justify-content: end;
+    }
+
+    &_FooterSkeleton {
+        --padding: 4px;
     }
 
     &_Consent {

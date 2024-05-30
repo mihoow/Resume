@@ -116,8 +116,11 @@ export async function fetchCompany({ url }: Request): Promise<CompanyData | null
 
         if (!doPasswordsMatch(password, encryptedPassword)) return null;
 
+        const isExpired = Date.now() > expiresAt.getTime()
+        if (isExpired) return null;
+
         return {
-            isExpired: Date.now() > expiresAt.getTime(),
+            isExpired: false,
             code,
             name,
             token,

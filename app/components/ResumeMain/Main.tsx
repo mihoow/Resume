@@ -118,8 +118,7 @@ const Section = component<
 
 export default component<{
     className?: string;
-    companyName: string;
-}>('Main', function ({ className, companyName }) {
+}>('Main', function ({ className }) {
     const t = useTranslation();
 
     const aboutMe = useData(aboutMeData);
@@ -127,7 +126,7 @@ export default component<{
 
     return (
         <div className={this.mcn(className)}>
-            <A4.Main companyName={companyName}>
+            <A4.Main>
                 <header className={this.__('Header')}>
                     <h1 className={this.__('NameSurname')}>
                         <span className={this.__('Name')}>Michał</span>
@@ -142,7 +141,7 @@ export default component<{
                     </Section>
                 </div>
             </A4.Main>
-            <A4.Main companyName={companyName}>
+            <A4.Main>
                 <div className={this.__('Categories')}>
                     <Section title={t('Languages', 'Języki')}>
                         <Languages />

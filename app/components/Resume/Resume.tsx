@@ -2,18 +2,11 @@ import Aside from '../ResumeAside/Aside';
 import Main from '../ResumeMain/Main';
 import { component } from '~/utils/component';
 
-type Props = {
-    companyName: string;
-};
-
-export default component<Props>('Resume', function ({ className, companyName }) {
+export default component('Resume', function ({ className }) {
     return (
         <div className={this.mcn(className)}>
             <Aside className={this.__('Aside')} />
-            <Main
-                className={this.__('Main')}
-                companyName={companyName}
-            />
+            <Main className={this.__('Main')} />
         </div>
     );
 });

@@ -1,0 +1,42 @@
+@use '../../styles/index' as *;
+
+.FindCompany {
+    position: relative;
+    max-width: 400px;
+
+    &_Popover {
+        width: 100%;
+    }
+
+    &_List {
+        max-height: 50vh;
+        overflow-y: auto;
+        padding-block: 8px;
+        @include font-size(14, 20);
+        font-weight: 500;
+        color: #111827;
+    }
+
+    &_ItemLink {
+        display: block;
+        padding: 8px 16px;
+        width: 100%;
+        border-bottom: 1px solid #e5e7eb;
+        cursor: pointer;
+
+        @include hover {
+            background-color: #f3f4f6;
+            color: #0e7490;
+        }
+
+        &:focus {
+            color: #0e7490;
+            outline: none;
+            box-shadow: 0 0 0 2px #0e7490;
+        }
+    }
+
+    &_Item:last-child &_ItemLink {
+        border-bottom: none;
+    }
+}

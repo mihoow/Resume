@@ -1,18 +1,21 @@
-import Actions from '~/components/Actions/Actions';
-import { type ChangeEvent } from 'react';
-import LanguageSwitch from '~/components/LanguageSwitch/LanguageSwitch';
-import { json } from '@remix-run/node';
 import type { ActionFunctionArgs, LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
+import { Await, useLoaderData } from '@remix-run/react';
+import { Suspense, lazy } from 'react';
+import { authorizeCompany, fetchAllCompanies, fetchCompany } from '~/services/companies.server';
+import { getUserSession, handleAdminAuth, handleAdminLogout } from '~/services/userSession';
+
+import { ActionType } from '~/config';
+import Actions from '~/components/Actions/Actions';
+import LanguageSwitch from '~/components/LanguageSwitch/LanguageSwitch';
 import Resume from '~/components/Resume/Resume';
+import { Skeleton } from '~/base/Skeleton/Skeleton';
 import bem from 'bem-ts';
+import { defer } from '@remix-run/node';
+import { namedAction } from 'remix-utils/named-action';
 import pageStyles from '../styles/cv.css';
 import { useDebounce } from 'use-debounce';
-import { namedAction } from 'remix-utils/named-action';
-import { ActionType } from '~/config';
-import { getUserSession, handleAdminAuth, handleAdminLogout } from '~/services/userSession';
-import { useLoaderData } from '@remix-run/react';
-import { TextInput } from '~/base/Forms/TextInput';
-import { authorizeCompany, fetchCompany } from '~/services/companies.server';
+
+const FindCompany = lazy(() => import('../components/FindCompany/FindCompany'));
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const formData = await request.formData();
@@ -20,7 +23,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return namedAction(formData, {
         [ActionType.ADMIN_AUTH]: () => handleAdminAuth(request, formData),
         [ActionType.ADMIN_LOGOUT]: () => handleAdminLogout(request),
-        [ActionType.COMPANY_REGISTRATION]: () => authorizeCompany(request, formData)
+        [ActionType.COMPANY_REGISTRATION]: () => authorizeCompany(request, formData),
     });
 };
 
@@ -28,7 +31,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { isAdmin, actionData } = await getUserSession(request);
     const companyData = await fetchCompany(request);
 
-    return json({ isAdmin, companyData, actionData });
+    return defer({
+        isAdmin,
+        companyData,
+        companies: isAdmin ? fetchAllCompanies() : null,
+        actionData,
+    });
 };
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: pageStyles }];
@@ -36,9 +44,9 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: pageStyles
 const __ = bem('CVPage');
 
 export default function CVPage() {
-    const { isAdmin } = useLoaderData<typeof loader>();
+    const { isAdmin, companies } = useLoaderData<typeof loader>();
 
-    const [companyName, setCompanyName] = useDebounce('', 100);
+    const [companyName] = useDebounce('', 100);
 
     return (
         <div className={__()}>
@@ -47,15 +55,18 @@ export default function CVPage() {
             </header>
             <main className={__('Main')}>
                 {isAdmin && (
-                    <div className={__('AdminForm')}>
-                        <TextInput
-                            className={__('CompanyInput')}
-                            type='text'
-                            placeholder='Company name'
-                            value={companyName}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setCompanyName(e.target.value)}
-                        />
-                    </div>
+                    <Suspense fallback={<Skeleton className={__('CompanySearchSkeleton')} />}>
+                        <Await resolve={companies}>
+                            {(companies) =>
+                                companies && (
+                                    <FindCompany
+                                        companies={companies}
+                                        className={__('CompanySearch')}
+                                    />
+                                )
+                            }
+                        </Await>
+                    </Suspense>
                 )}
                 <Actions
                     className={__('Actions')}

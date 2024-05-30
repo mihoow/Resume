@@ -21,7 +21,8 @@ export const COMPANY_AUTHORIZATION_TIME_MS = TimeInSeconds.MONTH * 1000;
 export enum ActionType {
     ADMIN_AUTH = 'admin-auth',
     ADMIN_LOGOUT ='admin-logout',
-    COMPANY_REGISTRATION = 'company-registration'
+    COMPANY_REGISTRATION = 'company-registration',
+    FIND_COMPANY = 'find-company'
 }
 
 export const AUTHOR: Readonly<Author> = {

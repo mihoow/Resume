@@ -46,6 +46,12 @@ export function createToken(companyCode: string) {
     }
 }
 
+export function getToken(companyCode: string, encryptedPassword: string): string {
+    const base64Code = Buffer.from(companyCode).toString('base64url');
+
+    return `${base64Code}.${decrypt(encryptedPassword)}`
+}
+
 export function readToken(token: string) {
     const [base64CompanyCode, password] = token.split('.')
 

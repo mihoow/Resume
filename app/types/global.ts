@@ -12,6 +12,8 @@ export type DbCompanyData = {
 }
 
 export type CompanyData = {
+    isExpired: boolean;
+    code: string;
     name?: string;
     token: string;
 }

@@ -14,7 +14,7 @@ type Props = {
     helperText?: ReactNode;
 } & ComponentPropsWithoutRef<'input'>;
 
-export const TextInput = component<Props, HTMLInputElement>(
+export const TextInput = component<Props, HTMLDivElement>(
     'TextInput',
     function ({
         className,
@@ -36,7 +36,7 @@ export const TextInput = component<Props, HTMLInputElement>(
 
         return (
             <>
-                <div className={this.mcn(className)}>
+                <div ref={myRef} className={this.mcn(className)}>
                     {addon && <span className={this.__('Addon')}>{addon}</span>}
                     <div className={this.__('Field')}>
                         {Icon && (
@@ -50,7 +50,6 @@ export const TextInput = component<Props, HTMLInputElement>(
                             </div>
                         )}
                         <input
-                            ref={myRef}
                             className={this.__('Input', {
                                 withAddon: !!addon,
                                 withIcon: !!Icon,

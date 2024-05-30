@@ -1,6 +1,6 @@
 import { ActionType, COMPANY_AUTHORIZATION_TIME_MS } from '~/config';
 import type { CompanyData, DbCompanyData, ValidationErrorData } from '~/types/global';
-import { createToken, doPasswordsMatch, readToken } from './authToken.server';
+import { createToken, doPasswordsMatch, getToken, readToken } from './authToken.server';
 
 import { ActionHandler } from './action.server';
 import { MongoServerError } from 'mongodb';
@@ -109,16 +109,40 @@ export async function fetchCompany({ url }: Request): Promise<CompanyData | null
 
         if (!companyData) return null;
 
-        const { name, expiresAt, password: encryptedPassword } = companyData;
-
-        if (Date.now() > expiresAt.getTime()) return null;
+        const { code, name, expiresAt, password: encryptedPassword } = companyData;
 
         if (!doPasswordsMatch(password, encryptedPassword)) return null;
 
         return {
+            isExpired: Date.now() > expiresAt.getTime(),
+            code,
             name,
             token,
         };
+    } catch (error) {
+        console.log(error)
+
+        return null;
+    }
+}
+
+export async function fetchAllCompanies() {
+    try {
+        const collection = await getCompaniesCollection();
+        const companies = await collection.find<WithId<DbCompanyData>>({}).toArray();
+
+        return companies.map(({ code, name, expiresAt, password: encryptedPassword }) => {
+            console.time('token')
+            const token = getToken(code, encryptedPassword)
+            console.timeEnd('token')
+
+            return {
+                isExpired: Date.now() > expiresAt.getTime(),
+                code,
+                name,
+                token,
+            }
+        })
     } catch (error) {
         console.log(error)
 

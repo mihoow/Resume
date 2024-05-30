@@ -1,6 +1,7 @@
 @use './index' as *;
 
 @forward '../components/LanguageSwitch/LanguageSwitch';
+@forward '../components/FindCompany/FindCompany';
 @forward '../components/Actions/Actions';
 @forward '../components/Resume/Resume';
 
@@ -34,10 +35,16 @@
         }
     }
 
-    &_AdminForm {
+    &_CompanySearchSkeleton {
+        height: 44px;
+        --height: 44px;
+        --radius: 8px;
+    }
+
+    &_CompanySearch,
+    &_CompanySearchSkeleton {
         margin-block-end: 32px;
-        @include flex-center-v;
-        gap: 24px;
+        max-width: 400px;
     }
 
     &_CompanyInput {

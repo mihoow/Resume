@@ -23,8 +23,6 @@
 
 .Aside {
     @include flex-column;
-    background-color: rgb(33, 71, 97);
-    color: $neutral;
 
     .A4 {
         padding-block: 30px 20px;

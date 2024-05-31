@@ -3,8 +3,8 @@ import { component } from '~/utils/component';
 import { useTranslation } from '~/hooks/useTranslation';
 import { useIsAdmin, useRootData } from '~/hooks/useRootData';
 
-const Aside = component<PropsWithChildren>('A4', function ({ className, children }) {
-    return <div className={this.mcn(className)}>{children}</div>;
+const Page = component<PropsWithChildren<{ type?: 'aside' | 'main' }>>('A4', function ({ className, type = 'aside', children }) {
+    return <div className={this.cn(this.__([type]), className)}>{children}</div>;
 });
 
 const Main = component<PropsWithChildren>('A4', function ({ className, children }) {
@@ -28,18 +28,18 @@ const Main = component<PropsWithChildren>('A4', function ({ className, children 
     })();
 
     return (
-        <Aside className={className}>
+        <Page type='main' className={className}>
             {children}
             {(isAdmin || company) && (
                 <footer className={this.__('Footer')}>
                     <span className={this.__('Consent')}>{consent}</span>
                 </footer>
             )}
-        </Aside>
+        </Page>
     );
 });
 
 export default {
-    Aside,
+    Aside: Page,
     Main,
 };

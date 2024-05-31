@@ -2,9 +2,23 @@
 
 .A4 {
     position: relative;
+    margin-block-end: 24px;
     height: 29.7cm;
     display: flex;
     flex-direction: column;
+
+    &-aside {
+        background-color: rgb(33, 71, 97);
+        color: $neutral;
+    }
+
+    &-main {
+        background-color: $neutral;
+    }
+
+    @include print {
+        margin-block-end: 0;
+    }
 
     &_Footer,
     &_FooterSkeleton {
@@ -20,20 +34,5 @@
 
     &_Consent {
         color: #8a8a8a;
-    }
-
-    &::after {
-        content: '';
-        display: block;
-        position: absolute;
-        bottom: 0;
-        inset-inline: 0;
-        height: 1px;
-        transform: translateY(-50%);
-        background-color: black;
-
-        @include print {
-            display: none;
-        }
     }
 }

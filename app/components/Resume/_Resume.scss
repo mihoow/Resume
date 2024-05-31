@@ -4,25 +4,28 @@
 @forward '../ResumeMain/Main';
 
 .Resume {
-    width: 21cm;
+    width: calc(100vw - 16px);
+    max-width: 21cm;
     min-height: 29.7cm;
     display: flex;
-    background-color: $neutral;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    border: 1px solid $neutral-contrast;
-
-    @media (max-width: 1023px) {
-        width: calc(100vw - 16px);
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        @include hide-scrollbar;
-    }
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    @include hide-scrollbar;
 
     @include print {
         width: 100%;
         border: none;
         overflow-x: initial;
+    }
+
+    @include wide-mobile {
+        width: calc(100vw - 32px);
+    }
+
+    @include tablet {
+        width: 100%;
     }
 
     &_Aside,
@@ -37,15 +40,21 @@
 
     &_Main {
         flex-grow: 1;
+        width: calc(100vw - 16px);
+        flex-shrink: 0;
 
-        @media (max-width: 1023px) {
-            width: calc(100vw - 16px);
-            flex-shrink: 0;
+        @include print {
+            flex-shrink: 1;
+            width: auto;
+        }
 
-            @include print {
-                flex-shrink: 1;
-                width: auto;
-            }
+        @include wide-mobile {
+            width: calc(100vw - 32px);
+        }
+
+        @include tablet {
+            flex-shrink: 1;
+            width: auto;
         }
 
         .A4 {
@@ -71,5 +80,4 @@
             text-decoration: underline;
         }
     }
-
 }

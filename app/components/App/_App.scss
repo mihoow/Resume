@@ -5,10 +5,14 @@
 @forward '../Actions/Actions';
 
 .App {
+    margin-inline: auto;
     width: calc(100% - 32px);
 
-    @include desktop {
-        margin-inline: auto;
+    @include wide-mobile {
+        width: (calc(100% - 64px));
+    }
+
+    @include a4 {
         width: 21cm;
     }
 
@@ -48,8 +52,11 @@
 
     &_Actions {
         margin-inline: auto;
-        padding-inline-end: 16px;
         width: 100%;
+
+        @include tablet {
+            padding-inline-end: 16px;
+        }
 
         @include desktop {
             padding-inline-end: unset;
@@ -79,7 +86,9 @@
 
         &_Header,
         &_AdminForm,
-        &_Actions {
+        &_Actions,
+        &_CompanySearch,
+        &_CompanySearchSkeleton {
             display: none;
         }
     }

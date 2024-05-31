@@ -22,5 +22,5 @@ export function redirectToResume(searchParams: URLSearchParams, lang: string) {
         ? Page.RESUME
         : `/${lang}${Page.RESUME}`
 
-    return redirect(search ? `${redirectUrl}?${search}` : redirectUrl, { status: 308 })
+    return redirect(search ? `${redirectUrl}?${search}` : redirectUrl)
 }

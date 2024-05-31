@@ -14,9 +14,9 @@
   "dependencies": {
     "@floating-ui/react": "^0.26.16",
     "@remix-run/css-bundle": "^2.1.0",
-    "@remix-run/node": "^2.9.2",
-    "@remix-run/react": "^2.9.2",
-    "@remix-run/serve": "^2.9.2",
+    "@remix-run/node": "^2.5.1",
+    "@remix-run/react": "^2.5.1",
+    "@remix-run/serve": "^2.5.1",
     "bem-ts": "^0.13.5",
     "isbot": "^3.6.8",
     "mongodb": "^6.6.2",

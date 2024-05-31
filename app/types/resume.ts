@@ -34,12 +34,6 @@ export type Experience = {
 export type Author = {
     profileImage: string;
     birthday: string;
-    address: string;
-    email: string;
     github: string;
     linkedin: string;
-    phone: {
-        areaCode: number | string;
-        tel: number | string;
-    };
 };

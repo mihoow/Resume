@@ -12,6 +12,7 @@ import { RootDataProvider } from './components/RootDataProvider/RootData.provide
 import { ToastListProvider } from './base/Toast/ToastList.provider';
 import { component } from './utils/component';
 import { defer } from '@remix-run/node';
+import { fetchSensitiveAuthorInfo } from './services/authorInfo.server';
 import { isSupportedLocale } from './utils/internationalization';
 import { namedAction } from 'remix-utils/named-action';
 import rootStyles from '~/styles/root.css';
@@ -39,6 +40,8 @@ export const loader = async ({
     request: { url },
     params: { lang = DEFAULT_LOCALE },
 }: LoaderFunctionArgs): Promise<TypedDeferredData<RootData>> => {
+    console.log('root');
+
     if (!isSupportedLocale(lang)) {
         throw new Response(`The requested language (${lang}) is not supported`, { status: 404 });
     }
@@ -53,14 +56,18 @@ export const loader = async ({
 
         I wasn't able to find any workaround
     */
-    if (isHomePage(pathname)) throw redirectToResume(searchParams, lang);
+    if (isHomePage(pathname)) throw redirectToResume(searchParams, lang)
 
-    const { isAdmin, actionData } = await getUserSession(request);
+    const [{ isAdmin, actionData }, company] = await Promise.all([
+        getUserSession(request),
+        fetchCompany(request)
+    ]);
 
     return defer({
         isAdmin,
-        company: fetchCompany(request),
+        company,
         allCompanies: isAdmin ? fetchAllCompanies() : null,
+        sensitiveAuthorInfo: isAdmin || company ? fetchSensitiveAuthorInfo() : null,
         actionData,
     });
 };

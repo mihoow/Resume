@@ -18,6 +18,17 @@ export type CompanyData = {
     token: string;
 }
 
+export type SensitiveAuthorInfo = {
+    identifier: 'sensitive-author-info';
+    email: string;
+    phone: {
+        code: number;
+        tel: number;
+    }
+    address: string;
+    addressLink: string;
+}
+
 export type TFunction<En = string, Pl = string> = (enVersion: En, plVersion?: Pl) => En | Pl;
 
 export type DataFunctionArgs = { t: TFunction };
@@ -52,7 +63,8 @@ export type ActionData = SuccessActionData | ValidationErrorData | ServerErrorDa
 
 export type RootData = {
     isAdmin: boolean;
-    company: Promise<CompanyData | null>;
+    company: CompanyData | null;
     allCompanies: Promise<CompanyData[] | null> | null;
+    sensitiveAuthorInfo: Promise<SensitiveAuthorInfo | null> | null;
     actionData: ActionData | undefined;
 };

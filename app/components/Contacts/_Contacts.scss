@@ -1,8 +1,9 @@
 @use '../../styles/index' as *;
 
 .ContactItem {
-    padding: 8px 12px;
     position: relative;
+    padding: 8px 12px;
+    min-height: 42px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -35,6 +36,12 @@
         .CopyToClipboard {
             visibility: visible;
         }
+    }
+}
+
+.SensitiveContactItem {
+    &_Skeleton {
+        --height: 16px;
     }
 }
 

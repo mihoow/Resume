@@ -1,5 +1,5 @@
-import type { ArrayItem } from "./utils";
-import type { LANGUAGE_LEVELS } from "~/config";
+import type { ArrayItem } from "../../types/utils";
+import type { LANGUAGE_LEVELS } from "./config";
 
 export type LangLevel = ArrayItem<typeof LANGUAGE_LEVELS> | 'native';
 
@@ -31,9 +31,3 @@ export type Experience = {
     listItems?: Array<string | { title: string; content: string; }>
 };
 
-export type Author = {
-    profileImage: string;
-    birthday: string;
-    github: string;
-    linkedin: string;
-};

@@ -1,6 +1,6 @@
-import { additionalSkillsData, hobbiesData } from '~/data/resume';
+import { additionalSkillsData, hobbiesData } from '~/features/Resume/data';
 
-import A4 from '../A4/A4';
+import A4 from '../../../../components/A4/A4';
 import Certificates from '../Certificates/Certificates';
 import Contacts from '../Contacts/Contacts';
 import { type PropsWithChildren } from 'react';

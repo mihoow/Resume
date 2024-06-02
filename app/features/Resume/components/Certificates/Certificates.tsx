@@ -1,5 +1,5 @@
 import Link from '~/base/Link';
-import { certificatesData } from '~/data/resume';
+import { certificatesData } from '../../data';
 import { component } from '~/utils/component';
 import { useData } from '~/hooks/useData';
 

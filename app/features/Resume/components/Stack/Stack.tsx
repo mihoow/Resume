@@ -1,6 +1,6 @@
 import { Rating as StarRating } from 'react-simple-star-rating';
 import { component } from '~/utils/component';
-import { myStackData } from '~/data/resume';
+import { myStackData } from '../../data';
 import { useData } from '~/hooks/useData';
 
 export default component('Stack', function ({ className }) {

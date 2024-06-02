@@ -88,7 +88,6 @@ export default component('Contacts', function ({ className }) {
                 <SensitiveContactItem
                     title={t('Address', 'Adres')}
                     placeholderLength={0.8}
-                    starsCount={15}
                 >
                     {({ address, addressLink }) => (
                         <>
@@ -106,7 +105,6 @@ export default component('Contacts', function ({ className }) {
                 <SensitiveContactItem
                     title={t('Phone', 'Telefon')}
                     placeholderLength={0.5}
-                    starsCount={8}
                 >
                     {({ phone: { code, tel } }) => (
                         <>
@@ -123,7 +121,6 @@ export default component('Contacts', function ({ className }) {
                 <SensitiveContactItem
                     title={t('E-mail')}
                     placeholderLength={0.9}
-                    starsCount={40}
                 >
                     {({ email }) => (
                         <>

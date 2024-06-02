@@ -1,4 +1,4 @@
-import type { Certificate, Experience, LangLevel, Language, StackLevel } from "~/types/resume";
+import type { Certificate, Experience, LangLevel, Language, StackLevel } from "~/features/Resume/type";
 
 import type { DataFunctionArgs } from "~/types/global";
 

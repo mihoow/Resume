@@ -1,5 +1,4 @@
-import type { Author } from "./types/resume";
-import type { Locale } from "./types/global";
+import type { Author, Locale } from "./types/global";
 
 export enum TimeInSeconds {
     MS = 1000,
@@ -37,5 +36,3 @@ export const AUTHOR: Readonly<Author> = {
     github: 'https://github.com/mihoow',
     linkedin: 'https://www.linkedin.com/in/mwieczorek8',
 };
-
-export const LANGUAGE_LEVELS: Readonly<string[]> = ['a1', 'a2', 'b1', 'b2', 'c1', 'c2'];

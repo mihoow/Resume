@@ -1,6 +1,6 @@
-@use '../../styles/index' as *;
+@use '../../../../styles/index' as *;
 
-@forward '../A4/A4';
+@forward '../../../../components/A4/A4';
 @forward '../Certificates/Certificates';
 @forward '../Contacts/Contacts';
 

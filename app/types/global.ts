@@ -4,6 +4,24 @@ export type Locale = 'en' | 'pl';
 
 export type Namespace = 'base' | 'cv';
 
+export type Author = {
+    profileImage: string;
+    birthday: string;
+    github: string;
+    linkedin: string;
+};
+
+export type SensitiveAuthorInfo = {
+    identifier: 'sensitive-author-info';
+    email: string;
+    phone: {
+        code: number;
+        tel: number;
+    }
+    address: string;
+    addressLink: string;
+}
+
 export type DbCompanyData = {
     expiresAt: Date;
     code: string;
@@ -16,17 +34,6 @@ export type CompanyData = {
     code: string;
     name?: string;
     token: string;
-}
-
-export type SensitiveAuthorInfo = {
-    identifier: 'sensitive-author-info';
-    email: string;
-    phone: {
-        code: number;
-        tel: number;
-    }
-    address: string;
-    addressLink: string;
 }
 
 export type TFunction<En = string, Pl = string> = (enVersion: En, plVersion?: Pl) => En | Pl;

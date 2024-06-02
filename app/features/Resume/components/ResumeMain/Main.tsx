@@ -4,10 +4,10 @@ import { useTranslation } from '~/hooks/useTranslation';
 import Link from '~/base/Link';
 import Languages from '../Languages/Languages';
 import Stack from '../Stack/Stack';
-import A4 from '../A4/A4';
-import type { Experience } from '~/types/resume';
+import A4 from '../../../../components/A4/A4';
+import type { Experience } from '~/features/Resume/type';
 import { useData } from '~/hooks/useData';
-import { aboutMeData, scandiwebExperienceData } from '~/data/resume';
+import { aboutMeData, scandiwebExperienceData } from '~/features/Resume/data';
 
 const SubsectionSubject = component<{
     subject: Experience['subject'];

@@ -1,7 +1,7 @@
-import { LANGUAGE_LEVELS } from '~/config';
-import type { LangLevel } from '~/types/resume';
+import { LANGUAGE_LEVELS } from '../../config';
+import type { LangLevel } from '../../type';
 import { component } from '~/utils/component';
-import { languagesData } from '~/data/resume';
+import { languagesData } from '../../data';
 import { useData } from '~/hooks/useData';
 
 const Rating = component<{

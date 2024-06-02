@@ -94,6 +94,7 @@ export const Popover = component<Props & Omit<ComponentProps<'div'>, keyof Props
             return cloneElement(
                 children,
                 getReferenceProps({
+                    ref,
                     myRef: ref,
                     ...children?.props,
                 })

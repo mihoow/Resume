@@ -1,0 +1,35 @@
+@use '../../../../styles/index' as *;
+
+.IconButton {
+    @include box(25px);
+    @include flex-center;
+    align-items: center;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color, outline-color cubic-bezier(0.4, 0, 0.2, 1) 150ms,
+        background-color cubic-bezier(0.4, 0, 0.2, 1) 300ms;
+
+    @include hover {
+        background-color: #e5e7eb;
+    }
+
+    &-isActive {
+        background-color: #d1d5db !important;
+    }
+
+    &:focus-visible {
+        border-color: #06b6d4;
+        outline-color: #06b6d4;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    svg {
+        @include box(20px);
+        user-select: none;
+    }
+}

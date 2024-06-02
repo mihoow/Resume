@@ -12,3 +12,5 @@ ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
 export type WithOptional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+
+export type NoReadonlyKeys<T> = { [P in keyof T]: 'readonly' extends keyof T[P] ? never : P }[keyof T]

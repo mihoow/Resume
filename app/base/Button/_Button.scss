@@ -79,18 +79,21 @@
         align-items: stretch;
         transition: all cubic-bezier(0.4, 0, 0.2, 1) 200ms;
 
-        &-isLoading {
+        &-isSpaced {
             padding-inline-start: 48px;
         }
     }
 
     &_SpinnerSlot {
-        position: absolute;
-        inset-block-start: 0;
-        inset-inline-start: 16px;
-        height: 100%;
         display: flex;
         align-items: center;
+
+        &-hasLoadingText {
+            position: absolute;
+            inset-block-start: 0;
+            inset-inline-start: 16px;
+            height: 100%;
+        }
     }
 
     &_Label {

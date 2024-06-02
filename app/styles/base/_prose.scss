@@ -1,0 +1,110 @@
+@use './util' as *;
+
+@mixin blockquote-styles {
+    padding: 1rem 10px;
+    background-color: #f9f9f9;
+    border-inline-start: 5px solid #0d0d0d1a;
+}
+
+@mixin list-styles {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    list-style-position: inside;
+
+    &:is(ul) {
+        list-style-type: disc;
+    }
+
+    &:is(ol) {
+        list-style-type: decimal;
+    }
+
+    p {
+        display: inline;
+    }
+
+    ul,
+    ol {
+        margin-block-start: 8px !important;
+        padding-inline-start: 20px !important;
+    }
+
+    li {
+        & > ul {
+            list-style-type: circle;
+
+            ul {
+                list-style-type: square;
+            }
+        }
+
+        & > ol {
+            list-style-type: lower-alpha;
+
+            ol {
+                list-style-type: lower-roman;
+            }
+        }
+    }
+}
+
+@mixin decorators {
+    strong {
+        font-weight: bold;
+    }
+
+    em {
+        font-style: italic;
+    }
+
+    s {
+        text-decoration: line-through;
+    }
+
+    u {
+        text-decoration: underline;
+    }
+}
+
+@mixin indent-styles {
+    @for $indent from 1 through 4 {
+        [data-indent='#{$indent}'] {
+            margin-inline-start: $indent * 40px;
+        }
+    }
+}
+
+@mixin size-styles {
+    $sizes: (
+        'sm': 10px,
+        'md': 13px,
+        'lg': 18px,
+        'xl': 32px,
+    );
+
+    @each $name, $font-size in $sizes {
+        [data-size='#{$name}'] {
+            font-size: $font-size;
+        }
+    }
+}
+
+@mixin prose {
+    @include decorators;
+    @include indent-styles;
+    @include size-styles;
+
+    font-size: 13px;
+    line-height: 1.5;
+    color: #111827;
+
+    blockquote {
+        @include blockquote-styles;
+    }
+
+    ul,
+    ol {
+        @include list-styles;
+    }
+}

@@ -1,0 +1,19 @@
+@use '../../../../styles/index' as *;
+
+@forward '../IconButton/IconButton';
+
+.Footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &_Submit {
+        min-width: 85px;
+    }
+
+    &_Discard {
+        svg {
+            @include box(16px);
+        }
+    }
+}

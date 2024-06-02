@@ -1,0 +1,22 @@
+@use '../../../../styles/index' as *;
+
+.TextSizeSample {
+    user-select: none;
+    line-height: 1.5;
+
+    &-sm {
+        font-size: 10px;
+    }
+
+    &-md {
+        font-size: 13px;
+    }
+
+    &-lg {
+        font-size: 18px;
+    }
+
+    &-xl {
+        font-size: 32px;
+    }
+}

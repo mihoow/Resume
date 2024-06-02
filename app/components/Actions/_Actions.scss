@@ -1,6 +1,7 @@
 @use '../../styles/index' as *;
 
 @forward '../AdminModal/AdminModal';
+@forward '../../features/RichTextEditor/components/EditorModal/EditorModal';
 
 .Actions {
     &_ActionBar {

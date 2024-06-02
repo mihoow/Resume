@@ -16,6 +16,7 @@ import { fetchSensitiveAuthorInfo } from './services/authorInfo.server';
 import { isSupportedLocale } from './utils/internationalization';
 import { namedAction } from 'remix-utils/named-action';
 import rootStyles from '~/styles/root.css';
+import { sendEmail } from './services/sendEmail.server';
 import { setup as setupBem } from 'bem-ts';
 import { useLocale } from './hooks/useLocale';
 
@@ -32,6 +33,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         [ActionType.ADMIN_AUTH]: () => handleAdminAuth(request, formData),
         [ActionType.ADMIN_LOGOUT]: () => handleAdminLogout(request),
         [ActionType.COMPANY_REGISTRATION]: () => authorizeCompany(request, formData),
+        [ActionType.SEND_EMAIL]: () => sendEmail(formData)
     });
 };
 
@@ -40,8 +42,6 @@ export const loader = async ({
     request: { url },
     params: { lang = DEFAULT_LOCALE },
 }: LoaderFunctionArgs): Promise<TypedDeferredData<RootData>> => {
-    console.log('root');
-
     if (!isSupportedLocale(lang)) {
         throw new Response(`The requested language (${lang}) is not supported`, { status: 404 });
     }

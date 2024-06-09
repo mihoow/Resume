@@ -27,7 +27,8 @@ export enum ActionType {
     ADMIN_AUTH = 'admin-auth',
     ADMIN_LOGOUT ='admin-logout',
     COMPANY_REGISTRATION = 'company-registration',
-    FIND_COMPANY = 'find-company'
+    FIND_COMPANY = 'find-company',
+    SEND_EMAIL = 'send-email'
 }
 
 export const AUTHOR: Readonly<Author> = {

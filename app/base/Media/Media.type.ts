@@ -1,1 +1,7 @@
-export type Breakpoint = 'mobile' | 'smallMobile' | 'bigMobile' | 'tablet' | 'desktop';
+export type Breakpoint =
+    | 'smallMobile'
+    | 'mobile'
+    | 'wideMobile'
+    | 'tablet'
+    | 'desktop'
+    | 'wideDesktop';

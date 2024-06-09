@@ -15,9 +15,15 @@ export function isActionData(data: unknown, intent?: string): data is ActionData
 
     if (!isValid) return false;
 
-    return !intent || data.intent === intent
+    return !intent || data.intent === intent;
 }
 
 export function isValidationErrorData(data: unknown, intent?: string): data is ValidationErrorData {
     return isActionData(data, intent) && !data.ok && 'validationErrors' in data;
+}
+
+export function shallowObjectCompare(a: Record<string, unknown>, b: Record<string, unknown>) {
+    const aKeys = Object.keys(a);
+
+    return aKeys.length === Object.keys(b).length && aKeys.every((key) => a[key] === b[key]);
 }

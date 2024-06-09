@@ -1,5 +1,7 @@
 import { Suspense, lazy } from 'react';
 
+import { ActionType } from '~/config';
+import { EnvelopeAtIcon } from '~/icons/EnvelopeAt';
 import { KeyIcon } from '~/icons/Key';
 import LockIcon from '~/icons/Lock';
 import PrinterIcon from '~/icons/Printer';
@@ -10,6 +12,7 @@ import { useTranslation } from '~/hooks/useTranslation';
 
 const AuthModal = lazy(() => import('../AuthModal/AuthModal'));
 const AdminModal = lazy(() => import('../AdminModal/AdminModal'));
+const SendEmailModal = lazy(() => import('../../features/RichTextEditor'));
 
 const AdminManageAction = component('AdminManageAction', function ({ className }) {
     const t = useTranslation();
@@ -53,8 +56,33 @@ const AuthAuthAction = component('AuthModalAction', function ({ className }) {
     );
 });
 
+const SendEmailAction = component('SendEmailAction', function ({ className }) {
+    const t = useTranslation();
+    const emailModalHandle = useModalHandle();
+
+    return (
+        <>
+            <button
+                className={className}
+                type='button'
+                onClick={emailModalHandle.open}
+                aria-label={t('Send an e-mail', 'Wyślij maila')}
+            >
+                <EnvelopeAtIcon />
+            </button>
+            <Suspense fallback={null}>
+                <SendEmailModal
+                    intent={ActionType.SEND_EMAIL}
+                    handle={emailModalHandle}
+                    addInlineStyles
+                />
+            </Suspense>
+        </>
+    );
+});
+
 export default component('Actions', function ({ className }) {
-    const isAdmin = useIsAdmin()
+    const isAdmin = useIsAdmin();
     const t = useTranslation();
 
     const handlePrint = () => {
@@ -78,6 +106,7 @@ export default component('Actions', function ({ className }) {
                     ) : (
                         <AuthAuthAction className={this.__('Button')} />
                     )}
+                    <SendEmailAction className={this.__('Button')} />
                 </div>
             </div>
         </>

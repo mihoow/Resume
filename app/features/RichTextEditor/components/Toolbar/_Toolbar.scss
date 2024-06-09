@@ -1,0 +1,69 @@
+@use '../../../../styles/index' as *;
+
+@forward '../IconButton/IconButton';
+@forward '../TextSize/TextSize';
+
+.Toolbar {
+    padding: 8px 5px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12),
+        0px 2px 4px -1px rgba(0, 0, 0, 0.2);
+
+    &-mobile {
+        max-width: 100vw;
+        overflow-x: auto;
+        @include hide-scrollbar;
+        padding-inline: 16px;
+        gap: 10px;
+    }
+
+    &_Break {
+        margin-inline: 3px;
+        display: inline-block;
+        height: 20px;
+        border-left: 1px solid #d1d5db;
+        user-select: none;
+
+        &-mobile {
+            display: none;
+        }
+    }
+
+    &_Button {
+        flex-shrink: 0;
+    }
+
+    &_Group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &_GroupButton {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        cursor: pointer;
+        user-select: none;
+
+        &-checklist {
+            padding: 6px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            svg {
+                position: absolute;
+                inset-inline-start: 24px;
+                inset-block-start: 50%;
+                transform: translate(-50%, -50%);
+                @include box(20px);
+            }
+        }
+
+        &:hover {
+            background-color: #e5e7eb;
+        }
+    }
+}

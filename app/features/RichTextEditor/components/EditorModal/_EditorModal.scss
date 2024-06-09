@@ -1,0 +1,154 @@
+@use '../../../../styles/index' as *;
+
+@forward '../SendEmailFields/SendEmailFields';
+@forward '../Toolbar/Toolbar';
+@forward '../Footer/Footer';
+
+.EditorModal {
+    &-mobile {
+        .Modal {
+            &_Content {
+                max-width: unset;
+                height: 100%;
+                padding: 0;
+            }
+
+            &_InnerContent {
+                max-height: none;
+                border-radius: 0;
+            }
+        }
+
+        .ModalHeader {
+            position: relative;
+            padding: 8px 16px;
+            justify-content: start;
+
+            @include wide-mobile {
+                padding-inline: 24px;
+            }
+
+            &_Close {
+                order: -1;
+                margin-left: 0;
+                transform: translateX(-10px);
+            }
+
+            &_Title {
+                width: calc(100% - 44px);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+    }
+
+    &_ModalTitle {
+        &-mobile {
+            width: calc(100% - 48px);
+        }
+    }
+
+    &_MobileSubmit {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        transform: translateY(-50%);
+    }
+
+    &_Body {
+        padding: 0;
+        overflow: unset;
+
+        &-mobile {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    &_Inputs {
+        padding: 12px 24px 16px 24px;
+
+        &-mobile {
+            padding-inline: 12px;
+            padding-block-end: 0;
+
+            @include wide-mobile {
+                padding-inline: 16px;
+            }
+
+            input {
+                padding-inline: 8px;
+
+                @include wide-mobile {
+                    padding-inline: 12px;
+                }
+            }
+        }
+    }
+
+    &_Content {
+        max-height: calc(90dvh - 241px);
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+
+        &-mobile {
+            flex-grow: 1;
+            max-height: calc(100vh - 95px);
+        }
+    }
+
+    &_Editor {
+        padding: 24px;
+        min-height: 30vh;
+        max-height: min(90vh, 500px);
+        padding-bottom: 0;
+        @include prose;
+
+        &-withEmailFields {
+            padding-block-start: 0;
+        }
+
+        &-mobile {
+            flex-grow: 1;
+            padding: 16px;
+
+            @include wide-mobile {
+                padding-inline: 24px;
+            }
+        }
+
+        p {
+            &.is-editor-empty:first-child::before {
+                content: 'Write your message...';
+                height: 0;
+                float: left;
+                color: #9ca3af;
+                pointer-events: none;
+
+                [data-lang='pl'] & {
+                    content: 'Napisz swoją wiadomość...';
+                }
+            }
+        }
+    }
+
+    &_Toolbar {
+        margin: 16px 24px;
+        width: fit-content;
+
+        &-mobile {
+            margin: 0;
+            width: 100%;
+
+            @include wide-mobile {
+                padding-inline: 24px;
+            }
+        }
+    }
+
+    &_Footer {
+        display: block;
+    }
+}

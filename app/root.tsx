@@ -1,4 +1,10 @@
-import type { ActionFunctionArgs, LinksFunction, LoaderFunctionArgs, TypedDeferredData } from '@remix-run/node';
+import type {
+    ActionFunctionArgs,
+    LinksFunction,
+    LoaderFunctionArgs,
+    MetaFunction,
+    TypedDeferredData,
+} from '@remix-run/node';
 import { ActionType, DEFAULT_LOCALE } from './config';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react';
 import { authorizeCompany, fetchAllCompanies, fetchCompany } from './services/companies.server';
@@ -33,7 +39,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         [ActionType.ADMIN_AUTH]: () => handleAdminAuth(request, formData),
         [ActionType.ADMIN_LOGOUT]: () => handleAdminLogout(request),
         [ActionType.COMPANY_REGISTRATION]: () => authorizeCompany(request, formData),
-        [ActionType.SEND_EMAIL]: () => sendEmail(formData)
+        [ActionType.SEND_EMAIL]: () => sendEmail(formData),
     });
 };
 
@@ -56,12 +62,9 @@ export const loader = async ({
 
         I wasn't able to find any workaround
     */
-    if (isHomePage(pathname)) throw redirectToResume(searchParams, lang)
+    if (isHomePage(pathname)) throw redirectToResume(searchParams, lang);
 
-    const [{ isAdmin, actionData }, company] = await Promise.all([
-        getUserSession(request),
-        fetchCompany(request)
-    ]);
+    const [{ isAdmin, actionData }, company] = await Promise.all([getUserSession(request), fetchCompany(request)]);
 
     return defer({
         isAdmin,
@@ -72,11 +75,13 @@ export const loader = async ({
     });
 };
 
+export const meta: MetaFunction = () => [{ title: 'Wieczorek' }];
+
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: rootStyles }];
 
 export default component('Root', function () {
     const loaderData = useLoaderData<typeof loader>();
-    const locale = useLocale()
+    const locale = useLocale();
 
     return (
         <html
@@ -89,6 +94,10 @@ export default component('Root', function () {
                 <meta
                     name='viewport'
                     content='width=device-width, initial-scale=1'
+                />
+                <meta
+                    name='robots'
+                    content='noindex, nofollow'
                 />
                 <Meta />
                 <Links />

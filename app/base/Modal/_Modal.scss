@@ -41,7 +41,7 @@ body {
             color: rgb(17 24 39);
         }
 
-        &:focus {
+        &:focus-visible {
             box-shadow: 0 0 0 4px #0e7490;
         }
 

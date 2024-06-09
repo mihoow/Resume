@@ -12,7 +12,7 @@
     border-radius: 8px;
     cursor: pointer;
 
-    &:focus {
+    &:focus-visible {
         z-index: 10;
         outline: none;
     }
@@ -32,7 +32,7 @@
         background-color: #fff;
         color: #111827;
 
-        &:focus {
+        &:focus-visible {
             color: #0e7490;
             box-shadow: 0 0 0 4px #0e7490;
         }
@@ -49,7 +49,7 @@
         background-color: #b91c1c;
         color: #fff;
 
-        &:focus {
+        &:focus-visible {
             box-shadow: 0 0 0 4px #fca5a5;
         }
 
@@ -64,7 +64,7 @@
         background-color: #15803d;
         color: #fff;
 
-        &:focus {
+        &:focus-visible {
             box-shadow: 0 0 0 4px #86efac;
         }
 

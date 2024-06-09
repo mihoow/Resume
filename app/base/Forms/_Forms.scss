@@ -88,7 +88,7 @@
                 color: #6b7280;
             }
 
-            &:focus {
+            &:focus-visible {
                 border-color: #06b6d4;
                 outline-color: #06b6d4;
             }
@@ -103,7 +103,7 @@
                 color: #0e7490;
             }
 
-            &:focus {
+            &:focus-visible {
                 border-color: #06b6d4;
                 outline: #06b6d4;
             }
@@ -118,7 +118,7 @@
                 color: #b91c1c;
             }
 
-            &:focus {
+            &:focus-visible {
                 border-color: #ef4444;
                 outline: #ef4444;
             }
@@ -133,7 +133,7 @@
                 color: #a16207;
             }
 
-            &:focus {
+            &:focus-visible {
                 border-color: #eab308;
                 outline-color: #eab308;
             }
@@ -148,7 +148,7 @@
                 color: #15803d;
             }
 
-            &:focus {
+            &:focus-visible {
                 border-color: #22c55e;
                 outline-color: #22c55e;
             }

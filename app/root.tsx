@@ -77,7 +77,11 @@ export const loader = async ({
 
 export const meta: MetaFunction = () => [{ title: 'Wieczorek' }];
 
-export const links: LinksFunction = () => [{ rel: 'stylesheet', href: rootStyles }];
+export const links: LinksFunction = () => [
+    { rel: 'stylesheet', href: rootStyles },
+    { rel: 'icon', type: 'image/x-icon', sizes: '16x15', href: '/logos/logo_16.ico' },
+    { rel: 'icon', type: 'image/x-icon', sizes: '32x29', href: '/logos/logo_32.ico' },
+];
 
 export default component('Root', function () {
     const loaderData = useLoaderData<typeof loader>();

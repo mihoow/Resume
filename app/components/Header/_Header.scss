@@ -1,0 +1,142 @@
+@use '../../styles/index' as *;
+
+.Heading {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    color: $neutral-contrast;
+
+    &_Names {
+        @include font-size(40, 1.5, 5);
+        text-align: center;
+    }
+
+    &_Name {
+        &-first {
+            span {
+                display: none;
+            }
+
+            @include wide-mobile {
+                margin-right: 24px;
+
+                span {
+                    display: inline;
+                }
+            }
+        }
+
+        &-last {
+            span {
+                @include small-mobile {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &_Logo {
+        margin-right: 0.125em;
+
+        &-reversed {
+            transform-origin: center;
+            transform: rotate(180deg);
+        }
+    }
+
+    &_Position {
+        @include font-size(24, 1.5, 1);
+        color: $neutral-contrast;
+        text-align: end;
+
+        @include small-mobile {
+            font-size: 16px;
+        }
+    }
+}
+
+.Navbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    &_Toggler {
+        padding: 4px;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 8px;
+        @include font-size(14, 20);
+        color: #6b7280;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #f3f4f6;
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #e5e7eb;
+        }
+
+        svg {
+            flex-shrink: 0;
+            @include box(24px);
+        }
+    }
+
+    &_LinkList {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        @include mobile {
+            display: none;
+
+            &-isOpen {
+                position: absolute;
+                top: 100%;
+                inset-inline: 0;
+                z-index: 10;
+                padding: 0 16px 16px 16px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 6px;
+                background-color: #f3f4f6;
+            }
+        }
+    }
+
+    &_Link {
+        padding: 4px 8px;
+        @include font-size(16, 24);
+        color: $neutral-contrast;
+
+
+        &-isActive {
+            color: $primary;
+        }
+    }
+}
+
+.Header {
+    position: relative;
+    padding-block: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    background-color: #f3f4f6;
+
+    &_Heading {
+        margin-inline: auto;
+        width: fit-content;
+    }
+
+    &_Bar {
+        padding-inline: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}

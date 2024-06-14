@@ -35,8 +35,13 @@
             }
         }
 
-        &-mobile,
-        &-bigMobile {
+        &-mobile {
+            @include wide-mobile {
+                display: none;
+            }
+        }
+
+        &-wideMobile {
             @include tablet {
                 display: none;
             }

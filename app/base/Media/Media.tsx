@@ -45,14 +45,12 @@ function getShouldRender(
    });
 }
 
-const __ = bem('Media');
-
 const MediaComponent = memo(
     forwardRef<HTMLDivElement, ComponentProps>(
         ({ children, min, max, className = '', ...props }, forwardedRef) => (
             <div
                ref={ forwardedRef }
-               className={ `${ __([`min-${ min }`, `max-${ max }`]) } ${ className }`.trim() }
+               className={ `Media-min-${ min } Media-max-${ max } ${ className }`.trim() }
                { ...props }
             >
                 { children }

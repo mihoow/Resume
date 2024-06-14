@@ -5,7 +5,7 @@
     width: fit-content;
     background-color: $neutral;
     border-radius: 8px;
-    border: 2px solid #e6e7ed;
+    border: 2px solid $neutral-contrast;
     overflow: hidden;
 
     &_FlagSlider {

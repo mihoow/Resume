@@ -1,4 +1,5 @@
 import { Suspense, lazy } from 'react';
+import { useContactHandle, useModalHandle } from '~/hooks/useModalHandle';
 
 import { ActionType } from '~/config';
 import { EnvelopeAtIcon } from '~/icons/EnvelopeAt';
@@ -7,7 +8,6 @@ import LockIcon from '~/icons/Lock';
 import PrinterIcon from '~/icons/Printer';
 import { component } from '~/utils/component';
 import { useIsAdmin } from '~/hooks/useRootData';
-import { useModalHandle } from '~/hooks/useModalHandle';
 import { useTranslation } from '~/hooks/useTranslation';
 
 const AuthModal = lazy(() => import('../AuthModal/AuthModal'));
@@ -58,14 +58,14 @@ const AuthAuthAction = component('AuthModalAction', function ({ className }) {
 
 const SendEmailAction = component('SendEmailAction', function ({ className }) {
     const t = useTranslation();
-    const emailModalHandle = useModalHandle();
+    const contactModalHandler = useContactHandle();
 
     return (
         <>
             <button
                 className={className}
                 type='button'
-                onClick={emailModalHandle.open}
+                onClick={contactModalHandler.open}
                 aria-label={t('Send an e-mail', 'Wyślij maila')}
             >
                 <EnvelopeAtIcon />
@@ -73,7 +73,7 @@ const SendEmailAction = component('SendEmailAction', function ({ className }) {
             <Suspense fallback={null}>
                 <SendEmailModal
                     intent={ActionType.SEND_EMAIL}
-                    handle={emailModalHandle}
+                    handle={contactModalHandler}
                     addInlineStyles
                 />
             </Suspense>

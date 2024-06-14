@@ -1,12 +1,12 @@
 @use '../../styles/index' as *;
 
+@forward '../Header/Header';
 @forward '../LanguageSwitch/LanguageSwitch';
 @forward '../FindCompany/FindCompany';
 @forward '../Actions/Actions';
 
 .App {
     margin-inline: auto;
-    width: calc(100% - 32px);
 
     @include wide-mobile {
         width: (calc(100% - 64px));
@@ -17,16 +17,17 @@
     }
 
     &_Header {
-        height: 48px;
-        @include flex-center-v;
-
-        @include desktop {
-            height: 80px;
-        }
+        margin-block-end: 32px;
     }
 
     &_Main {
+        margin-inline: auto;
+        width: calc(100% - 32px);
         padding-block: 20px;
+
+        @include wide-mobile {
+            width: 100%;
+        }
 
         @include desktop {
             padding-block: 30px;

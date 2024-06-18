@@ -63,6 +63,8 @@ export default component('Aside', function ({ className }) {
                         src='/images/profi-opt.jpg'
                         alt={t('my profile', 'moje zdjęcie profilowe')}
                         loading='eager'
+                        width={226.5}
+                        height={339}
                     />
                 </div>
                 <div className={this.__('Content')}>

@@ -81,6 +81,7 @@ export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: rootStyles },
     { rel: 'icon', type: 'image/x-icon', sizes: '16x15', href: '/logos/logo_16.ico' },
     { rel: 'icon', type: 'image/x-icon', sizes: '32x29', href: '/logos/logo_32.ico' },
+    { rel: 'preload', type: 'image/svg+xml', href: '/logos/m.svg' }
 ];
 
 export default component('Root', function () {

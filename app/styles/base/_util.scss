@@ -134,6 +134,19 @@
         0px -14px 24px #0E1F3514;
 }
 
+@mixin list-item($color: #fff, $block-margin: 4px, $space: 4px) {
+    &::before {
+        content: '';
+        display: inline-block;
+        margin-block: $block-margin;
+        margin-inline-end: $space;
+        width: 1px;
+        height: 100%;
+        border-block: 4px solid transparent;
+        border-inline-start: 6px solid $color !important;
+    }
+}
+
 @mixin match-mods($first-mod, $mods...) {
     $other-selector: '';
 

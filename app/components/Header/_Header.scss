@@ -1,5 +1,7 @@
 @use '../../styles/index' as *;
 
+@forward '../LanguageSwitch/LanguageSwitch';
+
 .Heading {
     display: flex;
     flex-direction: column;

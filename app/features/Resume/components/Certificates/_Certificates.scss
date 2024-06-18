@@ -13,21 +13,7 @@
     &_Item {
         .Link {
             display: flex;
-            column-gap: 4px;
-
-            &::before {
-                content: '';
-                display: block;
-                margin-block: 4px;
-                width: 1px;
-                height: 100%;
-                border-block: 4px solid transparent;
-                border-inline-start: 6px solid #fff !important;
-
-                @include print {
-                    border-inline-color: $neutral-contrast;
-                }
-            }
+           @include list-item;
         }
     }
 }

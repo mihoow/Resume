@@ -5,6 +5,7 @@ import { Await } from '@remix-run/react';
 import Actions from '../Actions/Actions';
 import { useIsAdmin, useRootData } from '~/hooks/useRootData';
 import { Header } from '../Header/Header';
+import { Footer } from '../Footer/Footer';
 
 const FindCompany = lazy(() => import('../FindCompany/FindCompany'));
 
@@ -33,6 +34,7 @@ export const App = component<PropsWithChildren>('App', function ({ children }) {
                 <Actions className={this.__('Actions')} />
                 {children}
             </main>
+            <Footer className={this.__('Footer')} />
         </div>
     );
 });

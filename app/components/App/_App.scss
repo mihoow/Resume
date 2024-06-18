@@ -1,9 +1,9 @@
 @use '../../styles/index' as *;
 
 @forward '../Header/Header';
-@forward '../LanguageSwitch/LanguageSwitch';
 @forward '../FindCompany/FindCompany';
 @forward '../Actions/Actions';
+@forward '../Footer/Footer';
 
 .App {
     margin-inline: auto;
@@ -86,7 +86,7 @@
         margin: 0 !important;
 
         &_Header,
-        &_AdminForm,
+        &_Footer,
         &_Actions,
         &_CompanySearch,
         &_CompanySearchSkeleton {

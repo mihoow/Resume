@@ -4,7 +4,7 @@ import { TrashIcon } from '~/features/RichTextEditor/icons/Trash';
 import { component } from '~/utils/component';
 import { useTranslation } from '~/hooks/useTranslation';
 
-export const Footer = component<{ onDismiss?: VoidFunction }>('Footer', function ({ className, onDismiss }) {
+export const Footer = component<{ onDismiss?: VoidFunction }>('RichTextFooter', function ({ className, onDismiss }) {
     const t = useTranslation();
 
     return (

@@ -1,0 +1,145 @@
+@use '../../styles/index' as *;
+@use 'sass:math';
+
+.BeneathTheMoonlight {
+    $scale: 0.5;
+
+    position: relative;
+    @include box(100%, 900px * $scale);
+    background-color: #002142;
+    overflow: hidden;
+
+    &_Hills {
+        position: absolute;
+        z-index: 3;
+        margin-top: 450px * $scale;
+        margin-left: calc(50% - (350px * $scale));
+        @include box(100%, 300px * $scale);
+    }
+
+    &_Hill {
+        position: absolute;
+        z-index: 4;
+        margin-top: 100px * $scale;
+        height: 1000px * $scale;
+        border-radius: 30px;
+        transform: rotate(45deg);
+
+        &:nth-child(1) {
+            margin-left: -200px * $scale;
+            width: 700px * $scale;
+            box-shadow: 0px 1px (30px * $scale) 0px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to bottom right, #002142, #27435f);
+        }
+
+        &:nth-child(2) {
+            margin-left: -100px * $scale;
+            width: 800px * $scale;
+            box-shadow: 0px 1px (30px * $scale) 0px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to top right, #002142, #27435f);
+        }
+
+        &:nth-child(3) {
+            margin-left: 50px * $scale;
+            width: 600px * $scale;
+            box-shadow: 0px 1px (30px * $scale) 0px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to bottom right, #002142, #27435f);
+        }
+    }
+
+    &_Moon {
+        position: absolute;
+        z-index: 2;
+        background: #fefce6;
+        box-shadow: 0px 1px (30px * $scale) 0px rgba(255, 255, 255, 1);
+        border-radius: 50%;
+
+        @for $i from 1 through 8 {
+            &:nth-child(#{$i}) {
+                $d: $i * (100px * $scale);
+
+                margin-left: calc(50% - #{$d}/ 2);
+                margin-top: calc((400px * $scale) - #{$d}/ 2);
+                @include box($d);
+                opacity: math.div(1, ($i * 5));
+            }
+        }
+
+        &:first-child {
+            $d: 150px * $scale;
+
+            margin-top: calc((400px * $scale) - #{$d}/ 2);
+            margin-left: calc(50% - #{$d}/ 2);
+            @include box($d);
+            opacity: 1;
+        }
+    }
+
+    &_Shoot {
+        position: absolute;
+        z-index: 5;
+        margin-left: -1040px * $scale;
+        @include box(5px);
+
+        background-color: #fefce6;
+        box-shadow: 0px 1px (30px * $scale) 0px rgba(255, 255, 255, 1);
+        border-radius: 50%;
+
+        @for $i from 1 through 8 {
+            @keyframes shoot-#{$i} {
+                0% {
+                    margin-left: 0px;
+                    margin-top: 100px * $scale;
+                    @include box(8px);
+                }
+                100% {
+                    margin-left: 900px * $scale;
+                    margin-top: (150px + random(40)) * $scale;
+                    @include box(0);
+                }
+            }
+
+            &:nth-child(#{$i}) {
+                animation: shoot-#{$i} random(4) + s linear 1;
+                animation-delay: $i * 0.01s;
+            }
+        }
+    }
+
+    &_Stars {
+        position: relative;
+        margin: 0 auto;
+        margin-top: 0px;
+        @include box(100%, 875px * $scale);
+        overflow: hidden;
+    }
+
+    &_Star {
+        @keyframes twinkle {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0.3;
+            }
+        }
+
+        z-index: 1;
+        background: white;
+        border-radius: 50%;
+        position: absolute;
+        opacity: 1;
+        animation: twinkle 1s linear infinite;
+
+        @for $i from 0 through 200 {
+            &:nth-child(#{$i}) {
+                $d: random(2) * $scale;
+
+                @include box($d + px);
+                margin-left: (random(1500) * $scale) + px;
+                margin-top: (random(875) * $scale) + px;
+                animation-delay: $i * 0.01s;
+            }
+        }
+    }
+}

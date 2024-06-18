@@ -1,0 +1,52 @@
+@use '../../styles/index' as *;
+
+@forward '../BeneathTheMoonlight/BeneathTheMoonlight';
+
+.Footer {
+    &_Content {
+        padding: 24px 16px 16px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        background-color: #214761;
+        color: #fff;
+
+        @include wide-mobile {
+            padding-inline: 24px;
+        }
+    }
+
+    &_AttributionList {
+        @include flex-column;
+        gap: 12px;
+        @include font-size(14, 20);
+    }
+
+    &_AttributionText {
+        margin-inline-end: 0.25em;
+    }
+
+    &_AttributionLink {
+        font-weight: 700;
+        transition: color ease-in-out 150ms;
+
+        @include hover {
+            color: $primary;
+        }
+
+        &:focus-visible {
+            box-shadow: $primary 0 0 4px 2px;
+        }
+    }
+
+    &_Ending {
+        @include flex-column;
+        align-items: center;
+        gap: 16px;
+    }
+
+    &_Heart {
+        color: red;
+        font-size: 20px;
+    }
+}

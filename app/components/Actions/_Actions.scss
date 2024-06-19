@@ -26,6 +26,10 @@
             }
         }
 
+        &:focus-visible {
+            box-shadow: $primary 0 0 4px 2px;
+        }
+
         svg {
             @include box(20px);
         }

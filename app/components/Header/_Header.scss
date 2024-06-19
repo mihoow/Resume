@@ -114,6 +114,9 @@
         @include font-size(16, 24);
         color: $neutral-contrast;
 
+        &:focus-visible {
+            box-shadow: $primary 0 0 4px 2px;
+        }
 
         &-isActive {
             color: $primary;

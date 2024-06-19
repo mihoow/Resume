@@ -5,7 +5,7 @@
     column-gap: 4px;
 
     &_Square {
-        @include box(30px, 6px);
+        @include box(calc((100% - 20px) / 6), 6px);
         background-color: #8a8a8a58;
 
         &-isFilled {
@@ -23,16 +23,21 @@
         row-gap: 3px;
     }
 
+    &_Name {
+        font-weight: bold;
+    }
+
     &_ItemRow {
         @include flex-center-v;
         column-gap: 12px;
     }
 
-    &_Name {
-        font-weight: bold;
+    &_Rating {
+        flex-basis: 200px;
     }
 
     &_LevelName {
+        flex-shrink: 0;
         color: #8a8a8a;
     }
 }

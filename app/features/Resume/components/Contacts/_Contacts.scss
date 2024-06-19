@@ -12,8 +12,9 @@
     &_Title {
         padding-inline: 6px;
         position: absolute;
-        inset-block-end: 99%;
+        inset-block-end: 100%;
         inset-inline-start: 6px;
+        transform: translateY(1px);
         background-color: rgb(33, 71, 97);
         line-height: 1;
         font-weight: bold;

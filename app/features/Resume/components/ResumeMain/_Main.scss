@@ -20,9 +20,10 @@
     margin-block-start: 6px;
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 12px;
+    gap: 6px;
 
     &_Label {
+        padding-inline-start: 6px;
         font-weight: bold;
 
         &::before {
@@ -33,6 +34,8 @@
         }
 
         &:first-child {
+            padding-inline-start: 0;
+
             &::before {
                 display: none;
             }

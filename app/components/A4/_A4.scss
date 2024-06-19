@@ -7,12 +7,23 @@
     display: flex;
     flex-direction: column;
 
+    @include small-mobile {
+        min-height: 29.7cm;
+        height: auto;
+
+        @include print {
+            height: 29.7cm;
+        }
+    }
+
     &-aside {
         background-color: rgb(33, 71, 97);
         color: $neutral;
     }
 
     &-main {
+        @include flex-column;
+        gap: 12px;
         background-color: $neutral;
     }
 

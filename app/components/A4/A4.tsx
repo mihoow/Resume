@@ -29,7 +29,9 @@ const Main = component<PropsWithChildren>('A4', function ({ className, children 
 
     return (
         <Page type='main' className={className}>
-            {children}
+            <div className={this.__('Content')}>
+                {children}
+            </div>
             {(isAdmin || company) && (
                 <footer className={this.__('Footer')}>
                     <span className={this.__('Consent')}>{consent}</span>

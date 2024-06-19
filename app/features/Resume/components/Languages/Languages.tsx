@@ -23,7 +23,7 @@ const Rating = component<{
 });
 
 export default component('Languages', function ({ className }) {
-    const { languageLevels, knownLanguages } = useData(languagesData)
+    const { languageLevels, knownLanguages } = useData(languagesData);
 
     return (
         <ul className={this.mcn(className)}>
@@ -34,7 +34,10 @@ export default component('Languages', function ({ className }) {
                 >
                     <span className={this.__('Name')}>{language}</span>
                     <div className={this.__('ItemRow')}>
-                        <Rating level={level} />
+                        <Rating
+                            level={level}
+                            className={this.__('Rating')}
+                        />
                         <span className={this.__('LevelName')}>
                             {level !== 'native' && (
                                 <>

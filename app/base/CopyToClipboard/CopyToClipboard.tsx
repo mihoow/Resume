@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import ClipboardHeartIcon from '~/icons/ClipboardHeart';
+import { CopyIcon } from '~/icons/Copy';
 import type { ReactNode } from 'react';
 import bem from 'bem-ts';
 import { component } from '~/utils/component';
@@ -46,7 +46,7 @@ export default component<Props>('CopyToClipboard', function ({ className, childr
     }
 
     function renderIcon() {
-        return <ClipboardHeartIcon className={__('Icon', { isCopied })} />;
+        return <CopyIcon />;
     }
 
     return (

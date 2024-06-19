@@ -1,32 +1,23 @@
 @use '../../styles/index' as *;
 
 .CopyToClipboard {
+    @include box(20px);
+    @include flex-center;
+    opacity: 0.2;
+    color: #fff;
+    transition: color cubic-bezier(0.4, 0, 0.2, 1) 150ms, opacity cubic-bezier(0.4, 0, 0.2, 1) 150ms;
     cursor: pointer;
 
-    &_Icon {
-        @include box(20px);
-        color: gray;
-
-        .heart {
-            display: none;
-        }
-
-        &-isCopied {
-            color: green !important;
-
-            .heart {
-                display: block;
-            }
-        }
+    &:hover {
+        color: $primary;
+        opacity: 1;
     }
 
-    &:hover {
-        .CopyToClipboard_Icon {
-            color: $primary;
+    &:focus-visible {
+        box-shadow: gold 0 0 4px 2px;
+    }
 
-            .heart {
-                display: block;
-            }
-        }
+    svg {
+        @include box(16px);
     }
 }

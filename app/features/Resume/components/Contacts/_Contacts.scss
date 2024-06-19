@@ -20,23 +20,6 @@
         font-weight: bold;
     }
 
-    .CopyToClipboard {
-        visibility: hidden;
-
-        &:focus-visible {
-            visibility: visible;
-            box-shadow: gold 0 0 4px 2px;
-        }
-
-        &_Icon {
-            color: $neutral;
-
-            &-isCopied {
-                color: $primary !important;
-            }
-        }
-    }
-
     &:hover,
     &:focus-within {
         .CopyToClipboard {

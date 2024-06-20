@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { CopyIcon } from '~/icons/Copy';
 import type { ReactNode } from 'react';
-import Tooltip from '../Tooltip/Tooltip';
+import Tooltip from '../Tooltip';
 import bem from 'bem-ts';
 import { component } from '~/utils/component';
 import { useTranslation } from '~/hooks/useTranslation';

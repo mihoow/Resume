@@ -5,7 +5,7 @@ import { useBaseFloating, useBaseInteractions } from '~/hooks/useFloating';
 import { component } from '~/utils/component';
 import { getArrowPlacement } from '~/utils/floating-ui';
 
-type Props = {
+type BaseProps = {
     content: ReactNode;
     placement?: 'auto' | Placement;
     trigger?: 'hover' | 'click';
@@ -13,7 +13,9 @@ type Props = {
     isEnabled?: boolean;
 };
 
-export const Tooltip = component<Props & Omit<ComponentPropsWithoutRef<'div'>, keyof Props>>(
+export type TooltipProps = BaseProps & Omit<ComponentPropsWithoutRef<'div'>, keyof BaseProps>
+
+export const Tooltip = component<TooltipProps>(
     'Tooltip',
     function ({
         className,

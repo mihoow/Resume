@@ -3,5 +3,6 @@ export default {
   ignoredRouteFiles: ["**/.*"],
   serverDependenciesToBundle: [
     /^remix-utils.*/,
+    'cache-control-parser'
   ]
 };

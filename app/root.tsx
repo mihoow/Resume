@@ -1,11 +1,12 @@
 import type {
     ActionFunctionArgs,
+    HeadersFunction,
     LinksFunction,
     LoaderFunctionArgs,
     MetaFunction,
     TypedDeferredData,
 } from '@remix-run/node';
-import { ActionType, DEFAULT_LOCALE } from './config';
+import { ActionType, DEFAULT_LOCALE, TimeInSeconds } from './config';
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react';
 import { authorizeCompany, fetchAllCompanies, fetchCompany } from './services/companies.server';
 import { getUserSession, handleAdminAuth, handleAdminLogout } from './services/userSession';
@@ -16,6 +17,7 @@ import MediaProvider from './base/Media/Media.provider';
 import type { RootData } from './types/global';
 import { RootDataProvider } from './components/RootDataProvider/RootData.provider';
 import { ToastListProvider } from './base/Toast/ToastList.provider';
+import { stringify as cacheControl } from 'cache-control-parser'
 import { component } from './utils/component';
 import { defer } from '@remix-run/node';
 import { fetchSensitiveAuthorInfo } from './services/authorInfo.server';
@@ -75,10 +77,29 @@ export const loader = async ({
         actionData,
     }, {
         headers: {
-            'Set-Cookie': await userSession.commit()
+            'Set-Cookie': await userSession.commit(),
+            'Cache-Control': cacheControl({
+                public: !isAdmin,
+                private: isAdmin,
+                "max-age": 10 * TimeInSeconds.MINUTE,
+                "s-maxage": 10 * TimeInSeconds.MINUTE,
+                "stale-while-revalidate": 5 * TimeInSeconds.MINUTE,
+                "stale-if-error": isAdmin ? undefined : 2 * TimeInSeconds.DAY
+            })
         }
     });
 };
+
+export const headers: HeadersFunction = ({ loaderHeaders }) => {
+    const headers: Record<string, string> = {};
+    const cacheControl = loaderHeaders.get('Cache-Control')
+
+    if (cacheControl) {
+        headers['Cache-Control'] = cacheControl
+    }
+
+    return headers
+}
 
 export const meta: MetaFunction = () => [{ title: 'Wieczorek' }];
 

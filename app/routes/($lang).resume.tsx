@@ -5,15 +5,16 @@ import { component } from '~/utils/component';
 import { getFixedTFromPathname } from '~/utils/internationalization';
 import pageStyles from '../styles/cv.css';
 
-export const links: LinksFunction = () => [{ rel: 'stylesheet', href: pageStyles }];
+export const links: LinksFunction = () => [
+    { rel: 'stylesheet', href: pageStyles },
+    { rel: 'preload', as: 'image', href: '/images/profi-opt.jpg' },
+];
 
 export const meta: MetaFunction = ({ location: { pathname } }) => {
-    const t = getFixedTFromPathname(pathname)
+    const t = getFixedTFromPathname(pathname);
 
-    return [
-        { title: `Wieczorek | ${t('Resume', 'Życiorys')}` },
-    ]
-}
+    return [{ title: `Wieczorek | ${t('Resume', 'Życiorys')}` }];
+};
 
 export default component('CvPage', function () {
     return <Resume className={this.mcn()} />;

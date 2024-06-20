@@ -6,6 +6,8 @@ export type Breakpoint =
     | 'desktop'
     | 'wideDesktop';
 
+export type ModalBreakpoint = 'mobile' | 'desktop';
+
 export type MediaContextType = {
     isFirstPageRender: boolean;
     activeBreakpoints: Breakpoint[];

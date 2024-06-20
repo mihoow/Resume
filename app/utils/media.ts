@@ -1,5 +1,6 @@
+import { Breakpoint, ModalBreakpoint } from "~/types/media";
+
 import { BREAKPOINT_MAP } from "~/config";
-import { Breakpoint } from "~/types/media";
 
 export function getActiveBreakpoints(): Breakpoint[] {
     const {
@@ -56,4 +57,12 @@ export function isBetweenBreakpoints(
 
         return activeBreakpointMin >= minWidth && activeBreakpointMax <= maxWidth;
     });
+}
+
+export function getModalBreakpoint(): ModalBreakpoint {
+    const { innerWidth, innerHeight } = window;
+
+    if (innerWidth < 768 || innerHeight < 768) return 'mobile';
+
+    return 'desktop';
 }

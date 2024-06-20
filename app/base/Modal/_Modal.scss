@@ -12,6 +12,16 @@ body {
     border-radius: 8px 8px 0 0;
     border-bottom: 2px solid rgb(229, 231, 235);
 
+    @include full-size-modal {
+        position: relative;
+        padding: 8px 16px;
+        justify-content: start;
+
+        @include wide-mobile {
+            padding-inline: 24px;
+        }
+    }
+
     &-isPopup {
         padding: 8px;
         border-bottom: none;
@@ -22,6 +32,13 @@ body {
         line-height: 28px;
         color: rgb(17 24 39);
         font-weight: 500;
+
+        @include full-size-modal {
+            width: calc(100% - 44px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
     }
 
     &_Close {
@@ -35,6 +52,12 @@ body {
         font-size: 14px;
         line-height: 20px;
         cursor: pointer;
+
+        @include full-size-modal {
+            order: -1;
+            margin-left: 0;
+            transform: translateX(-10px);
+        }
 
         @include hover {
             background-color: rgb(229 231 235);
@@ -61,7 +84,6 @@ body {
     }
 }
 
-
 .ModalFooter {
     padding: 24px;
     display: flex;
@@ -74,6 +96,10 @@ body {
         border: none;
     }
 
+    @include full-size-modal {
+        padding: 8px 16px;
+    }
+
     & > * + * {
         margin-left: 8px;
     }
@@ -83,7 +109,7 @@ body {
     position: fixed;
     inset-block-start: 0;
     inset-inline-end: 0;
-    z-index: z-index("modal");
+    z-index: z-index('modal');
 
     height: 100vh;
     overflow-y: auto !important;
@@ -106,6 +132,12 @@ body {
         width: 100%;
         padding: 16px;
 
+        @include full-size-modal {
+            max-width: unset;
+            height: 100%;
+            padding: 0;
+        }
+
         @include tablet {
             height: auto;
         }
@@ -120,5 +152,10 @@ body {
         flex-direction: column;
         border-radius: 8px;
         background-color: #fff;
+
+        @include full-size-modal {
+            max-height: none;
+            border-radius: 0;
+        }
     }
 }

@@ -1,17 +1,17 @@
 import type { CSSProperties, FC } from "react";
 
 import type { ChainedCommands } from "@tiptap/react";
+import { ModalBreakpoint } from "~/types/media";
 
 export type TextSize = 'sm' | 'md' | 'lg' | 'xl';
 
-export type Breakpoint = 'mobile' | 'desktop';
 
 export type ToolbarButton = {
     content: FC;
     tooltip?: string | [string, string];
     shortcut?: string;
     activeName?: string | Record<string, string>;
-    breakpoints?: Breakpoint[];
+    breakpoints?: ModalBreakpoint[];
 };
 
 export type ActionButton = ToolbarButton & {

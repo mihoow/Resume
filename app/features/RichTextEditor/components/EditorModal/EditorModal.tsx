@@ -14,8 +14,8 @@ import { Submit } from '~/base/Forms/Submit';
 import { Toolbar } from '../Toolbar/Toolbar';
 import { addInlineStylesToHTML } from '../../utils';
 import { component } from '~/utils/component';
-import { useBreakpoints } from '../../hooks/useBreakpoints';
 import { useMirrorRef } from '~/hooks/useMirrorRef';
+import { useModalBreakpoint } from '~/hooks/useBreakpoints';
 import { usePreservedState } from '../../hooks/usePreservedState';
 import { useSubmit } from '@remix-run/react';
 import { useTranslation } from '~/hooks/useTranslation';
@@ -30,7 +30,7 @@ type Props = {
 const EditorModalContent = component<Props>(
     'EditorModal',
     function ({ className, handle, intent, content: initialContent = '', addInlineStyles = false }) {
-        const breakpoint = useBreakpoints();
+        const breakpoint = useModalBreakpoint();
         const {
             initialData: { content, email, topic },
             saveContent,
@@ -101,10 +101,10 @@ const EditorModalContent = component<Props>(
                 intent={intent}
                 onSubmit={handleSubmit}
                 onSuccess={flushAndClose}
-                className={this.cn(this.__([breakpoint]), className)}
+                className={this.mcn(className)}
             >
                 <Modal.Header>
-                    <span className={this.__('ModalTitle', [breakpoint])}>{t('Contact me', 'Skontaktuj się')}</span>
+                    <span className={this.__('ModalTitle', )}>{t('Contact me', 'Skontaktuj się')}</span>
                     {breakpoint === 'mobile' && (
                         <Submit
                             variant='submit'
@@ -115,25 +115,25 @@ const EditorModalContent = component<Props>(
                         </Submit>
                     )}
                 </Modal.Header>
-                <Modal.Body className={this.__('Body', [breakpoint])}>
-                    <div className={this.__('Content', [breakpoint])}>
+                <Modal.Body className={this.__('Body')}>
+                    <div className={this.__('Content')}>
                         {isEmailSender && (
                             <SendEmailFields
                                 initialEmail={email}
                                 onEmailChange={saveEmail}
                                 initialTopic={topic}
                                 onTopicChange={saveTopic}
-                                className={this.__('Inputs', [breakpoint])}
+                                className={this.__('Inputs')}
                             />
                         )}
                         <EditorContent
                             editor={editor}
-                            className={this.__('Editor', [breakpoint, isEmailSender ? 'withEmailFields' : null])}
+                            className={this.__('Editor', [isEmailSender ? 'withEmailFields' : null])}
                         />
                     </div>
                     <Toolbar
                         editor={editor}
-                        className={this.__('Toolbar', [breakpoint])}
+                        className={this.__('Toolbar')}
                         breakpoint={breakpoint}
                     />
                 </Modal.Body>

@@ -5,46 +5,8 @@
 @forward '../Footer/Footer';
 
 .EditorModal {
-    &-mobile {
-        .Modal {
-            &_Content {
-                max-width: unset;
-                height: 100%;
-                padding: 0;
-            }
-
-            &_InnerContent {
-                max-height: none;
-                border-radius: 0;
-            }
-        }
-
-        .ModalHeader {
-            position: relative;
-            padding: 8px 16px;
-            justify-content: start;
-
-            @include wide-mobile {
-                padding-inline: 24px;
-            }
-
-            &_Close {
-                order: -1;
-                margin-left: 0;
-                transform: translateX(-10px);
-            }
-
-            &_Title {
-                width: calc(100% - 44px);
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-        }
-    }
-
     &_ModalTitle {
-        &-mobile {
+        @include full-size-modal {
             width: calc(100% - 48px);
         }
     }
@@ -60,7 +22,7 @@
         padding: 0;
         overflow: unset;
 
-        &-mobile {
+        @include full-size-modal {
             display: flex;
             flex-direction: column;
         }
@@ -69,7 +31,7 @@
     &_Inputs {
         padding: 12px 24px 16px 24px;
 
-        &-mobile {
+        @include full-size-modal {
             padding-inline: 12px;
             padding-block-end: 0;
 
@@ -93,7 +55,7 @@
         flex-direction: column;
         overflow: auto;
 
-        &-mobile {
+        @include full-size-modal {
             flex-grow: 1;
             max-height: calc(100vh - 95px);
         }
@@ -110,7 +72,7 @@
             padding-block-start: 0;
         }
 
-        &-mobile {
+        @include full-size-modal {
             flex-grow: 1;
             padding: 16px;
 
@@ -138,7 +100,7 @@
         margin: 16px 24px;
         width: fit-content;
 
-        &-mobile {
+        @include full-size-modal {
             margin: 0;
             width: 100%;
 

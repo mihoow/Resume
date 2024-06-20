@@ -1,4 +1,10 @@
-import { getActiveBreakpoints, handleWindowResize, isBetweenBreakpoints, parseMinMaxProps } from '~/utils/media';
+import {
+    getActiveBreakpoints,
+    getModalBreakpoint,
+    handleWindowResize,
+    isBetweenBreakpoints,
+    parseMinMaxProps,
+} from '~/utils/media';
 import { useEffect, useState } from 'react';
 
 import { BreakpointsProps } from '~/types/media';
@@ -26,4 +32,14 @@ export function useBreakpoints({ min: initialMin, max: initialMax, minMax }: Bre
     }, [min, max]);
 
     return isMatch;
+}
+
+export function useModalBreakpoint() {
+    const [currBreakpoint, setCurrBreakpoint] = useState(getModalBreakpoint);
+
+    useEffect(() => {
+        return handleWindowResize(() => setCurrBreakpoint(getModalBreakpoint()));
+    }, []);
+
+    return currBreakpoint;
 }

@@ -1,9 +1,10 @@
-import type { ActionButton, Breakpoint, ButtonGroup, ToolbarButton, ToolbarItem } from '../../type';
+import type { ActionButton, ButtonGroup, ToolbarButton, ToolbarItem } from '../../type';
 
 import { CheckIcon } from '~/icons/Check';
 import type { Editor } from '@tiptap/react';
 import { IconButton } from '../IconButton/IconButton';
 import type { IconButtonProps } from '../IconButton/IconButton';
+import { ModalBreakpoint } from '~/types/media';
 import { Popover } from '~/base/Popover/Popover';
 import { TOOLBAR_ITEMS } from '../../config/toolbar';
 import { component } from '~/utils/component';
@@ -13,14 +14,14 @@ function isButtonGroup(item: ToolbarItem): item is ButtonGroup {
     return !!item && 'type' in item && item.type === 'checklist';
 }
 
-export const Toolbar = component<{ editor: Editor | null; breakpoint: Breakpoint }>(
+export const Toolbar = component<{ editor: Editor | null; breakpoint: ModalBreakpoint }>(
     'Toolbar',
     function ({ className, editor, breakpoint }) {
         const t = useTranslation();
 
         if (!editor) return null;
 
-        const isButtonVisible = (breakpoints?: Breakpoint[]) => {
+        const isButtonVisible = (breakpoints?: ModalBreakpoint[]) => {
             if (!breakpoints) return true;
 
             return breakpoints.includes(breakpoint);
@@ -46,13 +47,13 @@ export const Toolbar = component<{ editor: Editor | null; breakpoint: Breakpoint
         });
 
         return (
-            <div className={this.cn(this.__([breakpoint]), className)}>
+            <div className={this.mcn(className)}>
                 {TOOLBAR_ITEMS.map((button, i) => {
                     if (!button) {
                         return (
                             <span
                                 key={i}
-                                className={this.__('Break', [breakpoint])}
+                                className={this.__('Break')}
                             />
                         );
                     }

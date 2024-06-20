@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { ComponentPropsWithoutRef, PropsWithChildren, Suspense, lazy } from 'react';
 import { useContactHandle, useModalHandle } from '~/hooks/useModalHandle';
 
 import { ActionType } from '~/config';
@@ -6,7 +6,9 @@ import { EnvelopeAtIcon } from '~/icons/EnvelopeAt';
 import { KeyIcon } from '~/icons/Key';
 import LockIcon from '~/icons/Lock';
 import PrinterIcon from '~/icons/Printer';
+import Tooltip from '~/base/Tooltip/Tooltip';
 import { component } from '~/utils/component';
+import { useBreakpoints } from '~/hooks/useBreakpoints';
 import { useIsAdmin } from '~/hooks/useRootData';
 import { useTranslation } from '~/hooks/useTranslation';
 
@@ -14,20 +16,43 @@ const AuthModal = lazy(() => import('../AuthModal/AuthModal'));
 const AdminModal = lazy(() => import('../AdminModal/AdminModal'));
 const SendEmailModal = lazy(() => import('../../features/RichTextEditor'));
 
+const ActionButton = component<PropsWithChildren<{ label: string }> & ComponentPropsWithoutRef<'button'>>(
+    'ActionButton',
+    function ({ className, label, children, ...props }) {
+        const isDesktop = useBreakpoints({ min: 'desktop' })
+
+        return (
+            <Tooltip
+                placement={isDesktop ? 'left' : 'top'}
+                content={label}
+                theme='light'
+            >
+                <button
+                    className={this.mcn(className)}
+                    type='button'
+                    aria-label={label}
+                    {...props}
+                >
+                    {children}
+                </button>
+            </Tooltip>
+        );
+    }
+);
+
 const AdminManageAction = component('AdminManageAction', function ({ className }) {
     const t = useTranslation();
     const adminModalHandle = useModalHandle();
 
     return (
         <>
-            <button
+            <ActionButton
                 className={className}
-                type='button'
+                label={t('Manage', 'Zarządzaj')}
                 onClick={adminModalHandle.open}
-                aria-label={t('Manage', 'Zarządzaj')}
             >
                 <LockIcon />
-            </button>
+            </ActionButton>
             <Suspense fallback={null}>
                 <AdminModal handle={adminModalHandle} />
             </Suspense>
@@ -41,14 +66,13 @@ const AuthAuthAction = component('AuthModalAction', function ({ className }) {
 
     return (
         <>
-            <button
+            <ActionButton
                 className={className}
-                type='button'
+                label={t('Login as admin', 'Zaloguj się jako administrator')}
                 onClick={authModalHandle.open}
-                aria-label={t('Login', 'Zaloguj się')}
             >
                 <KeyIcon />
-            </button>
+            </ActionButton>
             <Suspense fallback={null}>
                 <AuthModal handle={authModalHandle} />
             </Suspense>
@@ -62,14 +86,13 @@ const SendEmailAction = component('SendEmailAction', function ({ className }) {
 
     return (
         <>
-            <button
+            <ActionButton
+                label={t('Send me an e-mail', 'Wyślij do mnie e-mail')}
                 className={className}
-                type='button'
                 onClick={contactModalHandler.open}
-                aria-label={t('Send an e-mail', 'Wyślij maila')}
             >
                 <EnvelopeAtIcon />
-            </button>
+            </ActionButton>
             <Suspense fallback={null}>
                 <SendEmailModal
                     intent={ActionType.SEND_EMAIL}
@@ -93,14 +116,13 @@ export default component('Actions', function ({ className }) {
         <>
             <div className={this.mcn(className)}>
                 <div className={this.__('ActionBar')}>
-                    <button
+                    <ActionButton
                         className={this.__('Button')}
-                        type='button'
+                        label={t('Print / Download', 'Wydrukuj / Pobierz')}
                         onClick={handlePrint}
-                        aria-label={t('Print', 'Wydrukuj')}
                     >
                         <PrinterIcon />
-                    </button>
+                    </ActionButton>
                     {isAdmin ? (
                         <AdminManageAction className={this.__('Button')} />
                     ) : (

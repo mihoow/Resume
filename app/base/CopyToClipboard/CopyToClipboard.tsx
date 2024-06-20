@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { CopyIcon } from '~/icons/Copy';
 import type { ReactNode } from 'react';
+import Tooltip from '../Tooltip/Tooltip';
 import bem from 'bem-ts';
 import { component } from '~/utils/component';
 import { useTranslation } from '~/hooks/useTranslation';
@@ -46,7 +47,15 @@ export default component<Props>('CopyToClipboard', function ({ className, childr
     }
 
     function renderIcon() {
-        return <CopyIcon />;
+        return (
+            <Tooltip
+                content={t('Copied!', 'Skopiowano!')}
+                placement='top'
+                isEnabled={isCopied}
+            >
+                <CopyIcon />
+            </Tooltip>
+        );
     }
 
     return (

@@ -1,100 +1,60 @@
-import type { ComponentPropsWithoutRef, ForwardedRef, PropsWithChildren, ReactElement } from 'react';
-import { forwardRef, memo } from 'react';
+import { Breakpoint, BreakpointsProps } from '~/types/media';
+import type { ComponentPropsWithoutRef, PropsWithChildren } from 'react';
+import { isBetweenBreakpoints, parseMinMaxProps } from '~/utils/media';
 
-import { BREAKPOINT_MAP } from './Media.config';
-import type { Breakpoint } from './Media.type';
 import { MediaContext } from './Media.context';
-import bem from 'bem-ts';
+import { component } from '~/utils/component';
 import { useContextSelector } from 'use-context-selector';
 
-type ContainerProps = PropsWithChildren<{
-    min?: Breakpoint | null;
-    max?: Breakpoint | null;
-    minMax?: Breakpoint | null;
-    className?: string;
-}> & ComponentPropsWithoutRef<'div'>;
+type ContainerProps = PropsWithChildren<BreakpointsProps & ComponentPropsWithoutRef<'div'>>;
 
-type ComponentProps = PropsWithChildren<{
-    min: Breakpoint;
-    max: Breakpoint;
-} & ComponentPropsWithoutRef<'div'>>;
+type ComponentProps = PropsWithChildren<
+    {
+        min: Breakpoint;
+        max: Breakpoint;
+    } & ComponentPropsWithoutRef<'div'>
+>;
 
-function parseMinMaxProps(
-    min?: Breakpoint | null,
-    max?: Breakpoint | null,
-    minMax?: Breakpoint | null
-): [Breakpoint, Breakpoint] {
-    if (minMax) {
-        return [minMax, minMax];
-    }
-
-    return [min || 'mobile', max || 'desktop'];
-}
-
-function getShouldRender(
-    activeBreakpoints: Breakpoint[],
-    minBreakpoint: Breakpoint,
-    maxBreakpoint: Breakpoint
-) {
-   return activeBreakpoints.some((breakpoint) => {
-        const { min: activeBreakpointMin, max: activeBreakpointMax } = BREAKPOINT_MAP[breakpoint];
-        const { min: minWidth } = BREAKPOINT_MAP[minBreakpoint || 'mobile'];
-        const { max: maxWidth } = BREAKPOINT_MAP[maxBreakpoint || 'desktop'];
-
-        return activeBreakpointMin >= minWidth && activeBreakpointMax <= maxWidth;
-   });
-}
-
-const MediaComponent = memo(
-    forwardRef<HTMLDivElement, ComponentProps>(
-        ({ children, min, max, className = '', ...props }, forwardedRef) => (
+const MediaComponent = component<ComponentProps>(
+    'MediaComponent',
+    function ({ className, min, max, myRef, children, ...props }) {
+        return (
             <div
-               ref={ forwardedRef }
-               className={ `Media-min-${ min } Media-max-${ max } ${ className }`.trim() }
-               { ...props }
+                ref={myRef}
+                className={this.cn(`Media-min-${min}`, `Media-max-${max}`, className)}
+                {...props}
             >
-                { children }
+                {children}
             </div>
-        )
-    )
-);
-MediaComponent.displayName = 'MediaComponent';
-
-function MediaContainer({
-    children,
-    min: initialMin,
-    max: initialMax,
-    minMax: initialMinMax,
-    className = '',
-    ...props
-}: ContainerProps, forwardedRef: ForwardedRef<HTMLDivElement>): ReactElement | null {
-    const [min, max] = parseMinMaxProps(initialMin, initialMax, initialMinMax);
-
-    const shouldRender = useContextSelector(
-        MediaContext,
-        ({ shouldMatchSSR, activeBreakpoints }) => shouldMatchSSR || getShouldRender(activeBreakpoints, min, max)
-    );
-
-    if (!shouldRender) {
-        return null;
+        );
     }
-
-    return (
-        <MediaComponent
-            ref={ forwardedRef }
-            min={ min }
-            max={ max }
-            className={ className }
-            { ...props }
-        >
-            { children }
-        </MediaComponent>
-    );
-}
-
-const EnhancedMedia = memo(
-    forwardRef(MediaContainer)
 );
-EnhancedMedia.displayName = 'Media';
 
-export default EnhancedMedia;
+const MediaContainer = component<ContainerProps>(
+    'MediaContainer',
+    function ({ className, min: initialMin, max: initialMax, minMax, myRef, children, ...props }) {
+        const [min, max] = parseMinMaxProps(initialMin, initialMax, minMax);
+
+        const shouldRender = useContextSelector(MediaContext, ({ isFirstPageRender, activeBreakpoints }) =>
+            isFirstPageRender ? true : isBetweenBreakpoints(activeBreakpoints, min, max)
+        );
+
+        if (!shouldRender) {
+            return null;
+        }
+
+        return (
+            <MediaComponent
+                myRef={myRef}
+                min={min}
+                max={max}
+                className={className}
+                {...props}
+            >
+                {children}
+            </MediaComponent>
+        );
+    }
+);
+
+export default MediaContainer;

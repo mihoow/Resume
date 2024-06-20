@@ -3,35 +3,35 @@
 @forward '../AdminModal/AdminModal';
 @forward '../../features/RichTextEditor/components/EditorModal/EditorModal';
 
+.ActionButton {
+    padding: 8px 16px;
+    display: flex;
+    background-color: $neutral;
+    border: 1px solid $neutral-contrast;
+    cursor: pointer;
+
+    @include hover {
+        box-shadow: 0 0 10px 2px $neutral-contrast;
+
+        svg {
+            color: $primary;
+        }
+    }
+
+    &:focus-visible {
+        box-shadow: $primary 0 0 4px 2px;
+    }
+
+    svg {
+        @include box(20px);
+    }
+}
+
 .Actions {
     &_ActionBar {
         margin-inline-start: auto;
         @include flex-center-v;
         gap: 24px;
         justify-content: flex-end;
-    }
-
-    &_Button {
-        padding: 8px 16px;
-        display: flex;
-        background-color: $neutral;
-        border: 1px solid $neutral-contrast;
-        cursor: pointer;
-
-        @include hover {
-            box-shadow: 0 0 10px 2px $neutral-contrast;
-
-            svg {
-                color: $primary;
-            }
-        }
-
-        &:focus-visible {
-            box-shadow: $primary 0 0 4px 2px;
-        }
-
-        svg {
-            @include box(20px);
-        }
     }
 }

@@ -1,5 +1,7 @@
 import type { Author, Locale } from "./types/global";
 
+import { Breakpoint } from "./types/media";
+
 export enum TimeInSeconds {
     MS = 1000,
     SECOND = 1,
@@ -36,4 +38,16 @@ export const AUTHOR: Readonly<Author> = {
     birthday: "02.10.1998",
     github: 'https://github.com/mihoow',
     linkedin: 'https://www.linkedin.com/in/mwieczorek8',
+};
+
+export const BREAKPOINT_MAP: Readonly<Record<
+    Breakpoint,
+    { min: number; max: number }
+>> = {
+    smallMobile: { min: 0, max: 413 },
+    mobile: { min: 414, max: 639 },
+    wideMobile: { min: 640, max: 767 },
+    tablet: { min: 768, max: 1023 },
+    desktop: { min: 1024, max: 1439 },
+    wideDesktop: { min: 1440, max: Infinity }
 };

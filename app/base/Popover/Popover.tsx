@@ -1,25 +1,20 @@
 import type { ComponentProps, ComponentPropsWithRef, ReactNode } from 'react';
-import { ComponentPropsWithoutRef, cloneElement, isValidElement, useMemo, useRef, useState } from 'react';
 import {
     FloatingFocusManager,
-    arrow,
-    autoPlacement,
-    autoUpdate,
-    flip,
-    offset,
     safePolygon,
-    shift,
     useClick,
     useDismiss,
-    useFloating,
     useHover,
     useInteractions,
     useMergeRefs,
     useRole,
 } from '@floating-ui/react';
+import { cloneElement, isValidElement, useMemo } from 'react';
+import { useBaseFloating, useBaseInteractions } from '~/hooks/useFloating';
 
 import type { Placement } from '@floating-ui/react';
 import { component } from '~/utils/component';
+import { getArrowPlacement } from '~/utils/floating-ui';
 
 type Props = {
     content: ReactNode;
@@ -28,15 +23,6 @@ type Props = {
     trigger?: 'hover' | 'click';
     initialOpen?: boolean;
 };
-
-function getArrowPlacement(placement: Placement): Placement {
-    return {
-        top: 'bottom',
-        right: 'left',
-        bottom: 'top',
-        left: 'right',
-    }[placement.split('-')[0]] as Placement;
-}
 
 export const Popover = component<Props & Omit<ComponentProps<'div'>, keyof Props>>(
     'Popover',
@@ -50,38 +36,22 @@ export const Popover = component<Props & Omit<ComponentProps<'div'>, keyof Props
         children,
         ...props
     }) {
-        const arrowRef = useRef<HTMLDivElement>(null);
-        const [isOpen, setIsOpen] = useState(initialOpen);
-
         const {
-            floatingStyles,
-            context,
-            placement: usedPlacement,
-            middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
-            refs,
-        } = useFloating({
-            placement: placement === 'auto' ? undefined : placement,
-            open: isOpen,
-            onOpenChange: setIsOpen,
-            whileElementsMounted: autoUpdate,
-            middleware: [
-                offset(8),
-                placement === 'auto' ? autoPlacement() : flip(),
-                shift({ padding: 8 }),
-                arrow({ element: arrowRef.current }),
-            ],
+            isOpen,
+            arrowRef,
+            floatingProperties: {
+                floatingStyles,
+                context,
+                placement: usedPlacement,
+                middlewareData: { arrow: { x: arrowX = null, y: arrowY = null } = {} },
+                refs,
+            },
+        } = useBaseFloating({
+            initialOpen,
+            placement,
         });
 
-        const { getFloatingProps, getReferenceProps } = useInteractions([
-            useClick(context, { enabled: trigger === 'click' }),
-            useHover(context, {
-                enabled: trigger === 'hover',
-                handleClose: safePolygon(),
-                delay: { open: 100, close: 0 },
-            }),
-            useDismiss(context),
-            useRole(context, { role: 'dialog' }),
-        ]);
+        const { getFloatingProps, getReferenceProps } = useBaseInteractions({ context, role: 'dialog', trigger })
 
         const childrenRef = (children as ComponentPropsWithRef<'button'>).ref;
         const ref = useMergeRefs([childrenRef, context.refs.setReference]);

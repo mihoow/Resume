@@ -39,7 +39,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         [ActionType.ADMIN_AUTH]: () => handleAdminAuth(request, formData),
         [ActionType.ADMIN_LOGOUT]: () => handleAdminLogout(request),
         [ActionType.COMPANY_REGISTRATION]: () => authorizeCompany(request, formData),
-        [ActionType.SEND_EMAIL]: () => sendEmail(formData),
+        [ActionType.SEND_EMAIL]: () => sendEmail(request, formData),
     });
 };
 
@@ -64,7 +64,8 @@ export const loader = async ({
     */
     if (isHomePage(pathname)) throw redirectToResume(searchParams, lang);
 
-    const [{ isAdmin, actionData }, company] = await Promise.all([getUserSession(request), fetchCompany(request)]);
+    const [userSession, company] = await Promise.all([getUserSession(request), fetchCompany(request)]);
+    const { isAdmin, actionData } = userSession
 
     return defer({
         isAdmin,
@@ -72,6 +73,10 @@ export const loader = async ({
         allCompanies: isAdmin ? fetchAllCompanies() : null,
         sensitiveAuthorInfo: isAdmin || company ? fetchSensitiveAuthorInfo() : null,
         actionData,
+    }, {
+        headers: {
+            'Set-Cookie': await userSession.commit()
+        }
     });
 };
 

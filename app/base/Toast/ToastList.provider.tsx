@@ -10,12 +10,16 @@ import { component } from '~/utils/component';
 import { getServerMessages } from '~/data/serverMessages';
 import { useActionData } from '@remix-run/react';
 import { useData } from '~/hooks/useData';
+import { useRootData } from '~/hooks/useRootData';
 
 export const ToastListProvider = component<PropsWithChildren>('ToastListProvider', function ({ children }) {
     const toastListRef = useRef<ToastListRef | null>(null);
-    const actionData = useActionData();
     const serverMessages = useData(getServerMessages);
     const [toasts, setToasts] = useState<ToastState[]>([]);
+
+    const defaultActionData = useActionData();
+    const loaderActionData = useRootData(({ actionData }) => actionData)
+    const actionData = defaultActionData || loaderActionData;
 
     const handleShowToast = useCallback((newToast: ToastData) => {
         const { intent, message } = newToast;

@@ -6,6 +6,7 @@ import { EnvelopeAtIcon } from '~/icons/EnvelopeAt';
 import { KeyIcon } from '~/icons/Key';
 import LockIcon from '~/icons/Lock';
 import PrinterIcon from '~/icons/Printer';
+import { Skeleton } from '~/base/Skeleton/Skeleton';
 import Tooltip from '~/base/Tooltip';
 import { component } from '~/utils/component';
 import { useBreakpoints } from '~/hooks/useBreakpoints';

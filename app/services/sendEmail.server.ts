@@ -2,6 +2,7 @@ import { ActionHandler } from "./action.server";
 import { ActionType } from "~/config";
 import type { ServerMessageKey } from "~/data/serverMessages";
 import type { ValidationErrorData } from "~/types/global";
+import { getUserSession } from "./userSession";
 import nodemailer from 'nodemailer';
 
 type Validation =
@@ -83,18 +84,20 @@ function validateEmailFields(action: ActionHandler, formData: FormData): Validat
     }
 }
 
-export async function sendEmail(formData: FormData) {
-    const action = new ActionHandler(ActionType.SEND_EMAIL)
+export async function sendEmail(request: Request, formData: FormData) {
+    const action = new ActionHandler(request, ActionType.SEND_EMAIL)
+    const userSession = await getUserSession(request);
+
     const validation = validateEmailFields(action, formData)
 
     if (!validation.ok) {
         const { errors } = validation
 
         if ('content' in errors) {
-            return action.sendServerError({ message: errors.content })
+            return action.redirectWithServerError({ userSession, message: errors.content })
         }
 
-        return action.sendValidationError(errors)
+        return action.redirectWithValidationError({ userSession, validationErrors: errors })
     }
 
     const { fields: { email, topic, content } } = validation
@@ -115,8 +118,8 @@ export async function sendEmail(formData: FormData) {
             html: content
         })
 
-        return action.sendSuccessData({ message: 'emailSent' })
+        return action.redirectWithSuccess({ userSession, message: 'emailSent' })
     } catch (error) {
-        return action.sendUnknownServerError()
+        return action.redirectWithUnknownError({ userSession })
     }
 }

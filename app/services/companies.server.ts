@@ -45,11 +45,13 @@ function validateCompanyFields(formData: FormData): Validation {
 }
 
 export async function authorizeCompany(request: Request, formData: FormData) {
-    const action = new ActionHandler(ActionType.COMPANY_REGISTRATION);
+    const action = new ActionHandler(request, ActionType.COMPANY_REGISTRATION);
+    const userSession = await getUserSession(request);
+
     const validation = validateCompanyFields(formData);
 
     if (!validation.ok) {
-        return action.sendValidationError(validation.errors);
+        return action.redirectWithValidationError({ userSession, validationErrors: validation.errors });
     }
 
     const {
@@ -68,28 +70,26 @@ export async function authorizeCompany(request: Request, formData: FormData) {
             companyData.name = companyName;
         }
 
-        const [collection, userSession] = await Promise.all([
-            getCompaniesCollection(),
-            getUserSession(request)
-        ]);
+        const [collection, userSession] = await Promise.all([getCompaniesCollection(), getUserSession(request)]);
 
         if (!userSession.isAdmin) {
-            return action.sendServerError({ message: 'notAdmin' })
+            return action.sendServerError({ message: 'notAdmin' });
         }
 
         await collection.insertOne(companyData);
 
-        return await action.redirectWithSuccessData({
+        return await action.redirectWithSuccess({
             userSession,
-            url: `${Page.RESUME}?token=${token}`
+            url: `${Page.RESUME}?token=${token}`,
         });
     } catch (error) {
         console.log(error);
 
         if (error instanceof MongoServerError) {
             if (error.code === 11000) {
-                return action.sendValidationError({
-                    code: 'duplicatedCompanyCode',
+                return action.redirectWithValidationError({
+                    userSession,
+                    validationErrors: { code: 'duplicatedCompanyCode' },
                 });
             }
         }
@@ -116,7 +116,7 @@ export async function fetchCompany({ url }: Request): Promise<CompanyData | null
 
         if (!doPasswordsMatch(password, encryptedPassword)) return null;
 
-        const isExpired = Date.now() > expiresAt.getTime()
+        const isExpired = Date.now() > expiresAt.getTime();
         if (isExpired) return null;
 
         return {
@@ -126,7 +126,7 @@ export async function fetchCompany({ url }: Request): Promise<CompanyData | null
             token,
         };
     } catch (error) {
-        console.log(error)
+        console.log(error);
 
         return null;
     }
@@ -143,10 +143,10 @@ export async function fetchAllCompanies(): Promise<CompanyData[] | null> {
                 code,
                 name,
                 token: getToken(code, encryptedPassword),
-            } satisfies CompanyData
-        })
+            } satisfies CompanyData;
+        });
     } catch (error) {
-        console.log(error)
+        console.log(error);
 
         return null;
     }

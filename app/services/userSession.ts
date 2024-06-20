@@ -1,9 +1,9 @@
 import { ActionType, TimeInSeconds } from '~/config';
-import { createCookieSessionStorage, json } from '@remix-run/node';
 
 import type { ActionData } from '~/types/global';
 import { ActionHandler } from './action.server';
 import type { TypedResponse } from '@remix-run/node';
+import { createCookieSessionStorage } from '@remix-run/node';
 
 type UserSession = {
     isAdmin: boolean;
@@ -11,7 +11,7 @@ type UserSession = {
 
 type UserSessionFlashData = {
     actionData: ActionData;
-}
+};
 
 const { getSession, commitSession, destroySession } = createCookieSessionStorage<UserSession, UserSessionFlashData>({
     cookie: {
@@ -32,49 +32,52 @@ export async function getUserSession(request: Request) {
         isAdmin: session.get('isAdmin') || false,
         actionData: session.get('actionData'),
         authenticateAdmin: () => session.set('isAdmin', true),
+        logoutAdmin: () => session.set('isAdmin', false),
         commit: () => commitSession(session),
         destroy: () => destroySession(session),
-        flashData: (data: ActionData) => session.flash('actionData', data)
+        flashData: (data: ActionData) => session.flash('actionData', data),
     };
 }
 
 export async function handleAdminAuth(request: Request, formData: FormData): Promise<TypedResponse<ActionData>> {
-    const action = new ActionHandler(ActionType.ADMIN_AUTH);
+    const action = new ActionHandler(request, ActionType.ADMIN_AUTH);
+    const userSession = await getUserSession(request);
 
     try {
-        const authSession = await getUserSession(request);
         const password = formData.get('password');
 
         if (!password) {
-            return action.sendValidationError({ password: 'passwordEmpty' });
+            return action.redirectWithValidationError({
+                userSession,
+                validationErrors: { password: 'passwordEmpty' },
+            });
         }
 
         if (password !== process.env.ADMIN_PASSWORD) {
-            return action.sendValidationError({ password: 'passwordIncorrect' });
+            return action.redirectWithValidationError({ userSession, validationErrors: { password: 'passwordIncorrect' } });
         }
 
-        authSession.authenticateAdmin();
+        userSession.authenticateAdmin();
 
-        return action.sendSuccessData({ message: 'adminAuthSuccess' }, { 'Set-Cookie': await authSession.commit() });
+        return action.redirectWithSuccess({ userSession, message: 'adminAuthSuccess' });
     } catch (error) {
         console.log(error);
 
-        return action.sendUnknownServerError();
+        return action.redirectWithUnknownError({ userSession });
     }
 }
 
 export async function handleAdminLogout(request: Request) {
-    const action = new ActionHandler(ActionType.ADMIN_LOGOUT);
+    const action = new ActionHandler(request, ActionType.ADMIN_LOGOUT);
+    const userSession = await getUserSession(request);
 
     try {
-        const authSession = await getUserSession(request);
+        userSession.logoutAdmin()
 
-        return json(null, {
-            headers: { 'Set-Cookie': await authSession.destroy() },
-        });
+        return action.redirectWithSuccess({ userSession });
     } catch (error) {
         console.log(error);
 
-        return action.sendUnknownServerError();
+        return action.redirectWithUnknownError({ userSession });
     }
 }

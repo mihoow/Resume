@@ -62,7 +62,7 @@ export function getLinkToLocale(pathname: string, currSearch: string, locale: Lo
         (localizedPathname) => {
             if (!currSearch) return localizedPathname;
 
-            return `${localizedPathname}?${currSearch}`;
+            return `${localizedPathname}${currSearch}`;
         }
     );
 }

@@ -1,5 +1,5 @@
 {
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "packages/base/component/ContactInfo", "create-component.js"],
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
     "types": ["@remix-run/node", "vite/client"],
     "skipLibCheck": true,

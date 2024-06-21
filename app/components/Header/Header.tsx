@@ -25,6 +25,7 @@ const Heading = component('Heading', function ({ className }) {
                         width={39.5}
                         height={40}
                         className={this.__('Logo')}
+                        draggable={false}
                     />
                     <span>ichał</span>
                 </span>
@@ -37,6 +38,7 @@ const Heading = component('Heading', function ({ className }) {
                         alt='W'
                         height={40}
                         className={this.__('Logo', ['reversed'])}
+                        draggable={false}
                     />
                     <span>ieczorek</span>
                 </span>

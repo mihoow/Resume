@@ -76,6 +76,7 @@ const EditorModalContent = component<Props>(
 
                 submit(formData, {
                     method: 'POST',
+                    action: '/action'
                 });
             },
             [addInlineStyles, editor, submit]

@@ -102,6 +102,7 @@ const Navbar = component('Navbar', function ({ className }) {
                 <li>
                     <NavLink
                         to={getLinkToResume(pathname, search)}
+                        end
                         preventScrollReset
                         prefetch='intent'
                         className={({ isActive }) => this.__('Link', { isActive })}

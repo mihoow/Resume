@@ -16,10 +16,12 @@ declare module '@tiptap/core' {
 
 export const Indent = Extension.create({
     name: 'indent',
-    defaultOptions: {
-        types: ['paragraph', 'blockquote', 'heading'],
-        minLevel: 0,
-        maxLevel: 4,
+    addOptions() {
+        return {
+            types: ['paragraph', 'blockquote', 'heading'],
+            minLevel: 0,
+            maxLevel: 4,
+        }
     },
     addGlobalAttributes() {
         return [

@@ -6,7 +6,7 @@ import type {
     TypedDeferredData,
 } from '@remix-run/node';
 import { ActionType, DEFAULT_LOCALE } from './config';
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react';
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, ShouldRevalidateFunctionArgs, useLoaderData } from '@remix-run/react';
 import { authorizeCompany, fetchAllCompanies, fetchCompany } from './services/companies.server';
 import { getUserSession, handleAdminAuth, handleAdminLogout } from './services/userSession';
 import { isHomePage, redirectToResume } from './services/loader.server';
@@ -42,6 +42,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         [ActionType.SEND_EMAIL]: () => sendEmail(request, formData),
     });
 };
+
+export const shouldRevalidate = ({ currentUrl, nextUrl, defaultShouldRevalidate }: ShouldRevalidateFunctionArgs) => {
+    const { searchParams: currentSearchParams } = new URL(currentUrl)
+    const { searchParams: nextSearchParams } = new URL(nextUrl)
+
+    if (currentSearchParams.get('contact') !== nextSearchParams.get('contact')) return false;
+
+    return defaultShouldRevalidate;
+}
+
 
 export const loader = async ({
     request,

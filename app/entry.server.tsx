@@ -1,4 +1,4 @@
-// import 'dotenv/config'
+import 'dotenv/config'
 
 import type { EntryContext } from '@remix-run/node';
 import { PassThrough } from 'node:stream';

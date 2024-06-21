@@ -4,16 +4,14 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix build",
-    "dev": "concurrently \"npm run sass\" \"remix dev --manual\"",
-    "start": "remix-serve ./build/index.js",
+    "build": "remix vite:build",
+    "dev": "concurrently \"npm run sass\" \"remix vite:dev\"",
+    "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
-    "sass": "sass --watch app/ --style compressed --no-source-map",
-    "component": "node create-component.js"
+    "sass": "sass --watch app/ --style compressed --no-source-map"
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.16",
-    "@remix-run/css-bundle": "^2.1.0",
     "@remix-run/node": "^2.5.1",
     "@remix-run/react": "^2.5.1",
     "@remix-run/serve": "^2.5.1",
@@ -59,7 +57,9 @@
     "eslint": "^8.38.0",
     "minimist": "^1.2.8",
     "sass": "^1.69.4",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vite": "^5.3.1",
+    "vite-tsconfig-paths": "^4.3.2"
   },
   "engines": {
     "node": ">=18.0.0"

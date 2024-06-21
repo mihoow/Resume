@@ -1,6 +1,8 @@
 {
   "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "packages/base/component/ContactInfo", "create-component.js"],
   "compilerOptions": {
+    "types": ["@remix-run/node", "vite/client"],
+    "skipLibCheck": true,
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -14,14 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"],
-      "@/*": ["./packages/base/*"],
-      "@home/*": ["./packages/home/*"],
-      "@personal/*": ["./packages/personal/*"],
-      "@styleguide/*": ["./packages/styleguide/*"],
-      "@portfolio/*": ["./packages/portfolio/*"],
-      "@admin/*": ["./packages/admin/*"],
-      "@resource/*": ["./packages/resource/*"]
+      "~/*": ["./app/*"]
     },
 
     // Remix takes care of building everything in `remix build`.

@@ -1,10 +1,13 @@
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, ShouldRevalidateFunctionArgs, useLoaderData } from '@remix-run/react';
-import type {
-    LinksFunction,
-    LoaderFunctionArgs,
-    MetaFunction,
-    TypedDeferredData,
-} from '@remix-run/node';
+import {
+    Links,
+    Meta,
+    Outlet,
+    Scripts,
+    ScrollRestoration,
+    ShouldRevalidateFunctionArgs,
+    useLoaderData,
+} from '@remix-run/react';
+import type { LinksFunction, LoaderFunctionArgs, MetaFunction, TypedDeferredData } from '@remix-run/node';
 import { fetchAllCompanies, fetchCompany } from './services/companies.server';
 
 import { App } from './components/App/App';
@@ -18,7 +21,7 @@ import { defer } from '@remix-run/node';
 import { fetchSensitiveAuthorInfo } from './services/authorInfo.server';
 import { getUserSession } from './services/userSession';
 import { isSupportedLocale } from './utils/internationalization';
-import rootStyles from '~/styles/root.css';
+import rootStyles from '~/styles/root.css?url';
 import { setup as setupBem } from 'bem-ts';
 import { useLocale } from './hooks/useLocale';
 
@@ -29,14 +32,13 @@ setupBem({
 });
 
 export const shouldRevalidate = ({ currentUrl, nextUrl, defaultShouldRevalidate }: ShouldRevalidateFunctionArgs) => {
-    const { searchParams: currentSearchParams } = new URL(currentUrl)
-    const { searchParams: nextSearchParams } = new URL(nextUrl)
+    const { searchParams: currentSearchParams } = new URL(currentUrl);
+    const { searchParams: nextSearchParams } = new URL(nextUrl);
 
     if (currentSearchParams.get('contact') !== nextSearchParams.get('contact')) return false;
 
     return defaultShouldRevalidate;
-}
-
+};
 
 export const loader = async ({
     request,
@@ -46,21 +48,27 @@ export const loader = async ({
         throw new Response(`The requested language (${lang}) is not supported`, { status: 404 });
     }
 
-    const [userSession, { status: authStatus, data: company }] = await Promise.all([getUserSession(request), fetchCompany(request)]);
-    const { isAdmin, actionData } = userSession
+    const [userSession, { status: authStatus, data: company }] = await Promise.all([
+        getUserSession(request),
+        fetchCompany(request),
+    ]);
+    const { isAdmin, actionData } = userSession;
 
-    return defer({
-        isAdmin,
-        company,
-        authStatus,
-        allCompanies: isAdmin ? fetchAllCompanies() : null,
-        sensitiveAuthorInfo: isAdmin || company ? fetchSensitiveAuthorInfo() : null,
-        actionData,
-    }, {
-        headers: {
-            'Set-Cookie': await userSession.commit()
+    return defer(
+        {
+            isAdmin,
+            company,
+            authStatus,
+            allCompanies: isAdmin ? fetchAllCompanies() : null,
+            sensitiveAuthorInfo: isAdmin || company ? fetchSensitiveAuthorInfo() : null,
+            actionData,
+        },
+        {
+            headers: {
+                'Set-Cookie': await userSession.commit(),
+            },
         }
-    });
+    );
 };
 
 export const meta: MetaFunction = () => [{ title: 'Wieczorek' }];
@@ -69,7 +77,7 @@ export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: rootStyles },
     { rel: 'icon', type: 'image/x-icon', sizes: '16x15', href: '/logos/logo_16.ico' },
     { rel: 'icon', type: 'image/x-icon', sizes: '32x29', href: '/logos/logo_32.ico' },
-    { rel: 'preload', as: 'image', type: 'image/svg+xml', href: '/logos/m.svg' }
+    { rel: 'preload', as: 'image', type: 'image/svg+xml', href: '/logos/m.svg' },
 ];
 
 export default component('Root', function () {
@@ -107,7 +115,6 @@ export default component('Root', function () {
                 </RootDataProvider>
                 <ScrollRestoration />
                 <Scripts />
-                <LiveReload />
             </body>
         </html>
     );

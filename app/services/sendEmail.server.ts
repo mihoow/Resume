@@ -107,7 +107,7 @@ export async function sendEmail(request: Request, formData: FormData) {
             service: 'Gmail',
             auth: {
                 user: 'm1998.wieczorek@gmail.com',
-                pass: process.env.GMAIL_PASSWORD
+                pass: import.meta.env.VITE_GMAIL_PASSWORD
             }
         });
 

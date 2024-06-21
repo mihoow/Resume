@@ -19,8 +19,8 @@ const { getSession, commitSession, destroySession } = createCookieSessionStorage
         path: '/',
         sameSite: 'lax',
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        secrets: [process.env.AUTH_COOKIE_SECRET!],
+        secure: import.meta.env.PROD,
+        secrets: [import.meta.env.VITE_AUTH_COOKIE_SECRET],
         maxAge: TimeInSeconds.DAY,
     },
 });
@@ -53,7 +53,7 @@ export async function handleAdminAuth(request: Request, formData: FormData): Pro
             });
         }
 
-        if (password !== process.env.ADMIN_PASSWORD) {
+        if (password !== import.meta.env.VITE_ADMIN_PASSWORD) {
             return action.redirectWithValidationError({ userSession, validationErrors: { password: 'passwordIncorrect' } });
         }
 

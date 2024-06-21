@@ -110,6 +110,7 @@ export const Form = component<Props, HTMLFormElement>(
                     ref={myRef}
                     className={this.mcn(className)}
                     onSubmit={handleSubmit}
+                    action='/action'
                     {...props}
                 >
                     <input

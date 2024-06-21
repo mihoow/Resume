@@ -1,17 +1,14 @@
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, ShouldRevalidateFunctionArgs, useLoaderData } from '@remix-run/react';
 import type {
-    ActionFunctionArgs,
     LinksFunction,
     LoaderFunctionArgs,
     MetaFunction,
     TypedDeferredData,
 } from '@remix-run/node';
-import { ActionType, DEFAULT_LOCALE } from './config';
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, ShouldRevalidateFunctionArgs, useLoaderData } from '@remix-run/react';
-import { authorizeCompany, fetchAllCompanies, fetchCompany } from './services/companies.server';
-import { getUserSession, handleAdminAuth, handleAdminLogout } from './services/userSession';
-import { isHomePage, redirectToResume } from './services/loader.server';
+import { fetchAllCompanies, fetchCompany } from './services/companies.server';
 
 import { App } from './components/App/App';
+import { DEFAULT_LOCALE } from './config';
 import MediaProvider from './base/Media/Media.provider';
 import type { RootData } from './types/global';
 import { RootDataProvider } from './components/RootDataProvider/RootData.provider';
@@ -19,10 +16,9 @@ import { ToastListProvider } from './base/Toast/ToastList.provider';
 import { component } from './utils/component';
 import { defer } from '@remix-run/node';
 import { fetchSensitiveAuthorInfo } from './services/authorInfo.server';
+import { getUserSession } from './services/userSession';
 import { isSupportedLocale } from './utils/internationalization';
-import { namedAction } from 'remix-utils/named-action';
 import rootStyles from '~/styles/root.css';
-import { sendEmail } from './services/sendEmail.server';
 import { setup as setupBem } from 'bem-ts';
 import { useLocale } from './hooks/useLocale';
 
@@ -31,17 +27,6 @@ setupBem({
     modifierDelimiter: '-',
     strict: false,
 });
-
-export const action = async ({ request }: ActionFunctionArgs) => {
-    const formData = await request.formData();
-
-    return namedAction(formData, {
-        [ActionType.ADMIN_AUTH]: () => handleAdminAuth(request, formData),
-        [ActionType.ADMIN_LOGOUT]: () => handleAdminLogout(request),
-        [ActionType.COMPANY_REGISTRATION]: () => authorizeCompany(request, formData),
-        [ActionType.SEND_EMAIL]: () => sendEmail(request, formData),
-    });
-};
 
 export const shouldRevalidate = ({ currentUrl, nextUrl, defaultShouldRevalidate }: ShouldRevalidateFunctionArgs) => {
     const { searchParams: currentSearchParams } = new URL(currentUrl)
@@ -55,24 +40,11 @@ export const shouldRevalidate = ({ currentUrl, nextUrl, defaultShouldRevalidate 
 
 export const loader = async ({
     request,
-    request: { url },
     params: { lang = DEFAULT_LOCALE },
 }: LoaderFunctionArgs): Promise<TypedDeferredData<RootData>> => {
     if (!isSupportedLocale(lang)) {
         throw new Response(`The requested language (${lang}) is not supported`, { status: 404 });
     }
-
-    const { pathname, searchParams } = new URL(url);
-    /*
-        I would like to have a resume page as a homepage
-        but I cannot make it work because of this issue: https://github.com/remix-run/remix/issues/2498
-
-        The above issue also prevents me from adding a home route at all
-        With it, no action works (405 Not Allowed)
-
-        I wasn't able to find any workaround
-    */
-    if (isHomePage(pathname)) throw redirectToResume(searchParams, lang);
 
     const [userSession, { status: authStatus, data: company }] = await Promise.all([getUserSession(request), fetchCompany(request)]);
     const { isAdmin, actionData } = userSession

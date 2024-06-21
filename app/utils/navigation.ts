@@ -28,7 +28,7 @@ function getLinkToPage(pathname: string, currSearch: string, page: string) {
 }
 
 export function getLinkToResume(pathname: string, currSearch: string) {
-    return getLinkToPage(pathname, currSearch, 'resume');
+    return getLinkToPage(pathname, currSearch, '');
 }
 
 export function getLinkToCoverLetter(pathname: string, currSearch: string) {

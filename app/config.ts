@@ -16,7 +16,7 @@ export enum TimeInSeconds {
 export const WEBSITE_URL = "http://localhost:3000";
 
 export enum Page {
-    RESUME = '/resume'
+    RESUME = '/'
 }
 
 export const SUPPORTED_LOCALES: Readonly<Locale[]> = ['en', 'pl'];

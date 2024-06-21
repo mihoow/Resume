@@ -74,12 +74,13 @@ export const loader = async ({
     */
     if (isHomePage(pathname)) throw redirectToResume(searchParams, lang);
 
-    const [userSession, company] = await Promise.all([getUserSession(request), fetchCompany(request)]);
+    const [userSession, { status: authStatus, data: company }] = await Promise.all([getUserSession(request), fetchCompany(request)]);
     const { isAdmin, actionData } = userSession
 
     return defer({
         isAdmin,
         company,
+        authStatus,
         allCompanies: isAdmin ? fetchAllCompanies() : null,
         sensitiveAuthorInfo: isAdmin || company ? fetchSensitiveAuthorInfo() : null,
         actionData,

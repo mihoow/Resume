@@ -1,6 +1,7 @@
 @use '../../styles/index' as *;
 
 @forward '../Header/Header';
+@forward '../AuthAlert/AuthAlert';
 @forward '../FindCompany/FindCompany';
 @forward '../Actions/Actions';
 @forward '../Footer/Footer';
@@ -18,6 +19,14 @@
 
     &_Header {
         margin-block-end: 32px;
+    }
+
+    &_AuthAlert {
+        margin-inline: 16px;
+
+        @include wide-mobile {
+            margin-inline: 0;
+        }
     }
 
     &_Main {

@@ -1,5 +1,5 @@
 import { ActionType, COMPANY_AUTHORIZATION_TIME_MS, Page } from '~/config';
-import type { CompanyData, DbCompanyData, ValidationErrorData } from '~/types/global';
+import type { AuthStatus, CompanyData, DbCompanyData, ValidationErrorData } from '~/types/global';
 import { createToken, doPasswordsMatch, getToken, readToken } from './authToken.server';
 
 import { ActionHandler } from './action.server';
@@ -98,11 +98,23 @@ export async function authorizeCompany(request: Request, formData: FormData) {
     }
 }
 
-export async function fetchCompany({ url }: Request): Promise<CompanyData | null> {
+export async function fetchCompany({ url }: Request): Promise<{ status: AuthStatus; data: CompanyData | null }> {
     const { searchParams } = new URL(url);
     const token = searchParams.get('token');
 
-    if (!token) return null;
+    if (!token) {
+        return {
+            status: 'no-token',
+            data: null,
+        };
+    }
+
+    if (token === 'public') {
+        return {
+            status: 'public-access',
+            data: null,
+        };
+    }
 
     try {
         const { companyCode, password } = readToken(token);
@@ -110,25 +122,34 @@ export async function fetchCompany({ url }: Request): Promise<CompanyData | null
         const collection = await getCompaniesCollection();
         const companyData = await collection.findOne<WithId<DbCompanyData>>({ code: companyCode });
 
-        if (!companyData) return null;
+        if (!companyData || !doPasswordsMatch(password, companyData.password))
+            return {
+                status: 'invalid-token',
+                data: null,
+            };
 
-        const { code, name, expiresAt, password: encryptedPassword } = companyData;
-
-        if (!doPasswordsMatch(password, encryptedPassword)) return null;
-
+        const { code, name, expiresAt } = companyData;
         const isExpired = Date.now() > expiresAt.getTime();
-        if (isExpired) return null;
+
+        if (isExpired)
+            return {
+                status: 'expired-token',
+                data: null,
+            };
 
         return {
-            isExpired: false,
-            code,
-            name,
-            token,
+            status: 'ok',
+            data: {
+                isExpired: false,
+                code,
+                name,
+                token,
+            },
         };
     } catch (error) {
         console.log(error);
 
-        return null;
+        return { status: 'server-error', data: null };
     }
 }
 

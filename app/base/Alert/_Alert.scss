@@ -1,0 +1,36 @@
+@use '../../styles/index' as *;
+
+.Alert {
+    padding: 16px;
+    @include flex-column;
+    gap: 8px;
+    @include font-size(14, 20);
+    background-color: #f3f4f6;
+    border: 2px solid;
+    border-radius: 8px;
+
+    &-info {
+        border-color: #0891b2;
+        color: #0e7490;
+    }
+
+    &-warning {
+        border-color: #ca8a04;
+        color: #a16207;
+    }
+
+    &_Header {
+        @include flex-center-v;
+
+        svg {
+            flex-shrink: 0;
+            display: inline;
+            margin-inline-end: 12px;
+            @include box(20px);
+        }
+    }
+
+    &_Content {
+        color: $neutral-contrast;
+    }
+}

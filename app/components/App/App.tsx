@@ -6,16 +6,19 @@ import Actions from '../Actions/Actions';
 import { useIsAdmin, useRootData } from '~/hooks/useRootData';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
+import { AuthAlert } from '../AuthAlert/AuthAlert';
 
 const FindCompany = lazy(() => import('../FindCompany/FindCompany'));
 
 export const App = component<PropsWithChildren>('App', function ({ children }) {
     const isAdmin = useIsAdmin();
     const allCompanies = useRootData(({ allCompanies }) => allCompanies);
+    const authStatus = useRootData(({ authStatus }) => authStatus);
 
     return (
         <div className={this.mcn()}>
             <Header className={this.__('Header')} />
+            <AuthAlert authStatus={authStatus} className={this.__('AuthAlert')} />
             <main className={this.__('Main')}>
                 {isAdmin && (
                     <Suspense fallback={<Skeleton className={this.__('CompanySearchSkeleton')} />}>

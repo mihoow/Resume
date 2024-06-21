@@ -36,6 +36,14 @@ export type CompanyData = {
     token: string;
 }
 
+export type AuthStatus =
+    | 'no-token'
+    | 'public-access'
+    | 'server-error'
+    | 'invalid-token'
+    | 'expired-token'
+    | 'ok';
+
 export type TFunction<En = string, Pl = string> = (enVersion: En, plVersion?: Pl) => En | Pl;
 
 export type DataFunctionArgs = { t: TFunction };
@@ -71,6 +79,7 @@ export type ActionData = SuccessActionData | ValidationErrorData | ServerErrorDa
 export type RootData = {
     isAdmin: boolean;
     company: CompanyData | null;
+    authStatus: AuthStatus;
     allCompanies: Promise<CompanyData[] | null> | null;
     sensitiveAuthorInfo: Promise<SensitiveAuthorInfo | null> | null;
     actionData: ActionData | undefined;

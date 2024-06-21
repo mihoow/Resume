@@ -1,0 +1,17 @@
+@use '../../styles/index' as *;
+
+.AuthAlert {
+    p + p,
+    ul + p {
+        margin-block-start: 8px;
+    }
+
+    p + ul {
+        margin-block-start: 4px;
+    }
+
+    ul {
+        margin-inline-start: 6px;
+        @include list-styles;
+    }
+}

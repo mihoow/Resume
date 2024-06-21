@@ -28,12 +28,10 @@ const ContactItem = component<
 
 const SensitiveContactItem = component<{
     title: string;
-    placeholderLength?: number;
+    placeholder?: string;
     children: (info: SensitiveAuthorInfo) => ReactNode;
-}>('SensitiveContactItem', function ({ className, title, placeholderLength = 0.8, children }) {
+}>('SensitiveContactItem', function ({ className, title, placeholder, children }) {
     const sensitiveAuthorInfo = useRootData(({ sensitiveAuthorInfo }) => sensitiveAuthorInfo);
-
-    const MAX_STARS = 40;
 
     return (
         <ContactItem
@@ -42,15 +40,16 @@ const SensitiveContactItem = component<{
         >
             <Suspense
                 fallback={
-                    <Skeleton
-                        className={this.__('Skeleton')}
-                        count={placeholderLength}
-                    />
+                    <span className={this.__('Placeholder')}>
+                        {placeholder}
+                        <Skeleton className={this.__('Skeleton')} />
+                    </span>
                 }
             >
                 <Await resolve={sensitiveAuthorInfo}>
                     {(info) => {
-                        if (!info) return <span>{Array.from({ length: Math.floor(placeholderLength * MAX_STARS) }).fill('*').join('')}</span>;
+                        if (!info)
+                            return <span className={this.__('Placeholder', { isBlurred: true })}>{placeholder}</span>;
 
                         return children(info);
                     }}
@@ -87,7 +86,7 @@ export default component('Contacts', function ({ className }) {
                 <ContactItem title={t('Date of birth', 'Data urodzenia')}>{birthday}</ContactItem>
                 <SensitiveContactItem
                     title={t('Address', 'Adres')}
-                    placeholderLength={0.8}
+                    placeholder='Street 99, 00-000 City'
                 >
                     {({ address, addressLink }) => (
                         <>
@@ -104,7 +103,7 @@ export default component('Contacts', function ({ className }) {
                 </SensitiveContactItem>
                 <SensitiveContactItem
                     title={t('Phone', 'Telefon')}
-                    placeholderLength={0.5}
+                    placeholder="(+00) 000 000 000"
                 >
                     {({ phone: { code, tel } }) => (
                         <>
@@ -120,7 +119,7 @@ export default component('Contacts', function ({ className }) {
                 </SensitiveContactItem>
                 <SensitiveContactItem
                     title={t('E-mail')}
-                    placeholderLength={0.9}
+                    placeholder="name.surname@mail.com"
                 >
                     {({ email }) => (
                         <>

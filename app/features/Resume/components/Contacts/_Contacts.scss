@@ -29,8 +29,25 @@
 }
 
 .SensitiveContactItem {
+    &_Placeholder {
+        position: relative;
+
+        &-isBlurred {
+            color: transparent;
+            text-shadow: 0 0 4px #fff;
+
+            @supports not (text-shadow: 0 0 4px #fff) {
+                color: #fff;
+                opacity: 0.2;
+            }
+        }
+    }
+
     &_Skeleton {
         --height: 16px;
+
+        position: absolute;
+        inset: 0;
     }
 }
 

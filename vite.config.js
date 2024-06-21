@@ -18,6 +18,6 @@ export default defineConfig({
         tsconfigPaths()
     ],
     ssr: {
-        noExternal: ["remix-utils", /^@?mongodb.*/, "bson"]
+    noExternal: ["remix-utils", /^@?mongodb.*/, "bson"]
     }
 });

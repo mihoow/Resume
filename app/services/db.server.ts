@@ -9,7 +9,7 @@ let db: MongoClient;
 async function connectToDatabase() {
     if (db) return db;
 
-    const client = new MongoClient(import.meta.env.VITE_MONGO_URI, {
+    const client = new MongoClient(process.env.MONGO_URI, {
         serverApi: {
             version: ServerApiVersion.v1,
             strict: true,

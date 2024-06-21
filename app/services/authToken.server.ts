@@ -4,15 +4,15 @@ import { nanoid } from 'nanoid';
 
 export function encrypt(text: string) {
     const {
-        VITE_CRYPTO_ALGORITHM,
-        VITE_CRYPTO_KEY,
-        VITE_CRYPTO_IV
-    } = import.meta.env
+        CRYPTO_ALGORITHM,
+        CRYPTO_KEY,
+        CRYPTO_IV
+    } = process.env
 
     const cipher = createCipheriv(
-        VITE_CRYPTO_ALGORITHM,
-        Buffer.from(VITE_CRYPTO_IV, 'hex'),
-        Buffer.from(VITE_CRYPTO_KEY, 'hex')
+        CRYPTO_ALGORITHM,
+        Buffer.from(CRYPTO_IV, 'hex'),
+        Buffer.from(CRYPTO_KEY, 'hex')
     );
 
     return Buffer.concat([cipher.update(text), cipher.final()]).toString('hex');
@@ -20,15 +20,15 @@ export function encrypt(text: string) {
 
 export function decrypt(text: string) {
     const {
-        VITE_CRYPTO_ALGORITHM,
-        VITE_CRYPTO_KEY,
-        VITE_CRYPTO_IV
-    } = import.meta.env
+        CRYPTO_ALGORITHM,
+        CRYPTO_KEY,
+        CRYPTO_IV
+    } = process.env
 
     const decipher = createDecipheriv(
-        VITE_CRYPTO_ALGORITHM,
-        Buffer.from(VITE_CRYPTO_IV, 'hex'),
-        Buffer.from(VITE_CRYPTO_KEY, 'hex')
+        CRYPTO_ALGORITHM,
+        Buffer.from(CRYPTO_IV, 'hex'),
+        Buffer.from(CRYPTO_KEY, 'hex')
     );
 
     const encrypted = Buffer.from(text, 'hex');

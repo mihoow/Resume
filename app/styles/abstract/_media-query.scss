@@ -47,14 +47,3 @@
     }
 }
 
-@mixin portrait {
-    @media (-webkit-min-device-pixel-ratio: 1) and (orientation: portrait) {
-        @content;
-    }
-}
-
-@mixin landscape {
-    @media (-webkit-min-device-pixel-ratio: 1) and (orientation: landscape) {
-        @content;
-    }
-}

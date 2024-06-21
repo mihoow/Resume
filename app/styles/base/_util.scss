@@ -71,22 +71,6 @@
     }
 }
 
-@mixin position(
-    $position: relative,
-    $top: null,
-    $right: null,
-    $bottom: null,
-    $left: null,
-    $z-index: initial
-) {
-    position: $position;
-    inset-block-start: $top;
-    inset-block-end: $bottom;
-    inset-inline-start: $left;
-    inset-inline-end: $right;
-    z-index: $z-index;
-}
-
 @mixin box($width, $height: $width) {
     width: $width;
     height: $height;
@@ -144,18 +128,6 @@
         height: 100%;
         border-block: 4px solid transparent;
         border-inline-start: 6px solid $color !important;
-    }
-}
-
-@mixin match-mods($first-mod, $mods...) {
-    $other-selector: '';
-
-    @each $mod in $mods {
-       $other-selector: $other-selector + #{&}-#{$mod};
-    }
-
-    &-#{$first-mod}#{$other-selector} {
-        @content;
     }
 }
 

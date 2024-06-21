@@ -33,6 +33,7 @@
     "@tiptap/extension-underline": "^2.4.0",
     "@tiptap/pm": "^2.4.0",
     "@tiptap/react": "^2.4.0",
+    "@vercel/remix": "^2.9.2-patch.2",
     "bem-ts": "^0.13.5",
     "isbot": "^3.6.8",
     "mongodb": "^6.6.2",

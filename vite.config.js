@@ -20,10 +20,5 @@ export default defineConfig({
     ssr: {
         noExternal: ["remix-utils"],
         external: [/^@?mongodb.*/, "bson"]
-    },
-    // build: {
-    //     commonjsOptions: {
-    //         transformMixedEsModules: true
-    //     }
-    // }
+    }
 });

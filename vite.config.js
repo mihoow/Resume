@@ -18,6 +18,12 @@ export default defineConfig({
         tsconfigPaths()
     ],
     ssr: {
-    noExternal: ["remix-utils", /^@?mongodb.*/, "bson"]
-    }
+        noExternal: ["remix-utils"],
+        external: [/^@?mongodb.*/, "bson"]
+    },
+    // build: {
+    //     commonjsOptions: {
+    //         transformMixedEsModules: true
+    //     }
+    // }
 });

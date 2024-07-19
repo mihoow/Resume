@@ -17,7 +17,7 @@ async function connectToDatabase() {
         },
     });
 
-    if (import.meta.env.PROD) {
+    if (process.env.NODE_ENV === 'production') {
         db = await client.connect();
     } else {
         // in development, need to store the db connection in a global variable

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "remix vite:build",
     "dev": "concurrently \"npm run sass\" \"remix vite:dev\"",
-    "start": "remix-serve ./build/server/index.js",
+    "start": "remix-serve ./build/server/**/index.js",
     "typecheck": "tsc",
     "sass": "sass --watch app/ --style compressed --no-source-map"
   },

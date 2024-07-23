@@ -124,7 +124,7 @@ export const myStackData = ({ t }: DataFunctionArgs): StackLevel[] => [
         rating: 2,
         note: t(
             'basics, just scratched the surface',
-
+            'jedynie podstawy'
         ),
         items: ['PHP', 'Docker', 'Jest', 'Cypress', 'NextJS'],
     },

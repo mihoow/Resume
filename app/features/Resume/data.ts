@@ -94,7 +94,7 @@ export const myStackData = ({ t }: DataFunctionArgs): StackLevel[] => [
             'over 4 years of learning and practising',
             'ponad 4 lata nauki i praktyki'
         ),
-        items: ['HTML5', 'CSS (Sass)', 'Typescript', 'ReactJS'],
+        items: ['HTML5', 'CSS (Sass)', 'Typescript', 'ReactJS', 'REST API'],
     },
     {
         rating: 8,

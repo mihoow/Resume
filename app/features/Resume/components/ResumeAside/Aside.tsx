@@ -84,14 +84,14 @@ export default component('Aside', function ({ className }) {
                         title={t('Interests', 'Zainteresowania')}
                         items={hobbies}
                     />
-                    {/* {token && (
+                    {token && (
                         <p className={this.__('PrintNote')}>
                             {t(
                                 `You might also visit: ${resumeUrl} to see the interactive version of my CV`,
                                 `Możecie Państwo także odwiedzić: ${resumeUrl}, aby przejrzeć interaktywną wersję mojego CV`
                             )}
                         </p>
-                    )} */}
+                    )}
                 </div>
             </A4.Aside>
         </aside>

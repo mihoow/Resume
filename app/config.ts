@@ -13,7 +13,7 @@ export enum TimeInSeconds {
     YEAR = 31556952
 }
 
-export const WEBSITE_URL = "http://localhost:3000";
+export const WEBSITE_URL = "https://mwieczorek.me";
 
 export enum Page {
     RESUME = '/'

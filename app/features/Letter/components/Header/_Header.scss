@@ -1,0 +1,112 @@
+@use '../../../../styles/index' as *;
+
+@forward '../../../../components/ContactItem/ContactItem';
+
+.LetterHeader {
+    --image-width: 0px;
+    --image-height: 0px;
+
+    position: relative;
+    margin-block-end: calc(var(--image-height) / 2);
+    padding-block-end: calc(var(--image-height) / 2);
+    background-color: rgb(33, 71, 97);
+    color: $neutral;
+
+    @include a4 {
+        padding-block-end: 0;
+    }
+
+    &_NameSurname {
+        margin-block-end: 32px;
+        padding-block-start: 20px;
+        @include font-size(45, 42);
+        font-weight: 700;
+        text-align: center;
+        text-transform: uppercase;
+
+        @include a4 {
+            margin-block-end: 40px;
+        }
+    }
+
+    &_Contacts {
+        margin-inline: auto;
+        width: fit-content;
+        padding-inline: 16px;
+        padding-block-end: 32px;
+        @include flex-column;
+        gap: 12px;
+
+        @include a4 {
+            margin-inline: 0;
+            width: 100%;
+            min-height: calc(var(--image-height) / 2);
+            padding-block-end: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: min-content min-content;
+            grid-auto-flow: column;
+            align-content: end;
+            gap: 12px calc(var(--image-width) + 12px);
+        }
+    }
+
+    &_ContactItem {
+        @include flex-center-v;
+        gap: 6px;
+
+        @include a4 {
+            height: min-content;
+
+            &-linkedin,
+            &-github {
+                justify-self: end;
+            }
+        }
+
+        &,
+        .Link_Text {
+            @include font-size(12, 16);
+        }
+
+        svg {
+            @include box(20px);
+        }
+
+        .SensitiveContact {
+            &_CopyToClipboard {
+                margin-inline-start: 6px;
+            }
+        }
+    }
+
+    &_MyImage {
+        width: var(--image-width);
+        min-height: var(--image-height);
+        position: absolute;
+        inset-inline-start: 50%;
+        inset-block-end: calc((var(--image-height) / 2) * -1);
+        transform: translateX(-50%);
+        background-color: #ccc;
+    }
+
+    .Link {
+        padding: 0;
+        color: $neutral;
+        transition: color cubic-bezier(0.4, 0, 0.2, 1) 150ms;
+
+        @include hover {
+            color: $primary;
+
+            svg {
+                fill: $neutral;
+            }
+        }
+    }
+
+    .SocialLink {
+        &_Icon {
+            @include box(20px);
+        }
+    }
+}

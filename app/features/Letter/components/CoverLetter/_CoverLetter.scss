@@ -1,0 +1,16 @@
+@use '../../../../styles/index' as *;
+
+@forward '../Header/Header';
+
+.CoverLetter {
+    margin-block-end: 24px;
+    width: calc(100vw - 16px);
+    max-width: 21cm;
+    height: 29.7cm;
+    background-color: $neutral;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    @include hide-scrollbar;
+}

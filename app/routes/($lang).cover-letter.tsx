@@ -1,14 +1,18 @@
-import { Alert } from '~/base/Alert/Alert';
+import { LinksFunction, MetaFunction } from '@remix-run/node';
+
+import { CoverLetter } from '@letter/components/CoverLetter';
 import { component } from '~/utils/component';
-import { useTranslation } from '~/hooks/useTranslation';
+import { getFixedTFromPathname } from '~/utils/internationalization';
+import pageStyles from '../styles/cover-letter.css?url';
+
+export const meta: MetaFunction = ({ location: { pathname } }) => {
+    const t = getFixedTFromPathname(pathname);
+
+    return [{ title: `Wieczorek | ${t('Cover letter', 'List motywacyjny')}` }];
+};
+
+export const links: LinksFunction = () => [{ rel: 'stylesheet', href: pageStyles }];
 
 export default component('CoverLetterPage', function () {
-    const t = useTranslation();
-
-    return (
-        <Alert
-            color='info'
-            title={t('Page under development', 'Strona w budowie')}
-        />
-    );
+    return <CoverLetter />;
 });

@@ -1,0 +1,70 @@
+@use '../../../../styles/index' as *;
+
+.LetterLayout {
+    position: relative;
+    margin-block-end: 30px;
+    padding: 30px;
+
+    @include a4 {
+        padding-inline: 90px;
+    }
+
+    &_Header {
+        &::after {
+            content: '';
+            display: block;
+            margin-block: 16px 24px;
+            height: 8px;
+            width: max(235px, 45%);
+            background: linear-gradient(to right, rgb(33, 71, 97), $primary);
+            border-radius: 8px;
+        }
+    }
+
+    &_Recipient {
+        margin-block-end: 12px;
+
+        span {
+            display: block;
+        }
+    }
+
+    &_To {
+        margin-block-end: 4px;
+        color: #7c7c7c;
+        @include font-size(13, 13);
+    }
+
+    &_Date {
+        display: block;
+        color: #7c7c7c;
+    }
+
+    &_Greeting {
+        display: block;
+        margin-block: 16px 24px;
+        font-weight: 500;
+    }
+
+    &_Content {
+        @include prose;
+        @include flex-column;
+        gap: 20px;
+        @include font-size(16, 24);
+    }
+
+    &_Farewell {
+        margin-block-start: 24px;
+        @include flex-column;
+    }
+
+    &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        inset-block-end: -30px;
+        inset-inline: 0;
+        height: 30px;
+        background-color: rgb(33, 71, 97);
+    }
+}

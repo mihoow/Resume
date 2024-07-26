@@ -1,0 +1,10 @@
+@use '../../../../styles/index' as *;
+
+.LetterErrorBoundary {
+    @include flex-column;
+    gap: 16px;
+
+    &_Refresher {
+        width: 250px;
+    }
+}

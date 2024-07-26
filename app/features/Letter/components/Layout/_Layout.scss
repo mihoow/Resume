@@ -1,69 +1,36 @@
 @use '../../../../styles/index' as *;
 
+@forward '../Header/Header';
+
 .LetterLayout {
-    position: relative;
-    margin-block-end: 30px;
-    padding: 30px;
+    margin-block-end: 24px;
+    width: calc(100vw - 16px);
+    max-width: 21cm;
+    min-height: 29.7cm;
 
-    @include a4 {
-        padding-inline: 90px;
-    }
+    display: grid;
+    grid-template-rows: min-content 1fr min-content;
 
-    &_Header {
-        &::after {
-            content: '';
-            display: block;
-            margin-block: 16px 24px;
-            height: 8px;
-            width: max(235px, 45%);
-            background: linear-gradient(to right, rgb(33, 71, 97), $primary);
-            border-radius: 8px;
-        }
-    }
-
-    &_Recipient {
-        margin-block-end: 12px;
-
-        span {
-            display: block;
-        }
-    }
-
-    &_To {
-        margin-block-end: 4px;
-        color: #7c7c7c;
-        @include font-size(13, 13);
-    }
-
-    &_Date {
-        display: block;
-        color: #7c7c7c;
-    }
-
-    &_Greeting {
-        display: block;
-        margin-block: 16px 24px;
-        font-weight: 500;
-    }
+    background-color: $neutral;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    @include hide-scrollbar;
 
     &_Content {
-        @include prose;
-        @include flex-column;
-        gap: 20px;
-        @include font-size(16, 24);
-    }
+        padding: 30px;
+        height: 100%;
 
-    &_Farewell {
-        margin-block-start: 24px;
-        @include flex-column;
+        @include a4 {
+            padding-inline: 90px;
+        }
     }
 
     &::after {
         content: '';
         display: block;
-        position: absolute;
-        inset-block-end: -30px;
-        inset-inline: 0;
+        width: 100%;
         height: 30px;
         background-color: rgb(33, 71, 97);
     }

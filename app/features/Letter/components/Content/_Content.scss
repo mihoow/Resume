@@ -1,0 +1,52 @@
+@use '../../../../styles/index' as *;
+
+.LetterContent {
+    &_Header {
+        &::after {
+            content: '';
+            display: block;
+            margin-block: 16px 24px;
+            height: 8px;
+            width: max(235px, 45%);
+            background: linear-gradient(to right, rgb(33, 71, 97), $primary);
+            border-radius: 8px;
+        }
+    }
+
+    &_Recipient {
+        margin-block-end: 12px;
+
+        span {
+            display: block;
+        }
+    }
+
+    &_To {
+        margin-block-end: 4px;
+        color: #7c7c7c;
+        @include font-size(13, 13);
+    }
+
+    &_Date {
+        display: block;
+        color: #7c7c7c;
+    }
+
+    &_Greeting {
+        display: block;
+        margin-block: 16px 24px;
+        font-weight: 500;
+    }
+
+    &_Content {
+        @include prose;
+        @include flex-column;
+        gap: 20px;
+        @include font-size(16, 24);
+    }
+
+    &_Farewell {
+        margin-block-start: 24px;
+        @include flex-column;
+    }
+}

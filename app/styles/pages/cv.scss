@@ -1,6 +1,6 @@
-@use './index' as *;
+@use '../index' as *;
 
-@forward '../features/Resume/components/Resume/Resume';
+@forward '../../features/Resume/components/Resume/Resume';
 
 .CVPage {
     margin-inline: auto;

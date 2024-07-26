@@ -1,14 +1,18 @@
 import { EmailContact, GithubLink, LinkedinLink, PhoneContact } from '~/components/ContactItem/ContactItem';
+import { Link, useSearchParams } from '@remix-run/react';
 
 import { CSSProperties } from 'react';
 import { EmailIcon } from '../../icons/Email';
 import { IMAGE_SIZES } from '../../config';
 import { PhoneIcon } from '../../icons/Phone';
 import { component } from '~/utils/component';
+import { useIsAdmin } from '~/hooks/useRootData';
 import { useTranslation } from '~/hooks/useTranslation';
 
 export const LetterHeader = component('LetterHeader', function ({ className }) {
     const t = useTranslation();
+    const isAdmin = useIsAdmin();
+    const [searchParams] = useSearchParams();
 
     return (
         <header
@@ -41,6 +45,19 @@ export const LetterHeader = component('LetterHeader', function ({ className }) {
                 height={IMAGE_SIZES.height}
                 className={this.__('MyImage')}
             />
+            {isAdmin && (
+                <Link
+                    to={{
+                        pathname: './cover-letter/edit',
+                        search: searchParams.toString(),
+                    }}
+                    prefetch='viewport'
+                    preventScrollReset
+                    className={this.__('EditLink')}
+                >
+                    Edit
+                </Link>
+            )}
         </header>
     );
 });

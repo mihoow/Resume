@@ -90,6 +90,22 @@
         background-color: #ccc;
     }
 
+    &_EditLink {
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-start: 0;
+        width: 120px;
+        padding: 8px 24px;
+        background-color: $neutral;
+        color: rgb(33, 71, 97);
+        border-radius: 0 0 6px 0;
+        @include flex-center;
+
+        @include hover {
+            box-shadow: 0 0 10px 2px $neutral-contrast;
+        }
+    }
+
     .Link {
         padding: 0;
         color: $neutral;

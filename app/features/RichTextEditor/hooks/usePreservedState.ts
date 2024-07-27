@@ -1,60 +1,57 @@
-import { useCallback, useState } from 'react';
+import { DebouncedState, useDebouncedCallback } from 'use-debounce';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { useDebouncedCallback } from 'use-debounce';
+import { PreservedStateController } from '../type';
 
-export function usePreservedState(id: string, initialContent?: string) {
-    const storageKey = `rich-text-${id}`;
+type Options = {
+    key: string;
+    defaultValue?: string;
+};
 
-    const [initialData] = useState(() => {
-        const savedContent = sessionStorage.getItem(`${storageKey}:content`);
-        const savedEmail = sessionStorage.getItem(`${storageKey}:email`);
-        const savedTopic = sessionStorage.getItem(`${storageKey}:topic`);
+export function usePreservedStateController(): PreservedStateController {
+    const stateSavers = useRef<Record<string, DebouncedState<(value: string) => void>>>({});
 
-        return {
-            content: savedContent || initialContent,
-            email: savedEmail || '',
-            topic: savedTopic || '',
-        };
+    return useMemo(
+        () => ({
+            saveAll() {
+                Object.values(stateSavers.current).forEach((callback) => callback.flush());
+            },
+            flushStorage() {
+                // clear timeouts
+                Object.values(stateSavers.current).forEach((callback) => callback.cancel());
+
+                Object.keys(stateSavers.current).forEach((storageKey) => {
+                    sessionStorage.removeItem(storageKey);
+                });
+            },
+            addStateSaver(storageKey, saverCallback) {
+                stateSavers.current[storageKey] = saverCallback;
+            },
+        }),
+        []
+    );
+}
+
+export function usePreservedState(
+    { addStateSaver }: PreservedStateController,
+    { key, defaultValue = '' }: Options
+): [string, (value: string) => void] {
+    const storageKey = `rich-text-${key}`;
+
+    const [initialValue] = useState(() => {
+        const savedValue = sessionStorage.getItem(storageKey);
+
+        return savedValue || defaultValue;
     });
 
-    const debouncedSaveContent = useDebouncedCallback((content: string) => {
-        sessionStorage.setItem(`${storageKey}:content`, content);
+    const debouncedSaveValue = useDebouncedCallback((value: string) => {
+        sessionStorage.setItem(storageKey, value);
     }, 2000);
 
-    const debouncedSaveEmail = useDebouncedCallback((email: string) => {
-        sessionStorage.setItem(`${storageKey}:email`, email);
-    }, 2000);
+    useEffect(() => {
+        // ? Because of this, it can be later removed from a storage when closing a modal
+        addStateSaver(storageKey, debouncedSaveValue);
+    }, [addStateSaver, storageKey, debouncedSaveValue]);
 
-    const debouncedSaveTopic = useDebouncedCallback((topic: string) => {
-        sessionStorage.setItem(`${storageKey}:topic`, topic);
-    }, 2000);
-
-    const clearTimeouts = useCallback(() => {
-        debouncedSaveContent.cancel();
-        debouncedSaveEmail.cancel();
-        debouncedSaveTopic.cancel();
-    }, [debouncedSaveContent, debouncedSaveEmail, debouncedSaveTopic]);
-
-    const saveAll = useCallback(() => {
-        debouncedSaveContent.flush();
-        debouncedSaveEmail.flush();
-        debouncedSaveTopic.flush();
-    }, [debouncedSaveContent, debouncedSaveEmail, debouncedSaveTopic]);
-
-    const flushStorage = useCallback(() => {
-        clearTimeouts();
-
-        sessionStorage.removeItem(`${storageKey}:content`);
-        sessionStorage.removeItem(`${storageKey}:email`);
-        sessionStorage.removeItem(`${storageKey}:topic`);
-    }, [clearTimeouts, storageKey]);
-
-    return {
-        initialData,
-        saveContent: debouncedSaveContent,
-        saveEmail: debouncedSaveEmail,
-        saveTopic: debouncedSaveTopic,
-        saveAll,
-        flushStorage,
-    };
+    return [initialValue, debouncedSaveValue];
 }

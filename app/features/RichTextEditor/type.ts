@@ -1,10 +1,10 @@
-import type { CSSProperties, FC } from "react";
+import type { CSSProperties, FC } from 'react';
+import type { ChainedCommands, Editor } from '@tiptap/react';
 
-import type { ChainedCommands } from "@tiptap/react";
-import { ModalBreakpoint } from "~/types/media";
+import type { DebouncedState } from 'use-debounce';
+import type { ModalBreakpoint } from '~/types/media';
 
 export type TextSize = 'sm' | 'md' | 'lg' | 'xl';
-
 
 export type ToolbarButton = {
     content: FC;
@@ -29,4 +29,18 @@ export type ToolbarItem = ActionButton | ButtonGroup | null;
 export type StyleRule = {
     selector: string;
     styles: CSSProperties | ((element: HTMLElement) => CSSProperties);
+};
+
+export type PreservedStateController = {
+    saveAll: VoidFunction;
+    flushStorage: VoidFunction;
+    addStateSaver: (storageKey: string, saverCallback: DebouncedState<(value: string) => void>) => void;
+};
+
+export type EditorModalContextType = {
+    editor: Editor;
+    breakpoint: ModalBreakpoint;
+    preservedStateController: PreservedStateController;
+    saveAndClose: VoidFunction;
+    flushAndClose: VoidFunction;
 };

@@ -1,24 +1,25 @@
 import { EditorContent, useEditor } from '@tiptap/react';
+import type { FormEvent, PropsWithChildren } from 'react';
 import { useCallback, useEffect } from 'react';
+import {
+    usePreservedState,
+    usePreservedStateController,
+} from '../../hooks/usePreservedState';
 
 import { ActionType } from '~/config';
 import { EXTENSIONS } from '../../config/editor';
-import { Footer } from '../Footer/Footer';
+import { EditorModalContext } from '../../context';
+import { EditorModalContextType } from '../../type';
 import { Form } from '~/base/Forms/Form';
-import type { FormEvent } from 'react';
 import Modal from '~/base/Modal';
 import type { ModalHandle } from '~/types/global';
-import { SendEmailFields } from '../SendEmailFields/SendEmailFields';
-import { SendIcon } from '../../icons/Send';
-import { Submit } from '~/base/Forms/Submit';
 import { Toolbar } from '../Toolbar/Toolbar';
 import { addInlineStylesToHTML } from '../../utils';
 import { component } from '~/utils/component';
+import { useContext } from 'use-context-selector';
 import { useMirrorRef } from '~/hooks/useMirrorRef';
 import { useModalBreakpoint } from '~/hooks/useBreakpoints';
-import { usePreservedState } from '../../hooks/usePreservedState';
 import { useSubmit } from '@remix-run/react';
-import { useTranslation } from '~/hooks/useTranslation';
 
 type Props = {
     handle: ModalHandle;
@@ -27,34 +28,69 @@ type Props = {
     addInlineStyles?: boolean;
 };
 
-const EditorModalContent = component<Props>(
-    'EditorModal',
-    function ({ className, handle, intent, content: initialContent = '', addInlineStyles = false }) {
-        const breakpoint = useModalBreakpoint();
-        const {
-            initialData: { content, email, topic },
-            saveContent,
-            saveEmail,
-            saveTopic,
-            saveAll,
-            flushStorage,
-        } = usePreservedState(intent, initialContent);
+const EditorModalHeader = component<PropsWithChildren<{ title: string }>>(
+    'EditorModalHeader',
+    function ({ className, title, children }) {
+        return (
+            <Modal.Header className={this.mcn(className)}>
+                <span className={this.__('ModalTitle')}>{title}</span>
+                {children}
+            </Modal.Header>
+        );
+    }
+);
 
-        const t = useTranslation();
+const EditorModalBody = component<PropsWithChildren<{ editorClassName?: string }>>(
+    'EditorModalBody',
+    function ({ className, editorClassName, children }) {
+        // here it needs to be accessed this way, otherwise toolbar won't detect changes in editor content
+        const { editor, breakpoint } = useContext(EditorModalContext) as EditorModalContextType;
+
+        return (
+            <Modal.Body className={this.mcn(className)}>
+                <div className={this.__('Content')}>
+                    {children}
+                    <EditorContent
+                        editor={editor}
+                        className={this.cn(this.__('Editor'), editorClassName)}
+                    />
+                </div>
+                <Toolbar
+                    editor={editor}
+                    className={this.__('Toolbar')}
+                    breakpoint={breakpoint}
+                />
+            </Modal.Body>
+        );
+    }
+);
+
+const EditorModalContent = component<PropsWithChildren<Props>>(
+    'EditorModal',
+    function ({ className, handle, intent, content: initialContent = '', addInlineStyles = false, children }) {
+        const breakpoint = useModalBreakpoint();
+        const preservedStateController = usePreservedStateController();
+        const [content, onContentChange] = usePreservedState(preservedStateController, {
+            key: 'content',
+            defaultValue: initialContent,
+        });
+
+        const { saveAll, flushStorage } = preservedStateController;
+
         const editor = useEditor({
             extensions: EXTENSIONS,
             content,
         });
         const submit = useSubmit();
 
-        const argsRef = useMirrorRef({ editor, saveContent });
+        const argsRef = useMirrorRef({ editor, onContentChange });
 
         useEffect(() => {
-            const { editor, saveContent } = argsRef.current;
+            const { editor, onContentChange } = argsRef.current;
 
             if (!editor) return;
 
-            saveContent(editor.getHTML());
+            onContentChange(editor.getHTML());
         }, [editor?.state.doc.content, argsRef]);
 
         const handleSubmit = useCallback(
@@ -76,7 +112,7 @@ const EditorModalContent = component<Props>(
 
                 submit(formData, {
                     method: 'POST',
-                    action: '/action'
+                    action: '/action',
                 });
             },
             [addInlineStyles, editor, submit]
@@ -92,7 +128,7 @@ const EditorModalContent = component<Props>(
             handle.close();
         }, [flushStorage, handle]);
 
-        const isEmailSender = intent === ActionType.SEND_EMAIL
+        if (!editor) return null;
 
         return (
             <Modal
@@ -104,45 +140,11 @@ const EditorModalContent = component<Props>(
                 onSuccess={flushAndClose}
                 className={this.mcn(className)}
             >
-                <Modal.Header>
-                    <span className={this.__('ModalTitle', )}>{t('Contact me', 'Skontaktuj się')}</span>
-                    {breakpoint === 'mobile' && (
-                        <Submit
-                            variant='submit'
-                            className={this.__('MobileSubmit')}
-                            loadingText=''
-                        >
-                            <SendIcon />
-                        </Submit>
-                    )}
-                </Modal.Header>
-                <Modal.Body className={this.__('Body')}>
-                    <div className={this.__('Content')}>
-                        {isEmailSender && (
-                            <SendEmailFields
-                                initialEmail={email}
-                                onEmailChange={saveEmail}
-                                initialTopic={topic}
-                                onTopicChange={saveTopic}
-                                className={this.__('Inputs')}
-                            />
-                        )}
-                        <EditorContent
-                            editor={editor}
-                            className={this.__('Editor', [isEmailSender ? 'withEmailFields' : null])}
-                        />
-                    </div>
-                    <Toolbar
-                        editor={editor}
-                        className={this.__('Toolbar')}
-                        breakpoint={breakpoint}
-                    />
-                </Modal.Body>
-                {breakpoint === 'desktop' && (
-                    <Modal.Footer className={this.__('Footer')}>
-                        <Footer onDismiss={flushAndClose} />
-                    </Modal.Footer>
-                )}
+                <EditorModalContext.Provider
+                    value={{ editor, breakpoint, preservedStateController, saveAndClose, flushAndClose }}
+                >
+                    {children}
+                </EditorModalContext.Provider>
             </Modal>
         );
     },
@@ -150,15 +152,22 @@ const EditorModalContent = component<Props>(
     () => false
 );
 
-export const EditorModal = component<Props>('EditorModalContainer', function ({ className, handle, ...props }) {
-    if (!handle.isOpen) return null;
+const EditorModal = component<PropsWithChildren<Props>>(
+    'EditorModalContainer',
+    function ({ className, handle, ...props }) {
+        if (!handle.isOpen) return null;
 
-    return (
-        <EditorModalContent
-            handle={handle}
-            {...props}
-        />
-    );
+        return (
+            <EditorModalContent
+                handle={handle}
+                {...props}
+            />
+        );
+    }
+);
+
+export default Object.assign(EditorModal, {
+    Header: EditorModalHeader,
+    Body: EditorModalBody,
+    Footer: Modal.Footer,
 });
-
-export default EditorModal;

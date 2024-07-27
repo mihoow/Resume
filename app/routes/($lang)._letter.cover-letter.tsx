@@ -14,9 +14,9 @@ export const loader = async ({ request: { url }, params: { lang = DEFAULT_LOCALE
     const companyCode = getCompanyCodeFromUrl(url);
     const coverLetter = await getCoverLetter(companyCode, lang as Locale);
 
-    if (!coverLetter) {
-        throw new Response('No cover letter was found', { status: 404 });
-    }
+    // if (!coverLetter) {
+    //     throw new Response('No cover letter was found', { status: 404 });
+    // }
 
     return json({
         coverLetter,
@@ -76,4 +76,11 @@ export default component('CoverLetterPage', function () {
     );
 });
 
-export const ErrorBoundary = LetterErrorBoundary;
+export function ErrorBoundary() {
+    return (
+        <>
+            <LetterErrorBoundary />
+            <Outlet />
+        </>
+    );
+}

@@ -1,52 +1,22 @@
 @use '../../../../styles/index' as *;
 
-@forward '../SendEmailFields/SendEmailFields';
 @forward '../Toolbar/Toolbar';
-@forward '../Footer/Footer';
 
-.EditorModal {
+.EditorModalHeader {
     &_ModalTitle {
         @include full-size-modal {
             width: calc(100% - 48px);
         }
     }
+}
 
-    &_MobileSubmit {
-        position: absolute;
-        top: 50%;
-        right: 16px;
-        transform: translateY(-50%);
-    }
+.EditorModalBody {
+    padding: 0;
+    overflow: unset;
 
-    &_Body {
-        padding: 0;
-        overflow: unset;
-
-        @include full-size-modal {
-            display: flex;
-            flex-direction: column;
-        }
-    }
-
-    &_Inputs {
-        padding: 12px 24px 16px 24px;
-
-        @include full-size-modal {
-            padding-inline: 12px;
-            padding-block-end: 0;
-
-            @include wide-mobile {
-                padding-inline: 16px;
-            }
-
-            input {
-                padding-inline: 8px;
-
-                @include wide-mobile {
-                    padding-inline: 12px;
-                }
-            }
-        }
+    @include full-size-modal {
+        display: flex;
+        flex-direction: column;
     }
 
     &_Content {
@@ -67,10 +37,6 @@
         max-height: min(90vh, 500px);
         padding-bottom: 0;
         @include prose;
-
-        &-withEmailFields {
-            padding-block-start: 0;
-        }
 
         @include full-size-modal {
             flex-grow: 1;
@@ -108,9 +74,5 @@
                 padding-inline: 24px;
             }
         }
-    }
-
-    &_Footer {
-        display: block;
     }
 }

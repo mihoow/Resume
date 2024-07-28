@@ -1,0 +1,7 @@
+@use '../../../../styles/index' as *;
+
+@forward '../EditHeadersStep/EditHeadersStep';
+@forward '../EditTextStep/EditTextStep';
+
+.EditModal {
+}

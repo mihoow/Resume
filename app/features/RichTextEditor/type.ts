@@ -37,10 +37,14 @@ export type PreservedStateController = {
     addStateSaver: (storageKey: string, saverCallback: DebouncedState<(value: string) => void>) => void;
 };
 
-export type EditorModalContextType = {
+export type RichTextContextType = {
     editor: Editor;
-    breakpoint: ModalBreakpoint;
     preservedStateController: PreservedStateController;
+    getHTML: () => string | null;
+}
+
+export type EditorModalContextType = RichTextContextType & {
+    breakpoint: ModalBreakpoint;
     saveAndClose: VoidFunction;
     flushAndClose: VoidFunction;
 };

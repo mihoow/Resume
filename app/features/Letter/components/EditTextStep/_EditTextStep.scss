@@ -1,0 +1,57 @@
+@use '../../../../styles/index' as *;
+
+@forward '../../../RichTextEditor/components/EditorModal/EditorModal';
+
+.EditTextStep {
+    overflow-y: auto;
+
+    &_Editor {
+        &,
+        * {
+            overflow: unset;
+        }
+    }
+
+    &_Configuration {
+        padding: 8px 16px;
+        @include flex-column;
+        gap: 12px;
+
+        select {
+            width: 300px;
+        }
+    }
+
+    &_Footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    &_Explanation {
+        margin-block-end: 16px;
+
+        h5 {
+            margin-block-end: 12px;
+        }
+
+        ul {
+            @include list-styles;
+        }
+    }
+
+    &_SubmitArea {
+        width: 100%;
+        @include flex-center-v;
+        justify-content: flex-end;
+        gap: 32px;
+    }
+
+    &_SubmitInput {
+        width: 100%;
+    }
+
+    &_Submit {
+        min-width: 200px;
+    }
+}

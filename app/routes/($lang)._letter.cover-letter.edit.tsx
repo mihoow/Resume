@@ -1,12 +1,9 @@
-import { LoaderFunctionArgs, redirect } from '@remix-run/node';
-import { useNavigate, useSearchParams } from '@remix-run/react';
+import { LinksFunction, LoaderFunctionArgs, redirect } from '@remix-run/node';
 
-import { ActionType } from '~/config';
-import EditorModal from '~/features/RichTextEditor/components/EditorModal/EditorModal';
-import { ModalHandle } from '~/types/global';
+import { EditModal } from '@letter/components/EditModal/EditModal';
 import { component } from '~/utils/component';
 import { getUserSession } from '~/services/userSession';
-import { useMemo } from 'react';
+import pageStyles from '../styles/pages/letter-edit.css?url';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
     const userSession = await getUserSession(request);
@@ -18,26 +15,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     return null;
 };
 
+export const links: LinksFunction = () => [{ rel: 'stylesheet', href: pageStyles }];
+
 export default component('EditCoverLetter', function () {
-    const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-
-    const modalHandle: ModalHandle = useMemo(
-        () => ({
-            isOpen: true,
-            open: () => {},
-            close: () => navigate({ pathname: '..', search: searchParams.toString() }, { preventScrollReset: true }),
-        }),
-        [searchParams]
-    );
-
-    return (
-        <EditorModal
-            intent={ActionType.ADMIN_AUTH}
-            handle={modalHandle}
-        >
-            <EditorModal.Header title='Edit cover letter' />
-            <EditorModal.Body />
-        </EditorModal>
-    );
+    return <EditModal />;
 });

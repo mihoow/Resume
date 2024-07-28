@@ -1,0 +1,59 @@
+@use '../../../../styles/index' as *;
+
+.EditHeadersStep {
+    overflow-y: auto;
+
+    &_Section {
+        position: relative;
+        @include flex-column;
+        gap: 8px;
+
+        &:not(:last-child) {
+            margin-block-end: 30px;
+
+            &::after {
+                content: '';
+                display: block;
+                position: absolute;
+                inset-block-end: -15px;
+                inset-inline: 0;
+                height: 1px;
+                background-color: #ccc;
+            }
+        }
+    }
+
+    &_SectionTitle {
+        margin-block-end: 14px;
+        @include font-size(24, 30);
+    }
+
+    &_ShowRecipientCheckbox {
+        @include flex-center-v;
+        gap: 8px;
+        cursor: pointer;
+
+        input[type='checkbox'] {
+            background-color: initial;
+            cursor: default;
+            appearance: auto;
+            box-sizing: border-box;
+            margin: 3px 3px 3px 4px;
+            padding: initial;
+            border: initial;
+        }
+    }
+
+    input,
+    select {
+        max-width: 400px;
+    }
+
+    &_Footer {
+        justify-content: space-between;
+
+        button {
+            min-width: 200px;
+        }
+    }
+}

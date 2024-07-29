@@ -1,6 +1,6 @@
 import { type ClientSession, type MongoClient, MongoServerError } from 'mongodb';
 import type { CoverLetterDocument, CoverLetterTemplate, EditTextFormData } from './type';
-import type { DbCompanyData, Locale } from '~/types/global';
+import type { Locale } from '~/types/global';
 import {  ValidationError, object, string } from 'yup';
 
 import { ActionHandler } from '~/services/action.server';
@@ -8,6 +8,7 @@ import { ActionType } from '~/config';
 import { connectToDatabase } from '~/services/db.server';
 import { isCompanyExpired } from '~/services/companies.server';
 import { readToken } from '~/services/authToken.server';
+import { isLetterDocument, isLetterTemplate } from './utils';
 
 interface RecursiveSimpleObject {
     [x: string]: string | null | RecursiveSimpleObject;
@@ -47,14 +48,6 @@ function templatesCollection(db: MongoClient) {
 
 function documentsCollection(db: MongoClient) {
     return db.db('resume').collection<CoverLetterDocument>('cover-letters');
-}
-
-function isLetterDocument(doc: Record<string, unknown>): doc is CoverLetterDocument & { companies: DbCompanyData[] } {
-    return 'companyCode' in doc;
-}
-
-function isLetterTemplate(doc: Record<string, unknown>): doc is CoverLetterTemplate {
-    return 'name' in doc && 'html' in doc;
 }
 
 export function getCompanyCodeFromUrl(url: string) {

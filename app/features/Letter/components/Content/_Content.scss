@@ -39,7 +39,7 @@
     }
 
     &_Content {
-        @include prose;
+        @include prose($size-modification: 1px);
         @include flex-column;
         gap: 20px;
         @include font-size(16, 24);

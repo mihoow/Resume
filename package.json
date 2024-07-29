@@ -34,6 +34,7 @@
     "@tiptap/pm": "^2.4.0",
     "@tiptap/react": "^2.4.0",
     "bem-ts": "^0.13.5",
+    "html-to-react": "^1.7.0",
     "isbot": "^3.6.8",
     "mongodb": "^6.6.2",
     "nanoid": "^5.0.7",

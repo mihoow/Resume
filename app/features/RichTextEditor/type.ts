@@ -32,6 +32,7 @@ export type StyleRule = {
 };
 
 export type PreservedStateController = {
+    keyPrefix: string;
     saveAll: VoidFunction;
     flushStorage: VoidFunction;
     addStateSaver: (storageKey: string, saverCallback: DebouncedState<(value: string) => void>) => void;

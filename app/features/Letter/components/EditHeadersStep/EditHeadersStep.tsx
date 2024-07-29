@@ -9,6 +9,8 @@ import { Select } from '~/base/Forms/Select';
 import { TextInput } from '~/base/Forms/TextInput';
 import { capitalize } from '~/utils/text';
 import { isLetterDocument } from '../../utils';
+import { PreservedStateController } from '~/features/RichTextEditor/type';
+import { usePreservedState, usePreservedStateController } from '~/hooks/usePreservedState';
 
 type Sections = Array<{
     title?: string;
@@ -24,6 +26,7 @@ type Sections = Array<{
 
 const PreInput = component<
     PropsWithChildren<{
+        stateController: PreservedStateController;
         name: string;
         label?: string;
         initialValue: string | null;
@@ -32,7 +35,21 @@ const PreInput = component<
     HTMLInputElement | HTMLSelectElement
 >(
     'Input',
-    function ({ className, name, label = capitalize(name), initialValue: value, type = 'text', children, myRef }) {
+    function ({
+        className,
+        stateController,
+        name,
+        label = capitalize(name),
+        initialValue,
+        type = 'text',
+        children,
+        myRef,
+    }) {
+        const [defaultValue, onChange] = usePreservedState(stateController, {
+            key: name,
+            defaultValue: initialValue || '',
+        });
+
         return (
             <Label
                 className={this.mcn(className)}
@@ -42,7 +59,8 @@ const PreInput = component<
                     <Select
                         myRef={myRef as ComponentRefType<HTMLSelectElement>}
                         name={name}
-                        defaultValue={value || ''}
+                        defaultValue={defaultValue}
+                        onChange={({ currentTarget: { value } }) => onChange(value)}
                     >
                         {children}
                     </Select>
@@ -51,7 +69,8 @@ const PreInput = component<
                         inputRef={myRef as ComponentRefType<HTMLInputElement>}
                         type={type}
                         name={name}
-                        defaultValue={value || ''}
+                        defaultValue={defaultValue}
+                        onChange={({ currentTarget: { value } }) => onChange(value)}
                     />
                 )}
             </Label>
@@ -63,10 +82,12 @@ const Input = Object.assign(PreInput, {
 });
 
 export const EditHeadersStep = component<{
+    companyCode: string;
     data: CoverLetterTemplate | CoverLetterDocument;
     onSubmit: (inputs: Record<string, string>) => void;
-}>('EditHeadersStep', function ({ className, data, onSubmit }) {
+}>('EditHeadersStep', function ({ className, companyCode, data, onSubmit }) {
     const allInputsRef = useRef<Record<string, HTMLInputElement | HTMLSelectElement | null>>({});
+    const preservedStateController = usePreservedStateController(`clheaders-${companyCode}`);
 
     const sections: Sections = useMemo(() => {
         const document = isLetterDocument(data)
@@ -203,6 +224,8 @@ export const EditHeadersStep = component<{
     const handleReset = () => {
         const { current: allInputs } = allInputsRef;
 
+        preservedStateController.flushStorage();
+
         sections.forEach(({ inputs }) =>
             inputs.forEach(({ name, initialValue }) => {
                 const input = allInputs[name];
@@ -235,6 +258,7 @@ export const EditHeadersStep = component<{
 
                             const sharedProps = {
                                 key: name,
+                                stateController: preservedStateController,
                                 label,
                                 name,
                                 initialValue: initialValue ? String(initialValue) : null,

@@ -7,7 +7,7 @@ import { Submit } from '~/base/Forms/Submit';
 import { component } from '~/utils/component';
 import { useContactHandle } from '~/hooks/useModalHandle';
 import { useEditorModal } from '../../context';
-import { usePreservedState } from '../../hooks/usePreservedState';
+import { usePreservedState } from '~/hooks/usePreservedState';
 import { useTranslation } from '~/hooks/useTranslation';
 
 const SendEmailHeader = component('SendEmailHeader', function ({ className }) {

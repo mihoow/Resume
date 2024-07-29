@@ -1,18 +1,23 @@
 import { DebouncedState, useDebouncedCallback } from 'use-debounce';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { PreservedStateController } from '../type';
+import { PreservedStateController } from '../features/RichTextEditor/type';
 
 type Options = {
     key: string;
     defaultValue?: string;
 };
 
-export function usePreservedStateController(): PreservedStateController {
+export function usePreservedStateController(keyPrefix = ''): PreservedStateController {
     const stateSavers = useRef<Record<string, DebouncedState<(value: string) => void>>>({});
+
+    useEffect(() => {
+        Object.values(stateSavers.current).forEach((callback) => callback.flush());
+    }, [keyPrefix])
 
     return useMemo(
         () => ({
+            keyPrefix,
             saveAll() {
                 Object.values(stateSavers.current).forEach((callback) => callback.flush());
             },
@@ -28,15 +33,15 @@ export function usePreservedStateController(): PreservedStateController {
                 stateSavers.current[storageKey] = saverCallback;
             },
         }),
-        []
+        [keyPrefix]
     );
 }
 
 export function usePreservedState(
-    { addStateSaver }: PreservedStateController,
+    { keyPrefix, addStateSaver }: PreservedStateController,
     { key, defaultValue = '' }: Options
 ): [string, (value: string) => void] {
-    const storageKey = `rich-text-${key}`;
+    const storageKey = keyPrefix ? `${keyPrefix}-${key}` : key;
 
     const [initialValue] = useState(() => {
         const savedValue = sessionStorage.getItem(storageKey);

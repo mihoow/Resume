@@ -1,4 +1,4 @@
-import { CoverLetterDocument, CoverLetterTemplate, EditTextFormData } from '../../type';
+import type { CoverLetterDocument, CoverLetterTemplate, EditTextFormData } from '../../type';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useFetcher, useNavigate, useSearchParams } from '@remix-run/react';
 
@@ -14,7 +14,7 @@ import { useRootData } from '~/hooks/useRootData';
 export const EditModal = component<{ data: CoverLetterTemplate | CoverLetterDocument }>(
     'EditModal',
     function ({ className, data }) {
-        const companyCode = useRootData(({ company }) => company?.code);
+        const companyCode = useRootData(({ company }) => company?.code ?? null);
 
         const accumulatedFormData = useRef<Record<string, string | null>>({});
         const [currentStep, setCurrentStep] = useState<1 | 2>(() => (companyCode ? 1 : 2));
@@ -76,14 +76,16 @@ export const EditModal = component<{ data: CoverLetterTemplate | CoverLetterDocu
                 <ModalHeader>
                     <span>Edit cover letter</span>
                 </ModalHeader>
-                {currentStep === 1 && (
+                {currentStep === 1 && companyCode && (
                     <EditHeadersStep
+                        companyCode={companyCode}
                         data={data}
                         onSubmit={handleFirstStepSubmit}
                     />
                 )}
                 {currentStep === 2 && (
                     <EditTextStep
+                        companyCode={companyCode}
                         initialHTML={html}
                         handle={modalHandle}
                         language={language}

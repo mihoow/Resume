@@ -11,6 +11,7 @@ import { RichTextProvider } from '~/features/RichTextEditor/components/RichTextP
 import { Select } from '~/base/Forms/Select';
 import { TextInput } from '~/base/Forms/TextInput';
 import { component } from '~/utils/component';
+import { usePreservedState } from '~/hooks/usePreservedState';
 import { useRichTextModal } from '~/features/RichTextEditor/hooks/useRichTextModal';
 
 type Props = {
@@ -20,125 +21,137 @@ type Props = {
     onSubmit: (data: EditTextFormData) => void;
 };
 
-const EditTextStepContent = component<Props>('EditTextStep', function ({ className, handle, language, onPrev, onSubmit }) {
-    const richTextModalCtx = useRichTextModal(handle);
-    const [template, setTemplate] = useState('none');
+const EditTextStepContent = component<Props>(
+    'EditTextStep',
+    function ({ className, handle, language, onPrev, onSubmit }) {
+        const richTextModalCtx = useRichTextModal(handle);
+        const [template, setTemplate] = useState('none');
 
-    const languageSelectRef = useRef<HTMLSelectElement>(null);
-    const submitInputRef = useRef<HTMLInputElement>(null);
+        const languageSelectRef = useRef<HTMLSelectElement>(null);
+        const submitInputRef = useRef<HTMLInputElement>(null);
 
-    const { getHTML } = richTextModalCtx;
+        const { getHTML, preservedStateController } = richTextModalCtx;
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        const [initialLanguage, onLanguageChange] = usePreservedState(preservedStateController, {
+            key: 'language',
+            defaultValue: language,
+        });
 
-        const html = getHTML();
-        const { current: languageSelect } = languageSelectRef;
-        const { current: submitInput } = submitInputRef;
+        const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
 
-        if (!html || !languageSelect || !submitInput) return;
+            const html = getHTML();
+            const { current: languageSelect } = languageSelectRef;
+            const { current: submitInput } = submitInputRef;
 
-        const language = languageSelect.value as Locale;
+            if (!html || !languageSelect || !submitInput) return;
 
-        if (submitInput.value === 'document') {
-            onSubmit({
-                language,
-                html,
-                nameAsTemplate: null,
-                saveAs: 'document',
-            });
+            const language = languageSelect.value as Locale;
 
-            return;
-        } else {
-            const match = submitInput.value.match(/^temp:\((\w+)\)(?::document)?$/);
-
-            if (!match) {
-                alert('Submit input is not correct!');
+            if (submitInput.value === 'document') {
+                onSubmit({
+                    language,
+                    html,
+                    nameAsTemplate: null,
+                    saveAs: 'document',
+                });
 
                 return;
+            } else {
+                const match = submitInput.value.match(/^temp:\((\w+)\)(?::document)?$/);
+
+                if (!match) {
+                    alert('Submit input is not correct!');
+
+                    return;
+                }
+
+                const nameAsTemplate = match[1];
+
+                onSubmit({
+                    language,
+                    html,
+                    nameAsTemplate,
+                    saveAs: submitInput.value.endsWith(':document') ? 'template-and-document' : 'template',
+                });
             }
+        };
 
-            const nameAsTemplate = match[1];
-
-            onSubmit({
-                language,
-                html,
-                nameAsTemplate,
-                saveAs: submitInput.value.endsWith(':document') ? 'template-and-document' : 'template',
-            });
-        }
-    };
-
-    return (
-        <EditorModalContext.Provider value={richTextModalCtx}>
-            <form
-                onSubmit={handleSubmit}
-                className={this.mcn(className)}
-            >
-                <EditorModal.Body className={this.__('Editor')}>
-                    <fieldset className={this.__('Configuration')}>
-                        <Label value='Language'>
-                            <Select
-                                myRef={languageSelectRef}
-                                name='language'
-                                defaultValue={language}
-                            >
-                                <Select.Option value='en'>English</Select.Option>
-                                <Select.Option value='pl'>Polish</Select.Option>
-                            </Select>
-                        </Label>
-                        <Label value='Template'>
-                            <Select
-                                value={template}
-                                onChange={({ currentTarget: { value } }) => setTemplate(value)}
-                            >
-                                <Select.Option value='none'>None</Select.Option>
-                            </Select>
-                        </Label>
-                    </fieldset>
-                </EditorModal.Body>
-                <Modal.Footer className={this.__('Footer')}>
-                    {onPrev && (
-                        <Button
-                            type='button'
-                            onClick={onPrev}
-                        >
-                            Prev
-                        </Button>
-                    )}
-                    <div className={this.__('Explanation')}>
-                        <h5>Write:</h5>
-                        <ul>
-                            <li>`temp:(name)` - to save it only as template</li>
-                            <li>`document` - to save it as personalized cover letter</li>
-                            <li>`temp:(name):document` - to save it as both</li>
-                        </ul>
-                    </div>
-                    <div className={this.__('SubmitArea')}>
-                        <TextInput
-                            inputRef={submitInputRef}
-                            type='text'
-                            className={this.__('SubmitInput')}
-                        />
-                        <Button
-                            type='submit'
-                            variant='submit'
-                            className={this.__('Submit')}
-                        >
-                            Save
-                        </Button>
-                    </div>
-                </Modal.Footer>
-            </form>
-        </EditorModalContext.Provider>
-    );
-});
-
-export const EditTextStep = component<Props & { initialHTML: string }>(
-    'EditTextStepProvider',
-    function ({ className, initialHTML, ...props }) {
         return (
-            <RichTextProvider initialContent={initialHTML}>
+            <EditorModalContext.Provider value={richTextModalCtx}>
+                <form
+                    onSubmit={handleSubmit}
+                    className={this.mcn(className)}
+                >
+                    <EditorModal.Body className={this.__('Editor')}>
+                        <fieldset className={this.__('Configuration')}>
+                            <Label value='Language'>
+                                <Select
+                                    myRef={languageSelectRef}
+                                    name='language'
+                                    defaultValue={initialLanguage}
+                                    onChange={({ currentTarget: { value } }) => onLanguageChange(value)}
+                                >
+                                    <Select.Option value='en'>English</Select.Option>
+                                    <Select.Option value='pl'>Polish</Select.Option>
+                                </Select>
+                            </Label>
+                            <Label value='Template'>
+                                <Select
+                                    value={template}
+                                    onChange={({ currentTarget: { value } }) => setTemplate(value)}
+                                >
+                                    <Select.Option value='none'>None</Select.Option>
+                                </Select>
+                            </Label>
+                        </fieldset>
+                    </EditorModal.Body>
+                    <Modal.Footer className={this.__('Footer')}>
+                        {onPrev && (
+                            <Button
+                                type='button'
+                                onClick={onPrev}
+                            >
+                                Prev
+                            </Button>
+                        )}
+                        <div className={this.__('Explanation')}>
+                            <h5>Write:</h5>
+                            <ul>
+                                <li>`temp:(name)` - to save it only as template</li>
+                                <li>`document` - to save it as personalized cover letter</li>
+                                <li>`temp:(name):document` - to save it as both</li>
+                            </ul>
+                        </div>
+                        <div className={this.__('SubmitArea')}>
+                            <TextInput
+                                inputRef={submitInputRef}
+                                type='text'
+                                className={this.__('SubmitInput')}
+                            />
+                            <Button
+                                type='submit'
+                                variant='submit'
+                                className={this.__('Submit')}
+                            >
+                                Save
+                            </Button>
+                        </div>
+                    </Modal.Footer>
+                </form>
+            </EditorModalContext.Provider>
+        );
+    }
+);
+
+export const EditTextStep = component<Props & { initialHTML: string; companyCode: string | null }>(
+    'EditTextStepProvider',
+    function ({ className, initialHTML, companyCode, ...props }) {
+        return (
+            <RichTextProvider
+                storageKeyPrefix={companyCode ? `cltext-${companyCode}` : 'cltext'}
+                initialContent={initialHTML}
+            >
                 <EditTextStepContent
                     className={className}
                     {...props}

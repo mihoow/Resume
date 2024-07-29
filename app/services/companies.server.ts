@@ -98,6 +98,10 @@ export async function authorizeCompany(request: Request, formData: FormData) {
     }
 }
 
+export function isCompanyExpired({ expiresAt }: DbCompanyData) {
+    return Date.now() > expiresAt.getTime();
+}
+
 export async function fetchCompany({ url }: Request): Promise<{ status: AuthStatus; data: CompanyData | null }> {
     const { searchParams } = new URL(url);
     const token = searchParams.get('token');
@@ -128,8 +132,8 @@ export async function fetchCompany({ url }: Request): Promise<{ status: AuthStat
                 data: null,
             };
 
-        const { code, name, expiresAt } = companyData;
-        const isExpired = Date.now() > expiresAt.getTime();
+        const { code, name } = companyData;
+        const isExpired = isCompanyExpired(companyData);
 
         if (isExpired)
             return {

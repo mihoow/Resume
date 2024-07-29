@@ -1,7 +1,8 @@
-import { useCallback, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from '@remix-run/react';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { useFetcher, useNavigate, useSearchParams } from '@remix-run/react';
 
 import { EditHeadersStep } from '../EditHeadersStep/EditHeadersStep';
+import { EditTextFormData } from '../../type';
 import { EditTextStep } from '../EditTextStep/EditTextStep';
 import Modal from '~/base/Modal';
 import type { ModalHandle } from '~/types/global';
@@ -10,8 +11,10 @@ import { component } from '~/utils/component';
 import { noopFn } from '~/utils/misc';
 
 export const EditModal = component('EditModal', function ({ className }) {
+    const accumulatedFormData = useRef<Record<string, string | null>>({});
     const [currentStep, setCurrentStep] = useState<1 | 2>(1);
 
+    const fetcher = useFetcher();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
@@ -29,6 +32,32 @@ export const EditModal = component('EditModal', function ({ className }) {
         [handleClose]
     );
 
+    const handleFirstStepSubmit = useCallback((data: Record<string, string>) => {
+        accumulatedFormData.current = {
+            ...accumulatedFormData.current,
+            ...data,
+        };
+
+        setCurrentStep(2);
+    }, []);
+
+    const handleGoBack = useCallback(() => {
+        setCurrentStep(1)
+    }, [])
+
+    const handleLastStepSubmit = useCallback((data: EditTextFormData) => {
+        accumulatedFormData.current = {
+            ...accumulatedFormData.current,
+            ...data,
+        };
+
+        fetcher.submit(accumulatedFormData.current, {
+            method: 'POST',
+            preventScrollReset: true,
+            encType: 'application/json',
+        });
+    }, [fetcher]);
+
     return (
         <Modal
             onClose={handleClose}
@@ -37,12 +66,12 @@ export const EditModal = component('EditModal', function ({ className }) {
             <ModalHeader>
                 <span>Edit cover letter</span>
             </ModalHeader>
-            {currentStep === 1 && <EditHeadersStep onSubmit={() => setCurrentStep(2)} />}
+            {currentStep === 1 && <EditHeadersStep onSubmit={handleFirstStepSubmit} />}
             {currentStep === 2 && (
                 <EditTextStep
                     handle={modalHandle}
-                    onPrev={() => setCurrentStep(1)}
-                    onSubmit={() => {}}
+                    onPrev={handleGoBack}
+                    onSubmit={handleLastStepSubmit}
                 />
             )}
         </Modal>

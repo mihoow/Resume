@@ -9,7 +9,7 @@ export type ComponentThis = {
     __: ReturnType<typeof bem>
 };
 
-export type ComponentRefType<R> = MutableRefObject<R> | ((value: R | null) => void);
+export type ComponentRefType<R> = MutableRefObject<R | null> | ((value: R | null) => void);
 
 export type ComponentProps<P = {}, R = never> = P & {
     className?: string;

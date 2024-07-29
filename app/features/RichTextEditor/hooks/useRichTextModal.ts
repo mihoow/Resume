@@ -7,7 +7,7 @@ import { useCallback } from 'react';
 import { useModalBreakpoint } from '~/hooks/useBreakpoints';
 
 export function useRichTextModal(handle: ModalHandle): EditorModalContextType {
-    const { editor, preservedStateController } = useContext(RichTextContext as Context<RichTextContextType>);
+    const { editor, preservedStateController, getHTML } = useContext(RichTextContext as Context<RichTextContextType>);
     const breakpoint = useModalBreakpoint();
 
     const { saveAll, flushStorage } = preservedStateController;
@@ -28,5 +28,6 @@ export function useRichTextModal(handle: ModalHandle): EditorModalContextType {
         breakpoint,
         flushAndClose,
         saveAndClose,
+        getHTML
     };
 }

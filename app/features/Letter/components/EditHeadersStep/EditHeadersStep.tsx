@@ -7,7 +7,7 @@ import { Select } from '~/base/Forms/Select';
 import { TextInput } from '~/base/Forms/TextInput';
 import { component } from '~/utils/component';
 
-export const EditHeadersStep = component<{ onSubmit: (inputs: Record<string, FormDataEntryValue>) => void }>(
+export const EditHeadersStep = component<{ onSubmit: (inputs: Record<string, string>) => void }>(
     'EditHeadersStep',
     function ({ className, onSubmit }) {
         const formRef = useRef<HTMLFormElement>(null);
@@ -15,7 +15,9 @@ export const EditHeadersStep = component<{ onSubmit: (inputs: Record<string, For
         const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
 
-            const formData = Object.fromEntries(new FormData(e.currentTarget));
+            const formData = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
+            formData.showRecipient = formData.showRecipient || 'off';
+
             onSubmit(formData);
         };
 

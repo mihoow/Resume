@@ -47,7 +47,7 @@ export default component('CoverLetterPage', function () {
             <LetterContent data={coverLetter}>
                 <HTMLParser content={html} />
             </LetterContent>
-            <Outlet />
+            <Outlet context={coverLetter} />
         </>
     );
 });

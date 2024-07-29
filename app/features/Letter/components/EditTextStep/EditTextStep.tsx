@@ -15,7 +15,7 @@ import { useRichTextModal } from '~/features/RichTextEditor/hooks/useRichTextMod
 
 type Props = {
     handle: ModalHandle;
-    onPrev: VoidFunction;
+    onPrev: VoidFunction | null;
     onSubmit: (data: EditTextFormData) => void;
 };
 
@@ -31,8 +31,8 @@ const EditTextStepContent = component<Props>('EditTextStep', function ({ classNa
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const html = getHTML()
-        const { current: languageSelect } = languageSelectRef
+        const html = getHTML();
+        const { current: languageSelect } = languageSelectRef;
         const { current: submitInput } = submitInputRef;
 
         if (!html || !languageSelect || !submitInput) return;
@@ -44,15 +44,15 @@ const EditTextStepContent = component<Props>('EditTextStep', function ({ classNa
                 language,
                 html,
                 nameAsTemplate: null,
-                saveAs: 'document'
+                saveAs: 'document',
             });
 
             return;
-        } else  {
+        } else {
             const match = submitInput.value.match(/^temp:\((\w+)\)(?::document)?$/);
 
             if (!match) {
-                alert('Submit input is not correct!')
+                alert('Submit input is not correct!');
 
                 return;
             }
@@ -63,9 +63,7 @@ const EditTextStepContent = component<Props>('EditTextStep', function ({ classNa
                 language,
                 html,
                 nameAsTemplate,
-                saveAs: submitInput.value.endsWith(':document')
-                    ? 'template-and-document'
-                    : 'template'
+                saveAs: submitInput.value.endsWith(':document') ? 'template-and-document' : 'template',
             });
         }
     };
@@ -79,7 +77,10 @@ const EditTextStepContent = component<Props>('EditTextStep', function ({ classNa
                 <EditorModal.Body className={this.__('Editor')}>
                     <fieldset className={this.__('Configuration')}>
                         <Label value='Language'>
-                            <Select myRef={languageSelectRef} name='language'>
+                            <Select
+                                myRef={languageSelectRef}
+                                name='language'
+                            >
                                 <Select.Option value='en'>English</Select.Option>
                                 <Select.Option value='pl'>Polish</Select.Option>
                             </Select>
@@ -95,12 +96,14 @@ const EditTextStepContent = component<Props>('EditTextStep', function ({ classNa
                     </fieldset>
                 </EditorModal.Body>
                 <Modal.Footer className={this.__('Footer')}>
-                    <Button
-                        type='button'
-                        onClick={onPrev}
-                    >
-                        Prev
-                    </Button>
+                    {onPrev && (
+                        <Button
+                            type='button'
+                            onClick={onPrev}
+                        >
+                            Prev
+                        </Button>
+                    )}
                     <div className={this.__('Explanation')}>
                         <h5>Write:</h5>
                         <ul>

@@ -1,10 +1,12 @@
 import { ActionFunctionArgs, LinksFunction, LoaderFunctionArgs, redirect } from '@remix-run/node';
+import { CoverLetterDocument, CoverLetterTemplate } from '~/features/Letter/type';
 
 import { EditModal } from '@letter/components/EditModal/EditModal';
 import { component } from '~/utils/component';
 import { getUserSession } from '~/services/userSession';
 import pageStyles from '../styles/pages/letter-edit.css?url';
 import { saveCoverLetter } from '~/features/Letter/service.server';
+import { useOutletContext } from '@remix-run/react';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     return saveCoverLetter(request);
@@ -23,5 +25,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: pageStyles }];
 
 export default component('EditCoverLetter', function () {
-    return <EditModal />;
+    const letter = useOutletContext<CoverLetterTemplate | CoverLetterDocument>()
+
+    return <EditModal data={letter} />;
 });

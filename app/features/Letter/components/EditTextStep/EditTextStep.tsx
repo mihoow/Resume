@@ -15,11 +15,12 @@ import { useRichTextModal } from '~/features/RichTextEditor/hooks/useRichTextMod
 
 type Props = {
     handle: ModalHandle;
+    language: Locale;
     onPrev: VoidFunction | null;
     onSubmit: (data: EditTextFormData) => void;
 };
 
-const EditTextStepContent = component<Props>('EditTextStep', function ({ className, handle, onPrev, onSubmit }) {
+const EditTextStepContent = component<Props>('EditTextStep', function ({ className, handle, language, onPrev, onSubmit }) {
     const richTextModalCtx = useRichTextModal(handle);
     const [template, setTemplate] = useState('none');
 
@@ -80,6 +81,7 @@ const EditTextStepContent = component<Props>('EditTextStep', function ({ classNa
                             <Select
                                 myRef={languageSelectRef}
                                 name='language'
+                                defaultValue={language}
                             >
                                 <Select.Option value='en'>English</Select.Option>
                                 <Select.Option value='pl'>Polish</Select.Option>
@@ -132,13 +134,16 @@ const EditTextStepContent = component<Props>('EditTextStep', function ({ classNa
     );
 });
 
-export const EditTextStep = component<Props>('EditTextStepProvider', function ({ className, ...props }) {
-    return (
-        <RichTextProvider initialContent=''>
-            <EditTextStepContent
-                className={className}
-                {...props}
-            />
-        </RichTextProvider>
-    );
-});
+export const EditTextStep = component<Props & { initialHTML: string }>(
+    'EditTextStepProvider',
+    function ({ className, initialHTML, ...props }) {
+        return (
+            <RichTextProvider initialContent={initialHTML}>
+                <EditTextStepContent
+                    className={className}
+                    {...props}
+                />
+            </RichTextProvider>
+        );
+    }
+);

@@ -66,6 +66,8 @@ export const EditModal = component<{ data: CoverLetterTemplate | CoverLetterDocu
             [fetcher]
         );
 
+        const { language, html } = data;
+
         return (
             <Modal
                 onClose={handleClose}
@@ -82,7 +84,9 @@ export const EditModal = component<{ data: CoverLetterTemplate | CoverLetterDocu
                 )}
                 {currentStep === 2 && (
                     <EditTextStep
+                        initialHTML={html}
                         handle={modalHandle}
+                        language={language}
                         onPrev={companyCode ? handleGoBack : null}
                         onSubmit={handleLastStepSubmit}
                     />

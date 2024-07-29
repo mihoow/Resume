@@ -1,137 +1,301 @@
-import { FormEvent, useRef } from 'react';
+import { type ComponentRefType, component } from '~/utils/component';
+import type { CoverLetterDocument, CoverLetterTemplate } from '../../type';
+import { FormEvent, InputHTMLAttributes, PropsWithChildren, useMemo, useRef } from 'react';
 
 import { Button } from '~/base/Button/Button';
 import { Label } from '~/base/Forms/Label';
 import Modal from '~/base/Modal/Modal';
 import { Select } from '~/base/Forms/Select';
 import { TextInput } from '~/base/Forms/TextInput';
-import { component } from '~/utils/component';
+import { capitalize } from '~/utils/text';
+import { isLetterDocument } from '../../utils';
 
-export const EditHeadersStep = component<{ onSubmit: (inputs: Record<string, string>) => void }>(
-    'EditHeadersStep',
-    function ({ className, onSubmit }) {
-        const formRef = useRef<HTMLFormElement>(null);
+type Sections = Array<{
+    title?: string;
+    inputs: Array<{
+        label: string;
+        name: string;
+        initialValue: string | boolean | null;
+        type?: InputHTMLAttributes<HTMLInputElement>['type'];
+        options?: Record<string, string>;
+        className?: string;
+    }>;
+}>;
 
-        const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-
-            const formData = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
-            formData.showRecipient = formData.showRecipient || 'off';
-
-            onSubmit(formData);
-        };
-
-        const handleReset = () => {
-            const { current: form } = formRef;
-
-            if (!form) return;
-
-            const allInputs = [...form.querySelectorAll('input, select')];
-            allInputs.forEach((input) => {
-                if (input instanceof HTMLInputElement || input instanceof HTMLSelectElement) {
-                    input.value = '';
-                }
-            });
-        };
-
+const PreInput = component<
+    PropsWithChildren<{
+        name: string;
+        label?: string;
+        initialValue: string | null;
+        type?: InputHTMLAttributes<HTMLInputElement>['type'] | 'select';
+    }>,
+    HTMLInputElement | HTMLSelectElement
+>(
+    'Input',
+    function ({ className, name, label = capitalize(name), initialValue: value, type = 'text', children, myRef }) {
         return (
-            <form
-                ref={formRef}
-                onSubmit={handleSubmit}
+            <Label
                 className={this.mcn(className)}
+                value={label}
             >
-                <Modal.Body className={this.__('Content')}>
-                    <section className={this.__('Section')}>
-                        <Label value='Date'>
-                            <TextInput
-                                type='date'
-                                name='date'
-                            />
-                        </Label>
-                    </section>
-                    <section className={this.__('Section')}>
-                        <h4 className={this.__('SectionTitle')}>Recipient</h4>
-                        <Label value='Names'>
-                            <TextInput
-                                type='text'
-                                name='recipient.names'
-                            />
-                        </Label>
-                        <Label value='Surname'>
-                            <TextInput
-                                type='text'
-                                name='recipient.surname'
-                            />
-                        </Label>
-                        <Label value='Sex'>
-                            <Select name='recipient.sex'>
-                                <Select.Option value='male'>Male</Select.Option>
-                                <Select.Option value='female'>Felame</Select.Option>
-                            </Select>
-                        </Label>
-                        <Label value='Job position'>
-                            <TextInput
-                                type='text'
-                                name='recipient.jobPosition'
-                            />
-                        </Label>
-                    </section>
-                    <section className={this.__('Section')}>
-                        <h4 className={this.__('SectionTitle')}>Company</h4>
-                        <Label value='Name'>
-                            <TextInput
-                                type='text'
-                                name='company.name'
-                            />
-                        </Label>
-                        <Label value='Address line 1'>
-                            <TextInput
-                                type='text'
-                                name='company.addressLine1'
-                            />
-                        </Label>
-                        <Label value='Address line 2'>
-                            <TextInput
-                                type='text'
-                                name='company.addressLine2'
-                            />
-                        </Label>
-                    </section>
-                    <section className={this.__('Section')}>
-                        <h4 className={this.__('SectionTitle')}>Contacts</h4>
-                        <Label value='Phone'>
-                            <TextInput
-                                type='tel'
-                                name='contacts.phone'
-                            />
-                        </Label>
-                        <Label value='E-mail'>
-                            <TextInput
-                                type='email'
-                                name='contacts.email'
-                            />
-                        </Label>
-                    </section>
-                    <div className={this.__('ShowRecipientCheckbox')}>
-                        <input
-                            id='showRecipient'
-                            type='checkbox'
-                            name='showRecipient'
-                        />
-                        <label htmlFor='showRecipient'>Show recipient</label>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer className={this.__('Footer')}>
-                    <Button
-                        type='button'
-                        variant='danger'
-                        onClick={handleReset}
+                {type === 'select' ? (
+                    <Select
+                        myRef={myRef as ComponentRefType<HTMLSelectElement>}
+                        name={name}
+                        defaultValue={value || ''}
                     >
-                        Reset
-                    </Button>
-                    <Button type='submit'>Next</Button>
-                </Modal.Footer>
-            </form>
+                        {children}
+                    </Select>
+                ) : (
+                    <TextInput
+                        inputRef={myRef as ComponentRefType<HTMLInputElement>}
+                        type={type}
+                        name={name}
+                        defaultValue={value || ''}
+                    />
+                )}
+            </Label>
         );
     }
 );
+const Input = Object.assign(PreInput, {
+    Option: Select.Option,
+});
+
+export const EditHeadersStep = component<{
+    data: CoverLetterTemplate | CoverLetterDocument;
+    onSubmit: (inputs: Record<string, string>) => void;
+}>('EditHeadersStep', function ({ className, data, onSubmit }) {
+    const allInputsRef = useRef<Record<string, HTMLInputElement | HTMLSelectElement | null>>({});
+
+    const sections: Sections = useMemo(() => {
+        const document = isLetterDocument(data)
+            ? data
+            : {
+                  date: '',
+                  recipient: {
+                      names: '',
+                      surname: '',
+                      sex: 'male',
+                      jobPosition: '',
+                  },
+                  company: {
+                      name: '',
+                      addressLine1: '',
+                      addressLine2: '',
+                  },
+                  contacts: {
+                      email: '',
+                      phone: '',
+                  },
+                  showRecipient: true,
+              };
+
+        const {
+            date,
+            recipient: { names, surname, sex, jobPosition },
+            company: { name: companyName, addressLine1, addressLine2 },
+            contacts: { email, phone },
+            showRecipient,
+        } = document;
+
+        return [
+            {
+                inputs: [
+                    {
+                        label: 'Date',
+                        name: 'date',
+                        type: 'date',
+                        initialValue: date,
+                    },
+                ],
+            },
+            {
+                title: 'Recipient',
+                inputs: [
+                    {
+                        label: 'Names',
+                        name: 'recipient.names',
+                        initialValue: names,
+                    },
+                    {
+                        name: 'recipient.surname',
+                        label: 'Surname',
+                        initialValue: surname,
+                    },
+                    {
+                        name: 'recipient.sex',
+                        type: 'select',
+                        label: 'Sex',
+                        initialValue: sex,
+                        options: {
+                            male: 'Male',
+                            female: 'Female',
+                        },
+                    },
+                    {
+                        name: 'recipient.jobPosition',
+                        label: 'Job position',
+                        initialValue: jobPosition,
+                    },
+                ],
+            },
+            {
+                title: 'Company',
+                inputs: [
+                    {
+                        name: 'company.name',
+                        label: 'Name',
+                        initialValue: companyName,
+                    },
+                    {
+                        name: 'company.addressLine1',
+                        label: 'Address line 1',
+                        initialValue: addressLine1,
+                    },
+                    {
+                        name: 'company.addressLine2',
+                        label: 'Address line 2',
+                        initialValue: addressLine2,
+                    },
+                ],
+            },
+            {
+                title: 'Contacts',
+                inputs: [
+                    {
+                        type: 'tel',
+                        name: 'contacts.phone',
+                        label: 'Phone',
+                        initialValue: phone,
+                    },
+                    {
+                        type: 'email',
+                        name: 'contacts.email',
+                        label: 'Email',
+                        initialValue: email,
+                    },
+                ],
+            },
+            {
+                inputs: [
+                    {
+                        type: 'checkbox',
+                        name: 'showRecipient',
+                        label: 'Show recipient',
+                        initialValue: showRecipient,
+                        className: this.__('ShowRecipientCheckbox'),
+                    },
+                ],
+            },
+        ] satisfies Sections;
+    }, [data]);
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formData = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
+        formData.showRecipient = formData.showRecipient || 'off';
+
+        onSubmit(formData);
+    };
+
+    const handleReset = () => {
+        const { current: allInputs } = allInputsRef;
+
+        sections.forEach(({ inputs }) =>
+            inputs.forEach(({ name, initialValue }) => {
+                const input = allInputs[name];
+
+                if (!input) return;
+
+                if (input instanceof HTMLInputElement && input.type === 'checkbox') {
+                    input.checked = typeof initialValue === 'boolean' ? initialValue : false;
+                } else {
+                    input.value = initialValue ? String(initialValue) : '';
+                }
+            })
+        );
+    };
+
+    return (
+        <form
+            onSubmit={handleSubmit}
+            className={this.mcn(className)}
+        >
+            <Modal.Body className={this.__('Content')}>
+                {sections.map(({ title, inputs }, i) => (
+                    <section
+                        key={i}
+                        className={this.__('Section')}
+                    >
+                        {title && <h4 className={this.__('SectionTitle')}>{title}</h4>}
+                        {inputs.map((attributes) => {
+                            const { label, name, type = 'text', initialValue, className = '' } = attributes;
+
+                            const sharedProps = {
+                                key: name,
+                                label,
+                                name,
+                                initialValue: initialValue ? String(initialValue) : null,
+                                className,
+                                myRef: (node: HTMLInputElement | HTMLSelectElement | null) => {
+                                    allInputsRef.current[name] = node;
+                                },
+                            };
+
+                            if ('options' in attributes && attributes.options) {
+                                const { options } = attributes;
+
+                                return (
+                                    <Input {...sharedProps}>
+                                        {Object.entries(options).map(([optionValue, optionLabel]) => (
+                                            <Input.Option
+                                                key={optionValue}
+                                                value={optionValue}
+                                            >
+                                                {optionLabel}
+                                            </Input.Option>
+                                        ))}
+                                    </Input>
+                                );
+                            }
+
+                            if (type === 'checkbox') {
+                                return (
+                                    <div className={className}>
+                                        <input
+                                            id={name}
+                                            type='checkbox'
+                                            name={name}
+                                            defaultChecked={Boolean(initialValue)}
+                                            ref={sharedProps.myRef}
+                                        />
+                                        <label htmlFor={name}>{label}</label>
+                                    </div>
+                                );
+                            }
+
+                            return (
+                                <Input
+                                    {...sharedProps}
+                                    type={type}
+                                />
+                            );
+                        })}
+                    </section>
+                ))}
+            </Modal.Body>
+            <Modal.Footer className={this.__('Footer')}>
+                <Button
+                    type='button'
+                    variant='danger'
+                    onClick={handleReset}
+                >
+                    Reset
+                </Button>
+                <Button type='submit'>Next</Button>
+            </Modal.Footer>
+        </form>
+    );
+});

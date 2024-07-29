@@ -14,10 +14,10 @@ import { useRootData } from '~/hooks/useRootData';
 export const EditModal = component<{ data: CoverLetterTemplate | CoverLetterDocument }>(
     'EditModal',
     function ({ className, data }) {
-        const companyCode = useRootData(({ company }) => company?.code)
+        const companyCode = useRootData(({ company }) => company?.code);
 
         const accumulatedFormData = useRef<Record<string, string | null>>({});
-        const [currentStep, setCurrentStep] = useState<1 | 2>(() => companyCode ? 1 : 2);
+        const [currentStep, setCurrentStep] = useState<1 | 2>(() => (companyCode ? 1 : 2));
 
         const fetcher = useFetcher();
         const navigate = useNavigate();
@@ -74,7 +74,12 @@ export const EditModal = component<{ data: CoverLetterTemplate | CoverLetterDocu
                 <ModalHeader>
                     <span>Edit cover letter</span>
                 </ModalHeader>
-                {currentStep === 1 && <EditHeadersStep onSubmit={handleFirstStepSubmit} />}
+                {currentStep === 1 && (
+                    <EditHeadersStep
+                        data={data}
+                        onSubmit={handleFirstStepSubmit}
+                    />
+                )}
                 {currentStep === 2 && (
                     <EditTextStep
                         handle={modalHandle}

@@ -83,7 +83,8 @@ function getGreeting(document: CoverLetterDocument | null, t: TFunction) {
 export const LetterContent = component<PropsWithChildren<{ data: CoverLetterTemplate | CoverLetterDocument }>>(
     'LetterContent',
     function ({ className, data, children }) {
-        const t = useTranslation();
+        const { language } = data;
+        const t = useTranslation(language); // we use language set in cover-letter as it might be different from global locale
 
         const fullDocument = isLetterDocument(data) ? data : null;
 

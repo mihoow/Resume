@@ -4,4 +4,14 @@
 @forward '../EditTextStep/EditTextStep';
 
 .EditModal {
+    &_ModalContent {
+        &-isSecondStep {
+            max-width: unset;
+            width: calc(21cm + 48px);
+
+            @include full-size-modal {
+                width: 100%;
+            }
+        }
+    }
 }

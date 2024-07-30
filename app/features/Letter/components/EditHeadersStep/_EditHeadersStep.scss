@@ -51,8 +51,15 @@
 
     &_Footer {
         justify-content: space-between;
+        gap: 12px;
+
+        @include full-size-modal {
+            padding-block: 14px;
+            flex-direction: column;
+        }
 
         button {
+            margin-inline: 0;
             min-width: 200px;
         }
     }

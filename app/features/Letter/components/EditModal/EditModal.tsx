@@ -74,6 +74,7 @@ export const EditModal = component<{
         <Modal
             onClose={handleClose}
             className={this.mcn(className)}
+            contentClassName={this.__('ModalContent', { isSecondStep: currentStep === 2 })}
         >
             <ModalHeader>
                 <span>Edit cover letter</span>

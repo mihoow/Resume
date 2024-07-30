@@ -55,3 +55,9 @@
         @content;
     }
 }
+
+@mixin not-full-size-modal {
+    @media (min-width: 768px) and (min-height: 768px) {
+        @content;
+    }
+}

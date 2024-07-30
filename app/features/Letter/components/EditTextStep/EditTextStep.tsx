@@ -93,7 +93,10 @@ const EditTextStepContent = component<
                     onSubmit={handleSubmit}
                     className={this.mcn(className)}
                 >
-                    <EditorModal.Body className={this.__('Editor')}>
+                    <EditorModal.Body
+                        className={this.__('Editor')}
+                        editorClassName={this.__('RichText')}
+                    >
                         <fieldset className={this.__('Configuration')}>
                             <Label value='Language'>
                                 <Select

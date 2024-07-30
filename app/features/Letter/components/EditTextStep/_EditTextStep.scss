@@ -6,9 +6,20 @@
     overflow-y: auto;
 
     &_Editor {
-        &,
-        * {
-            overflow: unset;
+        @include not-full-size-modal {
+            &,
+            * {
+                overflow: unset;
+                max-height: unset;
+            }
+        }
+    }
+
+    &_RichText {
+        height: 525px;
+
+        @include full-size-modal {
+            height: 100%;
         }
     }
 
@@ -26,6 +37,14 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 14px;
+
+        & > * + * {
+            margin-inline: 0;
+        }
+
+        @include full-size-modal {
+            padding-block: 16px;
+        }
     }
 
     &_Explanation {
@@ -45,6 +64,11 @@
         @include flex-center-v;
         justify-content: flex-end;
         gap: 32px;
+
+        @include full-size-modal {
+            flex-direction: column;
+            gap: 16px;
+        }
     }
 
     &_SubmitInput {

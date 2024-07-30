@@ -123,7 +123,7 @@ export const LetterContent = component<PropsWithChildren<{ data: CoverLetterTemp
                 <article className={this.__('Content')}>{children}</article>
                 <footer className={this.__('Farewell')}>
                     <span>{t('Sincerely', 'Z poważaniem')},</span>
-                    <span>Michał Wieczorek</span>
+                    <span className={this.__('Signature')}>Michał Wieczorek</span>
                 </footer>
             </div>
         );

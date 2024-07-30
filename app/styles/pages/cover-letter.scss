@@ -1,2 +1,10 @@
 @forward '../../features/Letter/components/Content/Content';
 @forward '../../features/Letter/components/ErrorBoundary/ErrorBoundary';
+
+@font-face {
+    font-family: 'Dancing Script';
+    src: url('/font/Dancing-Script-Medium.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

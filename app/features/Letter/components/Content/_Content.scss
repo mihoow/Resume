@@ -49,4 +49,9 @@
         margin-block-start: 24px;
         @include flex-column;
     }
+
+    &_Signature {
+        font-family: 'Dancing Script', Roboto, sans-serif;
+        font-size: 20px;
+    }
 }

@@ -1,4 +1,5 @@
 import type { CoverLetterDocument, CoverLetterTemplate, EditTextFormData, TemplatesByLanguage } from '../../type';
+import { TEMPLATE_LANGUAGE_QUERY_PARAM, TEMPLATE_QUERY_PARAM } from '../../config';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useFetcher, useNavigate, useSearchParams } from '@remix-run/react';
 
@@ -25,10 +26,13 @@ export const EditModal = component<{
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
-    const handleClose = useCallback(
-        () => navigate({ pathname: '..', search: searchParams.toString() }, { preventScrollReset: true }),
-        [searchParams]
-    );
+    const handleClose = useCallback(() => {
+        const newSearchParams = new URLSearchParams(searchParams);
+        newSearchParams.delete(TEMPLATE_QUERY_PARAM);
+        newSearchParams.delete(TEMPLATE_LANGUAGE_QUERY_PARAM);
+
+        navigate({ pathname: '..', search: newSearchParams.toString() }, { preventScrollReset: true });
+    }, [searchParams]);
 
     const modalHandle: ModalHandle = useMemo(
         () => ({

@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useCallback, useRef, useState } from 'react';
 import { EditTextFormData, TemplatesByLanguage } from '../../type';
 import type { Locale, ModalHandle } from '~/types/global';
+import { TEMPLATE_LANGUAGE_QUERY_PARAM, TEMPLATE_QUERY_PARAM } from '../../config';
 
 import { Button } from '~/base/Button/Button';
 import EditorModal from '~/features/RichTextEditor/components/EditorModal/EditorModal';
@@ -169,12 +170,12 @@ export const EditTextStep = component<Props & { initialHTML: string; companyCode
     'EditTextStepProvider',
     function ({ className, initialHTML, companyCode, ...props }) {
         const [searchParams, setSearchParams] = useSearchParams();
-        const currentTemplateName = searchParams.get('temp') || 'none';
+        const currentTemplateName = searchParams.get(TEMPLATE_QUERY_PARAM) || 'none';
 
         const handleTemplateChange = useCallback((nextTemplate: string, language: Locale) => {
             setSearchParams((params) => {
-                params.set('temp', nextTemplate);
-                params.set('tempLang', language);
+                params.set(TEMPLATE_QUERY_PARAM, nextTemplate);
+                params.set(TEMPLATE_LANGUAGE_QUERY_PARAM, language);
 
                 return params;
             });

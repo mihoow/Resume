@@ -15,6 +15,7 @@ import { connectToDatabase } from '~/services/db.server';
 import { isCompanyExpired } from '~/services/companies.server';
 import { readToken } from '~/services/authToken.server';
 import { isLetterDocument, isLetterTemplate } from './utils';
+import { DEFAULT_TEMPLATE_NAME } from './config';
 
 interface RecursiveSimpleObject {
     [x: string]: string | null | RecursiveSimpleObject;
@@ -80,7 +81,12 @@ export async function getCoverLetter(
         .aggregate([
             { $match: { companyCode } },
             { $lookup: { from: 'companies', localField: 'companyCode', foreignField: 'code', as: 'companies' } },
-            { $unionWith: { coll: 'cover-letter-templates', pipeline: [{ $match: { name: 'default', language } }] } },
+            {
+                $unionWith: {
+                    coll: 'cover-letter-templates',
+                    pipeline: [{ $match: { name: DEFAULT_TEMPLATE_NAME, language } }],
+                },
+            },
         ])
         .toArray();
 

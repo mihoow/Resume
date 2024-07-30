@@ -1,5 +1,6 @@
 import { ActionFunctionArgs, LinksFunction, LoaderFunctionArgs, redirect } from '@remix-run/node';
 import { CoverLetterDocument, CoverLetterTemplate } from '~/features/Letter/type';
+import { TEMPLATE_LANGUAGE_QUERY_PARAM, TEMPLATE_QUERY_PARAM } from '~/features/Letter/config';
 import { getListOfTemplates, getTemplate, saveCoverLetter } from '~/features/Letter/service.server';
 import { json, useLoaderData, useOutletContext } from '@remix-run/react';
 
@@ -23,8 +24,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     }
 
     const { searchParams } = new URL(request.url);
-    const currentTemplateName = searchParams.get('temp') || 'none';
-    const currentTemplateLanguage = searchParams.get('tempLang');
+    const currentTemplateName = searchParams.get(TEMPLATE_QUERY_PARAM) || 'none';
+    const currentTemplateLanguage = searchParams.get(TEMPLATE_LANGUAGE_QUERY_PARAM);
 
     return json(
         await promiseHash({

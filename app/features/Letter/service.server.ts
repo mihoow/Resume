@@ -9,13 +9,14 @@ import type {
 import type { Locale } from '~/types/global';
 import { ValidationError, object, string } from 'yup';
 
-import { ActionHandler } from '~/services/action.server';
-import { ActionType } from '~/config';
 import { connectToDatabase } from '~/services/db.server';
 import { isCompanyExpired } from '~/services/companies.server';
 import { readToken } from '~/services/authToken.server';
 import { isLetterDocument, isLetterTemplate } from './utils';
 import { DEFAULT_TEMPLATE_NAME } from './config';
+import { ToastData } from '~/base/Toast/Toast.type';
+import { json } from '@remix-run/react';
+import { TypedResponse } from '@remix-run/node';
 
 interface RecursiveSimpleObject {
     [x: string]: string | null | RecursiveSimpleObject;
@@ -147,8 +148,7 @@ export async function getTemplate(name: string, language: Locale): Promise<Cover
     return templatesCollection(db).findOne({ name, language });
 }
 
-export async function saveCoverLetter(request: Request) {
-    const action = new ActionHandler(request, ActionType.EDIT_COVER_LETTER);
+export async function saveCoverLetter(request: Request): Promise<TypedResponse<ToastData>> {
     const requestData = dotNotationToNestedObject(await request.json());
 
     const coverLetterSchema = object({
@@ -236,38 +236,66 @@ export async function saveCoverLetter(request: Request) {
 
         if (saveAs === 'template') {
             await updateTemplate();
+
+            return json({
+                type: 'success',
+                message: 'Successfully saved as template.',
+            }, { status: 201 });
         }
 
         if (saveAs === 'document') {
             await updateDocument();
+
+            return json({
+                type: 'success',
+                message: 'Successfully saved as document.',
+            }, { status: 201 });
         }
 
         if (saveAs === 'template-and-document') {
             await db.withSession(async (session) => {
                 return session.withTransaction(async (session) => {
-                    await Promise.all([updateTemplate(session), updateDocument(session)]);
-
-                    return true;
+                    return Promise.all([updateTemplate(session), updateDocument(session)]);
                 });
             });
+
+            return json({
+                type: 'success',
+                message: 'Successfully saved as both template and document.',
+            }, {status: 201});
         }
 
-        return action.sendSuccessData({ message: 'adminAuthSuccess' });
+        throw new Error(`Unsupported type: ${saveAs}`);
     } catch (error) {
         console.log(error);
 
         if (error instanceof ValidationError) {
-            return action.sendServerError({ message: 'Validation error', messageBody: error.errors.join('. ') });
+            return json({
+                type: 'failure',
+                message: 'Validation error',
+                messageBody: error.errors.join('. '),
+            }, { status: 400 });
         }
 
         if (error instanceof MongoServerError) {
-            return action.sendServerError({ message: 'MongoDB error', messageBody: error.message });
+            return json({
+                type: 'failure',
+                message: 'MongoDB error',
+                messageBody: error.message,
+            }, { status: 500 });
         }
 
         if (error instanceof Error) {
-            return action.sendServerError({ message: 'Server error', messageBody: error.message });
+            return json({
+                type: 'failure',
+                message: 'Server error',
+                messageBody: error.message,
+            }, { status: 500 });
         }
 
-        return action.sendUnknownServerError();
+        return json({
+            type: 'failure',
+            message: 'Unknown error',
+        }, { status: 500 });
     }
 }

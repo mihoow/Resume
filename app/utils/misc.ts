@@ -1,6 +1,5 @@
 import type { ActionData, ValidationErrorData } from '~/types/global';
 
-import type { AnyFunc } from '~/types/utils';
 import type { ToastData } from '~/base/Toast/Toast.type';
 
 export const noopFn = () => {};

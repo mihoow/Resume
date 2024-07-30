@@ -1,7 +1,6 @@
 import type { CoverLetterDocument, CoverLetterTemplate, EditTextFormData, TemplatesByLanguage } from '../../type';
-import { TEMPLATE_LANGUAGE_QUERY_PARAM, TEMPLATE_QUERY_PARAM } from '../../config';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { useFetcher, useNavigate, useSearchParams } from '@remix-run/react';
+import { useFetcher, useSubmit } from '@remix-run/react';
 
 import { EditHeadersStep } from '../EditHeadersStep/EditHeadersStep';
 import { EditTextStep } from '../EditTextStep/EditTextStep';
@@ -16,31 +15,22 @@ export const EditModal = component<{
     data: CoverLetterTemplate | CoverLetterDocument;
     templates: TemplatesByLanguage;
     currentTemplate: CoverLetterTemplate | null;
-}>('EditModal', function ({ className, data, templates, currentTemplate }) {
+    onClose: VoidFunction;
+}>('EditModal', function ({ className, data, templates, currentTemplate, onClose }) {
     const companyCode = useRootData(({ company }) => company?.code ?? null);
 
     const accumulatedFormData = useRef<Record<string, string | null>>({});
     const [currentStep, setCurrentStep] = useState<1 | 2>(() => (companyCode ? 1 : 2));
 
-    const fetcher = useFetcher();
-    const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-
-    const handleClose = useCallback(() => {
-        const newSearchParams = new URLSearchParams(searchParams);
-        newSearchParams.delete(TEMPLATE_QUERY_PARAM);
-        newSearchParams.delete(TEMPLATE_LANGUAGE_QUERY_PARAM);
-
-        navigate({ pathname: '..', search: newSearchParams.toString() }, { preventScrollReset: true });
-    }, [searchParams]);
+    const submit = useSubmit();
 
     const modalHandle: ModalHandle = useMemo(
         () => ({
             isOpen: true,
             open: noopFn,
-            close: handleClose,
+            close: onClose,
         }),
-        [handleClose]
+        [onClose]
     );
 
     const handleFirstStepSubmit = useCallback((data: Record<string, string>) => {
@@ -63,22 +53,23 @@ export const EditModal = component<{
                 ...data,
             };
 
-            fetcher.submit(accumulatedFormData.current, {
+            submit(accumulatedFormData.current, {
                 method: 'POST',
                 preventScrollReset: true,
                 encType: 'application/json',
             });
         },
-        [fetcher]
+        [submit]
     );
 
     const { language, html } = currentTemplate || data;
 
     return (
         <Modal
-            onClose={handleClose}
+            onClose={onClose}
             className={this.mcn(className)}
             contentClassName={this.__('ModalContent', { isSecondStep: currentStep === 2 })}
+            dismissible={false}
         >
             <ModalHeader>
                 <span>Edit cover letter</span>

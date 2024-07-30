@@ -22,8 +22,17 @@
     }
 }
 
-@mixin a4
- {
+@mixin a4 {
+    @media (min-width: 858px) {
+        @content;
+    }
+}
+
+@mixin a4OrPrint {
+    @media print {
+        @content;
+    }
+
     @media (min-width: 858px) {
         @content;
     }
@@ -46,4 +55,3 @@
         @content;
     }
 }
-

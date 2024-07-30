@@ -12,7 +12,7 @@
     background-color: rgb(33, 71, 97);
     color: $neutral;
 
-    @include a4 {
+    @include a4OrPrint {
         padding-block-end: 0;
     }
 
@@ -24,7 +24,7 @@
         text-align: center;
         text-transform: uppercase;
 
-        @include a4 {
+        @include a4OrPrint {
             margin-block-end: 40px;
         }
     }
@@ -37,7 +37,7 @@
         @include flex-column;
         gap: 12px;
 
-        @include a4 {
+        @include a4OrPrint {
             margin-inline: 0;
             width: 100%;
             min-height: calc(var(--image-height) / 2);
@@ -55,7 +55,7 @@
         @include flex-center-v;
         gap: 6px;
 
-        @include a4 {
+        @include a4OrPrint {
             height: min-content;
 
             &-linkedin,
@@ -103,6 +103,10 @@
 
         @include hover {
             box-shadow: 0 0 10px 2px $neutral-contrast;
+        }
+
+        @include print {
+            display: none;
         }
     }
 

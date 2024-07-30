@@ -34,7 +34,6 @@ export type CoverLetterDocument = {
     company: CoverLetterCompany;
     contacts: CoverLetterContacts;
     showRecipient: boolean;
-    templateName: string;
 };
 
 export type EditTextFormData = {

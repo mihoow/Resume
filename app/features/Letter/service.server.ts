@@ -228,7 +228,6 @@ export async function saveCoverLetter(request: Request) {
                         company,
                         contacts,
                         showRecipient: showRecipient === 'on',
-                        templateName: 'none', // TODO: fill this
                     },
                 },
                 { upsert: true, session }

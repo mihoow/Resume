@@ -1,8 +1,8 @@
-import { FormEvent, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useRef, useState } from 'react';
+import { EditTextFormData, TemplatesByLanguage } from '../../type';
 import type { Locale, ModalHandle } from '~/types/global';
 
 import { Button } from '~/base/Button/Button';
-import { EditTextFormData } from '../../type';
 import EditorModal from '~/features/RichTextEditor/components/EditorModal/EditorModal';
 import { EditorModalContext } from '~/features/RichTextEditor/context';
 import { Label } from '~/base/Forms/Label';
@@ -10,32 +10,41 @@ import Modal from '~/base/Modal/Modal';
 import { RichTextProvider } from '~/features/RichTextEditor/components/RichTextProvider/RichTextProvider';
 import { Select } from '~/base/Forms/Select';
 import { TextInput } from '~/base/Forms/TextInput';
+import { capitalize } from '~/utils/text';
 import { component } from '~/utils/component';
 import { usePreservedState } from '~/hooks/usePreservedState';
 import { useRichTextModal } from '~/features/RichTextEditor/hooks/useRichTextModal';
+import { useSearchParams } from '@remix-run/react';
 
 type Props = {
     handle: ModalHandle;
     language: Locale;
+    templates: TemplatesByLanguage;
     onPrev: VoidFunction | null;
     onSubmit: (data: EditTextFormData) => void;
 };
 
-const EditTextStepContent = component<Props>(
+const EditTextStepContent = component<
+    Props & { currentTemplateName: string; onTemplateChange: (name: string, lang: Locale) => void }
+>(
     'EditTextStep',
-    function ({ className, handle, language, onPrev, onSubmit }) {
+    function ({ className, handle, language, templates, onPrev, onSubmit, currentTemplateName, onTemplateChange }) {
         const richTextModalCtx = useRichTextModal(handle);
-        const [template, setTemplate] = useState('none');
 
         const languageSelectRef = useRef<HTMLSelectElement>(null);
         const submitInputRef = useRef<HTMLInputElement>(null);
 
         const { getHTML, preservedStateController } = richTextModalCtx;
 
-        const [initialLanguage, onLanguageChange] = usePreservedState(preservedStateController, {
+        const [initialLanguage, saveLanguage] = usePreservedState(preservedStateController, {
             key: 'language',
             defaultValue: language,
         });
+        const [selectedLanguage, setSelectedLanguage] = useState(initialLanguage as Locale);
+
+        const handleTemplateChange = ({ currentTarget: { value: nextName } }: ChangeEvent<HTMLSelectElement>) => {
+            onTemplateChange(nextName, selectedLanguage);
+        };
 
         const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
@@ -90,7 +99,10 @@ const EditTextStepContent = component<Props>(
                                     myRef={languageSelectRef}
                                     name='language'
                                     defaultValue={initialLanguage}
-                                    onChange={({ currentTarget: { value } }) => onLanguageChange(value)}
+                                    onChange={({ currentTarget: { value } }) => {
+                                        saveLanguage(value);
+                                        setSelectedLanguage(value as Locale);
+                                    }}
                                 >
                                     <Select.Option value='en'>English</Select.Option>
                                     <Select.Option value='pl'>Polish</Select.Option>
@@ -98,10 +110,19 @@ const EditTextStepContent = component<Props>(
                             </Label>
                             <Label value='Template'>
                                 <Select
-                                    value={template}
-                                    onChange={({ currentTarget: { value } }) => setTemplate(value)}
+                                    value={currentTemplateName}
+                                    onChange={handleTemplateChange}
                                 >
                                     <Select.Option value='none'>None</Select.Option>
+                                    <Select.Option value='empty'>Empty</Select.Option>
+                                    {templates[selectedLanguage].map(({ name, language }) => (
+                                        <Select.Option
+                                            key={`${name}-${language}`}
+                                            value={name}
+                                        >
+                                            {capitalize(name)}
+                                        </Select.Option>
+                                    ))}
                                 </Select>
                             </Label>
                         </fieldset>
@@ -147,13 +168,31 @@ const EditTextStepContent = component<Props>(
 export const EditTextStep = component<Props & { initialHTML: string; companyCode: string | null }>(
     'EditTextStepProvider',
     function ({ className, initialHTML, companyCode, ...props }) {
+        const [searchParams, setSearchParams] = useSearchParams();
+        const currentTemplateName = searchParams.get('temp') || 'none';
+
+        const handleTemplateChange = useCallback((nextTemplate: string, language: Locale) => {
+            setSearchParams((params) => {
+                params.set('temp', nextTemplate);
+                params.set('tempLang', language);
+
+                return params;
+            });
+        }, []);
+
+        const storagePrefix = companyCode
+            ? `cltext-${companyCode}-${currentTemplateName}`
+            : `cltext-${currentTemplateName}`;
+
         return (
             <RichTextProvider
-                storageKeyPrefix={companyCode ? `cltext-${companyCode}` : 'cltext'}
+                storageKeyPrefix={storagePrefix}
                 initialContent={initialHTML}
             >
                 <EditTextStepContent
                     className={className}
+                    currentTemplateName={currentTemplateName}
+                    onTemplateChange={handleTemplateChange}
                     {...props}
                 />
             </RichTextProvider>

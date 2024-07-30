@@ -6,7 +6,7 @@ export type Recipient = Nullable<{
     surname: string;
     sex: 'male' | 'female';
     jobPosition: string;
-}>
+}>;
 
 export type CoverLetterCompany = Nullable<{
     name: string;
@@ -23,7 +23,7 @@ export type CoverLetterTemplate = {
     name: string;
     language: Locale;
     html: string;
-}
+};
 
 export type CoverLetterDocument = {
     companyCode: string;
@@ -35,11 +35,18 @@ export type CoverLetterDocument = {
     contacts: CoverLetterContacts;
     showRecipient: boolean;
     templateName: string;
-}
+};
 
 export type EditTextFormData = {
     language: Locale;
     html: string;
     nameAsTemplate: string | null;
     saveAs: 'template' | 'document' | 'template-and-document';
-}
+};
+
+export type TemplatesListItem = {
+    name: string;
+    language: Locale;
+};
+
+export type TemplatesByLanguage = Record<Locale, TemplatesListItem[]>;

@@ -1,7 +1,13 @@
 import { type ClientSession, type MongoClient, MongoServerError } from 'mongodb';
-import type { CoverLetterDocument, CoverLetterTemplate, EditTextFormData } from './type';
+import type {
+    CoverLetterDocument,
+    CoverLetterTemplate,
+    EditTextFormData,
+    TemplatesByLanguage,
+    TemplatesListItem,
+} from './type';
 import type { Locale } from '~/types/global';
-import {  ValidationError, object, string } from 'yup';
+import { ValidationError, object, string } from 'yup';
 
 import { ActionHandler } from '~/services/action.server';
 import { ActionType } from '~/config';
@@ -95,6 +101,44 @@ export async function getCoverLetter(
     }
 
     return coverLetter;
+}
+
+export async function getListOfTemplates() {
+    const db = await connectToDatabase();
+
+    const templates = (await templatesCollection(db)
+        .find()
+        .sort({ name: 1 })
+        .project({ _id: 0, name: 1, language: 1 })
+        .toArray()) as TemplatesListItem[];
+
+    return templates.reduce<TemplatesByLanguage>(
+        (acc, template) => {
+            acc[template.language].push(template);
+
+            return acc;
+        },
+        {
+            en: [],
+            pl: [],
+        }
+    );
+}
+
+export async function getTemplate(name: string, language: Locale): Promise<CoverLetterTemplate | null> {
+    if (name === 'none') return null;
+
+    if (name === 'empty') {
+        return {
+            name: 'empty',
+            language,
+            html: '',
+        } satisfies CoverLetterTemplate;
+    }
+
+    const db = await connectToDatabase();
+
+    return templatesCollection(db).findOne({ name, language });
 }
 
 export async function saveCoverLetter(request: Request) {

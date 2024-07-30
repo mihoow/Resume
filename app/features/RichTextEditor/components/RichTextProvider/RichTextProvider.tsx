@@ -33,6 +33,14 @@ export const RichTextProvider = component<
         onContentChange(editor.getHTML());
     }, [editor?.state.doc.content, argsRef]);
 
+    useEffect(() => {
+        const { editor } = argsRef.current
+
+        if (!editor) return;
+
+        editor.commands.setContent(initialContent || '')
+    }, [initialContent])
+
     const getHTML = useCallback(() => {
         if (!editor) return null;
 

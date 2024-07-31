@@ -38,7 +38,7 @@ export const LetterHeader = component('LetterHeader', function ({ className }) {
                 <LinkedinLink className={this.__('ContactItem', ['linkedin'])} />
             </div>
             <img
-                src='/images/profi.jpg'
+                src='/images/profi-200x250.jpg'
                 alt={t('my profile image', 'moje zdjęcie profilowe')}
                 loading='eager'
                 width={IMAGE_SIZES.width}

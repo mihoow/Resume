@@ -151,7 +151,14 @@ export async function getTemplate(name: string, language: Locale): Promise<Cover
 export async function saveCoverLetter(request: Request): Promise<TypedResponse<ToastData>> {
     const requestData = dotNotationToNestedObject(await request.json());
 
-    const coverLetterSchema = object({
+    const coverLetterTemplateSchema = object({
+        language: string().required().oneOf(['en', 'pl']),
+        html: string().required(),
+        nameAsTemplate: string().required().nullable(),
+        saveAs: string().required().oneOf(['template', 'document', 'template-and-document']),
+    });
+
+    const coverLetterDocumentSchema = object({
         date: string().required().nullable(),
         recipient: object({
             names: string().required().nullable(),
@@ -169,25 +176,16 @@ export async function saveCoverLetter(request: Request): Promise<TypedResponse<T
             email: string().required().nullable(),
         }),
         showRecipient: string().required().oneOf(['on', 'off']),
-        language: string().required().oneOf(['en', 'pl']),
-        html: string().required(),
-        nameAsTemplate: string().required().nullable(),
-        saveAs: string().required().oneOf(['template', 'document', 'template-and-document']),
     });
 
     try {
         const companyCode = getCompanyCodeFromUrl(request.url);
         const {
-            date,
-            recipient,
-            company,
-            contacts,
-            showRecipient,
             language: untypedLanguage,
             html,
             nameAsTemplate,
             saveAs: untypedSaveAs,
-        } = await coverLetterSchema.validate(requestData);
+        } = await coverLetterTemplateSchema.validate(requestData);
         const db = await connectToDatabase();
 
         const language = untypedLanguage as Locale;
@@ -215,6 +213,14 @@ export async function saveCoverLetter(request: Request): Promise<TypedResponse<T
             if (!companyCode) {
                 throw new Error('You want to save letter as document, you need to provide a company code.');
             }
+
+            const {
+                date,
+                recipient,
+                company,
+                contacts,
+                showRecipient,
+            } = await coverLetterDocumentSchema.validate(requestData)
 
             return documentsCollection(db).updateOne(
                 { companyCode },

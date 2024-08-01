@@ -16,10 +16,12 @@
     }
 
     &_RichText {
-        height: 525px;
+        height: 696px;
+        overflow-y: auto;
 
         @include full-size-modal {
             height: 100%;
+            overflow: unset;
         }
     }
 

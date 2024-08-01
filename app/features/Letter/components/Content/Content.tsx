@@ -1,6 +1,7 @@
+import { CSSProperties, PropsWithChildren, useMemo } from 'react';
 import { CoverLetterDocument, CoverLetterTemplate } from '../../type';
-import { PropsWithChildren, useMemo } from 'react';
 
+import { IMAGE_SIZES } from '../../config';
 import { TFunction } from '~/types/global';
 import { component } from '~/utils/component';
 import { isLetterDocument } from '../../utils';
@@ -98,7 +99,10 @@ export const LetterContent = component<PropsWithChildren<{ data: CoverLetterTemp
         );
 
         return (
-            <div className={this.mcn(className)}>
+            <div
+                className={this.mcn(this.__({ hasRecipient: recipientLines.length > 0 }), className)}
+                style={{ '--image-width': `${IMAGE_SIZES.width}px` } as CSSProperties}
+            >
                 {(recipientLines.length > 0 || date) && (
                     <header className={this.__('Header')}>
                         {recipientLines.length > 0 && (

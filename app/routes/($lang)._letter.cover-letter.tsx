@@ -15,9 +15,9 @@ export const loader = async ({ request: { url }, params: { lang = DEFAULT_LOCALE
     const companyCode = getCompanyCodeFromUrl(url);
     const coverLetter = await getCoverLetter(companyCode, lang as Locale);
 
-    // if (!coverLetter) {
-    //     throw new Response('No cover letter was found', { status: 404 });
-    // }
+    if (!coverLetter) {
+        throw new Response('No cover letter was found', { status: 404 });
+    }
 
     return json({
         coverLetter,
@@ -35,11 +35,6 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: pageStyles
 export default component('CoverLetterPage', function () {
     const { coverLetter } = useLoaderData<typeof loader>();
 
-    if (!coverLetter) {
-        // TODO: display a message
-        return <Outlet />;
-    }
-
     const { html } = coverLetter;
 
     return (
@@ -52,11 +47,4 @@ export default component('CoverLetterPage', function () {
     );
 });
 
-export function ErrorBoundary() {
-    return (
-        <>
-            <LetterErrorBoundary />
-            <Outlet />
-        </>
-    );
-}
+export const ErrorBoundary = LetterErrorBoundary;

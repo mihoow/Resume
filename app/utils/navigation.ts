@@ -4,7 +4,7 @@ import { DEFAULT_LOCALE } from '~/config';
 import type { Locale } from '~/types/global';
 import { pipe } from './pipe';
 
-function getLinkToPage(pathname: string, currSearch: string, page: string) {
+export function getLinkToPage(pathname: string, currSearch: string, page: string) {
     const nextSearchParams = new URLSearchParams(currSearch);
     nextSearchParams.delete('contact');
 
@@ -16,7 +16,7 @@ function getLinkToPage(pathname: string, currSearch: string, page: string) {
 
             return `/${locale}`;
         },
-        (link) => `${link}/${page}`,
+        (link) => `${link}${page}`,
         (link) => {
             const params = nextSearchParams.toString();
 

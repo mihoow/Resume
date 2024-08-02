@@ -1,0 +1,135 @@
+@use '../../styles/index' as *;
+
+.LinkableTabs {
+    --width: min(300px, 100%);
+    --total-tabs: 3;
+    --active-tab: 0;
+
+    position: relative;
+    width: var(--width);
+    overflow: hidden;
+    background-color: $neutral;
+    color: $neutral-contrast;
+    border-radius: 6px;
+
+    @include tablet {
+        overflow: unset;
+        width: 100%;
+    }
+
+    &_Track {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        transform: translateX(calc(-1 * (var(--active-tab) * var(--width))));
+        transition: transform 250ms ease-in;
+
+        @include tablet {
+            justify-content: space-evenly;
+            transform: translateX(0);
+        }
+    }
+
+    &_Tab {
+        flex-shrink: 0;
+        flex-basis: var(--width);
+        padding: 8px 16px;
+        @include flex-center;
+
+        @include tablet {
+            flex: 1 1 0px;
+            opacity: 0.5;
+            cursor: pointer;
+            transition: opacity 250ms ease-in-out;
+
+            &-isActive {
+                opacity: 1;
+            }
+
+            &:hover {
+                opacity: 1;
+            }
+
+            &:focus-visible {
+                opacity: 1;
+                box-shadow: $primary 0 0 4px 2px;
+            }
+        }
+    }
+
+    &_Navigation {
+        position: absolute;
+        inset: 0;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: transparent;
+
+        @include tablet {
+            inset-block-start: -2px;
+            inset-inline-start: calc(var(--active-tab) * (100% / var(--total-tabs)) - 2px);
+            inset-inline-end: calc((var(--total-tabs) - (var(--active-tab) + 1)) * (100% / var(--total-tabs)));
+            height: 44px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+
+            &.forwards {
+                transition: inset-inline-end 400ms ease-in, inset-inline-start 400ms 200ms ease-out;
+            }
+
+            &.backwards {
+                transition: inset-inline-start 400ms ease-in, inset-inline-end 400ms 200ms ease-out;
+            }
+
+            @media (prefers-reduced-motion) {
+                transition: none !important;
+            }
+        }
+    }
+
+    &_NavigationButton {
+        padding-inline: 8px;
+        height: 100%;
+        @include flex-center;
+        background-color: #e5e7eb;
+        border: 2px solid #d1d5db;
+        cursor: pointer;
+
+        @include tablet {
+            position: absolute;
+            inset-block-start: -2px;
+            height: 44px;
+        }
+
+        &:first-child {
+            border-radius: 6px 0 0 6px;
+
+            @include tablet {
+                inset-inline-start: -2px;
+            }
+        }
+
+        &:last-child {
+            border-radius: 0 6px 6px 0;
+
+            @include tablet {
+                inset-inline-end: -2px;
+            }
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        &:focus-visible {
+            box-shadow: $primary 0 0 4px 2px;
+            border-color: $primary;
+        }
+
+        svg {
+            @include box(20px);
+        }
+    }
+}

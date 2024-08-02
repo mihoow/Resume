@@ -7,6 +7,7 @@ import { useIsAdmin, useRootData } from '~/hooks/useRootData';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
 import { AuthAlert } from '../AuthAlert/AuthAlert';
+import { DocumentTabs } from '../DocumentTabs/DocumentTabs';
 
 const FindCompany = lazy(() => import('../FindCompany/FindCompany'));
 
@@ -34,6 +35,7 @@ export const App = component<PropsWithChildren>('App', function ({ children }) {
                         </Await>
                     </Suspense>
                 )}
+                <DocumentTabs className={this.__('DocumentTabs')} />
                 <Actions className={this.__('Actions')} />
                 {children}
             </main>

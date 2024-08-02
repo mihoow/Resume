@@ -99,8 +99,8 @@ export const myStackData = ({ t }: DataFunctionArgs): StackLevel[] => [
     {
         rating: 8,
         note: t(
-            'used sporadically throughout the years',
-            'używałem sporadycznie w ciągu 4 lat'
+            'used repeatedly throughout the years',
+            'używałem wielokrotnie w ciągu 4 lat'
         ),
         items: ['MongoDB', 'Redux', 'React Router', 'RemixJS', 'Radix UI', 'TailwindCSS', 'Git'],
     },
@@ -110,7 +110,7 @@ export const myStackData = ({ t }: DataFunctionArgs): StackLevel[] => [
             'EITHER I seriously studied but I lack serious practice\n OR I seriously practiced but I feel there is more to it',
             'ALBO poważnie studiowałem, ale brakuje mi poważnej praktyki\n ALBO poważnie praktykowałem, ale czuję, że mogę nauczyć się więcej'
         ),
-        items: ['NodeJS', 'Redis', 'Apollo GraphQL', 'HTML5 Canvas', t('Web performance', 'Optymalizacja wydajności'), 'PWA'],
+        items: ['NodeJS', 'ExpressJS', 'Redis', 'Apollo GraphQL', 'HTML5 Canvas', t('Web performance', 'Optymalizacja wydajności'), 'PWA'],
     },
     {
         rating: 4,
@@ -118,13 +118,13 @@ export const myStackData = ({ t }: DataFunctionArgs): StackLevel[] => [
             'successfully used although lacking the depth of understanding',
             'z powodzeniem używałem, choć brakuje mi głębi zrozumienia'
         ),
-        items: ['SocketIO', 'Magento 2', 'MySQL', 'Bootstrap', 'Figma', 'VueJS + Nuxt'],
+        items: ['SocketIO', 'Magento 2', 'MySQL', 'Bootstrap', 'Figma', 'VueJS + Nuxt', 'Sveltekit'],
     },
     {
         rating: 2,
         note: t(
             'basics, just scratched the surface',
-            'jedynie podstawy'
+            'podstawy'
         ),
         items: ['PHP', 'Docker', 'Jest', 'Cypress', 'NextJS'],
     },

@@ -64,11 +64,11 @@ export default component('Aside', function ({ className }) {
             <A4.Aside>
                 <div className={this.__('ImageWrapper')}>
                     <img
-                        src='/images/profi-opt.jpg'
+                        src='/images/profi-200x250.jpg'
                         alt={t('my profile', 'moje zdjęcie profilowe')}
                         loading='eager'
                         width={226.5}
-                        height={339}
+                        height={283}
                     />
                 </div>
                 <div className={this.__('Content')}>

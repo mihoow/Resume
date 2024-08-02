@@ -14,7 +14,7 @@ import { isCompanyExpired } from '~/services/companies.server';
 import { readToken } from '~/services/authToken.server';
 import { isLetterDocument, isLetterTemplate } from './utils';
 import { DEFAULT_TEMPLATE_NAME } from './config';
-import { ToastData } from '~/base/Toast/Toast.type';
+import type { ToastData } from '~/base/Toast/Toast.type';
 import { json } from '@remix-run/react';
 import { TypedResponse } from '@remix-run/node';
 
@@ -191,7 +191,7 @@ export async function saveCoverLetter(request: Request): Promise<TypedResponse<T
 
         const language = untypedLanguage as Locale;
         const saveAs = untypedSaveAs as EditTextFormData['saveAs'];
-        const timestamp = Date.now()
+        const timestamp = Date.now();
 
         async function updateTemplate(session?: ClientSession) {
             if (!nameAsTemplate) {
@@ -217,13 +217,9 @@ export async function saveCoverLetter(request: Request): Promise<TypedResponse<T
                 throw new Error('You want to save letter as document, you need to provide a company code.');
             }
 
-            const {
-                date,
-                recipient,
-                company,
-                contacts,
-                showRecipient,
-            } = await coverLetterDocumentSchema.validate(requestData)
+            const { date, recipient, company, contacts, showRecipient } = await coverLetterDocumentSchema.validate(
+                requestData
+            );
 
             return documentsCollection(db).updateOne(
                 { companyCode },
@@ -247,19 +243,25 @@ export async function saveCoverLetter(request: Request): Promise<TypedResponse<T
         if (saveAs === 'template') {
             await updateTemplate();
 
-            return json({
-                type: 'success',
-                message: 'Successfully saved as template.',
-            }, { status: 201 });
+            return json(
+                {
+                    type: 'success',
+                    message: 'Successfully saved as template.',
+                },
+                { status: 201 }
+            );
         }
 
         if (saveAs === 'document') {
             await updateDocument();
 
-            return json({
-                type: 'success',
-                message: 'Successfully saved as document.',
-            }, { status: 201 });
+            return json(
+                {
+                    type: 'success',
+                    message: 'Successfully saved as document.',
+                },
+                { status: 201 }
+            );
         }
 
         if (saveAs === 'template-and-document') {
@@ -269,10 +271,13 @@ export async function saveCoverLetter(request: Request): Promise<TypedResponse<T
                 });
             });
 
-            return json({
-                type: 'success',
-                message: 'Successfully saved as both template and document.',
-            }, {status: 201});
+            return json(
+                {
+                    type: 'success',
+                    message: 'Successfully saved as both template and document.',
+                },
+                { status: 201 }
+            );
         }
 
         throw new Error(`Unsupported type: ${saveAs}`);
@@ -280,32 +285,44 @@ export async function saveCoverLetter(request: Request): Promise<TypedResponse<T
         console.log(error);
 
         if (error instanceof ValidationError) {
-            return json({
-                type: 'failure',
-                message: 'Validation error',
-                messageBody: error.errors.join('. '),
-            }, { status: 400 });
+            return json(
+                {
+                    type: 'failure',
+                    message: 'Validation error',
+                    messageBody: error.errors.join('. '),
+                },
+                { status: 400 }
+            );
         }
 
         if (error instanceof MongoServerError) {
-            return json({
-                type: 'failure',
-                message: 'MongoDB error',
-                messageBody: error.message,
-            }, { status: 500 });
+            return json(
+                {
+                    type: 'failure',
+                    message: 'MongoDB error',
+                    messageBody: error.message,
+                },
+                { status: 500 }
+            );
         }
 
         if (error instanceof Error) {
-            return json({
-                type: 'failure',
-                message: 'Server error',
-                messageBody: error.message,
-            }, { status: 500 });
+            return json(
+                {
+                    type: 'failure',
+                    message: 'Server error',
+                    messageBody: error.message,
+                },
+                { status: 500 }
+            );
         }
 
-        return json({
-            type: 'failure',
-            message: 'Unknown error',
-        }, { status: 500 });
+        return json(
+            {
+                type: 'failure',
+                message: 'Unknown error',
+            },
+            { status: 500 }
+        );
     }
 }

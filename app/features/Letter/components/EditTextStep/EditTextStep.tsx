@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useCallback, useRef, useState } from 'react';
-import { EditTextFormData, TemplatesByLanguage } from '../../type';
+import type { EditTextFormData, TemplatesByLanguage } from '../../type';
 import type { Locale, ModalHandle } from '~/types/global';
 import { TEMPLATE_LANGUAGE_QUERY_PARAM, TEMPLATE_QUERY_PARAM } from '../../config';
 

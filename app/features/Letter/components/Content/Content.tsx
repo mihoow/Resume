@@ -1,8 +1,8 @@
 import { CSSProperties, PropsWithChildren, useMemo } from 'react';
-import { CoverLetterDocument, CoverLetterTemplate } from '../../type';
+import type { CoverLetterDocument, CoverLetterTemplate } from '../../type';
 
 import { IMAGE_SIZES } from '../../config';
-import { TFunction } from '~/types/global';
+import type { TFunction } from '~/types/global';
 import { component } from '~/utils/component';
 import { isLetterDocument } from '../../utils';
 import { useTranslation } from '~/hooks/useTranslation';

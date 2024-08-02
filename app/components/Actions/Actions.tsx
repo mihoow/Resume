@@ -6,7 +6,6 @@ import { EnvelopeAtIcon } from '~/icons/EnvelopeAt';
 import { KeyIcon } from '~/icons/Key';
 import LockIcon from '~/icons/Lock';
 import PrinterIcon from '~/icons/Printer';
-import { Skeleton } from '~/base/Skeleton/Skeleton';
 import Tooltip from '~/base/Tooltip';
 import { component } from '~/utils/component';
 import { useBreakpoints } from '~/hooks/useBreakpoints';
@@ -15,7 +14,7 @@ import { useTranslation } from '~/hooks/useTranslation';
 
 const AuthModal = lazy(() => import('../AuthModal/AuthModal'));
 const AdminModal = lazy(() => import('../AdminModal/AdminModal'));
-const SendEmailModal = lazy(() => import('../../features/RichTextEditor'));
+const SendEmailModal = lazy(() => import('../../features/RichTextEditor/components/SendEmailModal/SendEmailModal'));
 
 const ActionButton = component<PropsWithChildren<{ label: string }> & ComponentPropsWithoutRef<'button'>>(
     'ActionButton',
@@ -95,11 +94,7 @@ const SendEmailAction = component('SendEmailAction', function ({ className }) {
                 <EnvelopeAtIcon />
             </ActionButton>
             <Suspense fallback={null}>
-                <SendEmailModal
-                    intent={ActionType.SEND_EMAIL}
-                    handle={contactModalHandler}
-                    addInlineStyles
-                />
+                <SendEmailModal />
             </Suspense>
         </>
     );

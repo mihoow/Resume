@@ -1,0 +1,114 @@
+@use '../../../../styles/index' as *;
+
+.LetterContent {
+    --image-width: 0px;
+    --font-size: 14px;
+    --line-height: calc(var(--font-size) * 1.5);
+
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+
+    &-hasRecipient {
+        @include a4OrPrint {
+            transform: translateY(-60px);
+        }
+    }
+
+    @include tablet {
+        --font-size: 16px;
+    }
+
+    @include print {
+        --font-size: 11px;
+    }
+
+    &_Header {
+        &::after {
+            content: '';
+            display: block;
+            margin-block: 16px 24px;
+            height: 8px;
+            width: max(235px, 45%);
+            background: linear-gradient(to right, rgb(33, 71, 97), $primary);
+            border-radius: 8px;
+        }
+    }
+
+    &_Recipient {
+        margin-block-end: 12px;
+        // to ensure the text will not be over the image
+        max-width: calc(((21cm - 180px) / 2) - (var(--image-width) / 2) - 4px);
+
+        span {
+            display: block;
+        }
+    }
+
+    &_To {
+        margin-block-end: 4px;
+        color: #7c7c7c;
+        @include font-size(13, 13);
+
+        @include print {
+            @include font-size(10, 10);
+        }
+    }
+
+    &_Date {
+        display: block;
+        color: #7c7c7c;
+    }
+
+    &_Greeting {
+        display: block;
+        margin-block: 16px var(--line-height);
+        font-weight: 500;
+    }
+
+    &_Content {
+        @include prose($size-modification: 1px);
+        @include flex-column;
+        gap: 20px;
+
+        @include tablet {
+            @include prose($size-modification: 3px);
+        }
+
+        @include print {
+            @include prose($size-modification: -2px);
+        }
+
+        ul {
+            list-style: none !important;
+
+            @include print {
+                gap: 2px;
+            }
+
+            > li {
+                display: flex;
+                gap: 10px;
+
+                &::before {
+                    transform: translateY(1px);
+                    content: '\2756';
+                    display: block;
+                }
+            }
+        }
+    }
+
+    &_Farewell {
+        margin-block-start: var(--line-height);
+        @include flex-column;
+    }
+
+    &_Signature {
+        font-family: 'Dancing Script', Roboto, sans-serif;
+        @include font-size(20, 30);
+
+        @include print {
+            @include font-size(15, 22);
+        }
+    }
+}

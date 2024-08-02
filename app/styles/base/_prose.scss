@@ -7,6 +7,8 @@
 }
 
 @mixin list-styles {
+    margin-block-start: 8px !important;
+    padding-inline-start: 20px !important;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -75,29 +77,35 @@
     }
 }
 
-@mixin size-styles {
+@mixin size-styles($mod: 0px) {
     $sizes: (
-        'sm': 10px,
-        'md': 13px,
-        'lg': 18px,
-        'xl': 32px,
+        'sm': 10px + $mod,
+        'md': 13px + $mod,
+        'lg': 18px + $mod,
+        'xl': 32px + $mod,
     );
 
     @each $name, $font-size in $sizes {
         [data-size='#{$name}'] {
             font-size: $font-size;
+
+            min-height: $font-size * 1.5;
         }
     }
 }
 
-@mixin prose {
+@mixin prose($size-modification: 0px) {
     @include decorators;
     @include indent-styles;
-    @include size-styles;
+    @include size-styles($mod: $size-modification);
 
-    font-size: 13px;
+    font-size: 13px + $size-modification;
     line-height: 1.5;
     color: #111827;
+
+    p {
+        min-height: (13px + $size-modification) * 1.5;
+    }
 
     blockquote {
         @include blockquote-styles;

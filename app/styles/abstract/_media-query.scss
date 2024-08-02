@@ -22,8 +22,17 @@
     }
 }
 
-@mixin a4
- {
+@mixin a4 {
+    @media (min-width: 858px) {
+        @content;
+    }
+}
+
+@mixin a4OrPrint {
+    @media print {
+        @content;
+    }
+
     @media (min-width: 858px) {
         @content;
     }
@@ -47,3 +56,8 @@
     }
 }
 
+@mixin not-full-size-modal {
+    @media (min-width: 768px) and (min-height: 768px) {
+        @content;
+    }
+}

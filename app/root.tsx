@@ -21,7 +21,7 @@ import { defer } from '@remix-run/node';
 import { fetchSensitiveAuthorInfo } from './services/authorInfo.server';
 import { getUserSession } from './services/userSession';
 import { isSupportedLocale } from './utils/internationalization';
-import rootStyles from '~/styles/root.css?url';
+import rootStyles from '~/styles/pages/root.css?url';
 import { setup as setupBem } from 'bem-ts';
 import { useLocale } from './hooks/useLocale';
 

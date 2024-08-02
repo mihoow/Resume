@@ -26,6 +26,7 @@ type Props<E extends ElementType> = {
     dismissible?: boolean;
     popup?: boolean;
     as?: E;
+    contentClassName?: string;
 };
 
 function Modal<E extends ElementType = 'div'>(
@@ -38,6 +39,7 @@ function Modal<E extends ElementType = 'div'>(
         popup = false,
         children,
         as,
+        contentClassName,
         ...props
     }: Props<E> & Omit<ComponentPropsWithoutRef<E>, keyof Props<E>>
 ) {
@@ -77,7 +79,7 @@ function Modal<E extends ElementType = 'div'>(
                             ref={context.refs.setFloating}
                             role='dialog'
                             aria-labelledby={headerId}
-                            className={this.__('Content')}
+                            className={this.cn(this.__('Content'), contentClassName)}
                             {...getFloatingProps(props)}
                         >
                             <div className={this.__('InnerContent')}>{children}</div>

@@ -34,6 +34,7 @@
     "@tiptap/pm": "^2.4.0",
     "@tiptap/react": "^2.4.0",
     "bem-ts": "^0.13.5",
+    "html-to-react": "^1.7.0",
     "isbot": "^3.6.8",
     "mongodb": "^6.6.2",
     "nanoid": "^5.0.7",
@@ -44,7 +45,8 @@
     "react-simple-star-rating": "^5.1.7",
     "remix-utils": "^7.6.0",
     "use-context-selector": "^2.0.0",
-    "use-debounce": "^9.0.4"
+    "use-debounce": "^9.0.4",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.1.0",

@@ -1,0 +1,49 @@
+@use '../../../../styles/index' as *;
+
+@forward '../EditorModal/EditorModal';
+@forward '../SendEmailFields/SendEmailFields';
+@forward '../Footer/Footer';
+
+.SendEmailHeader {
+    &_MobileSubmit {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        transform: translateY(-50%);
+    }
+}
+
+.SendEmailBody {
+    &_Inputs {
+        padding: 12px 24px 16px 24px;
+
+        @include full-size-modal {
+            padding-inline: 12px;
+            padding-block-end: 0;
+
+            @include wide-mobile {
+                padding-inline: 16px;
+            }
+
+            input {
+                padding-inline: 8px;
+
+                @include wide-mobile {
+                    padding-inline: 12px;
+                }
+            }
+        }
+    }
+
+    &_Editor {
+        padding-block-start: 0;
+
+        @include full-size-modal {
+            padding-block-start: 16px;
+        }
+    }
+}
+
+.SendEmailFooter {
+    display: block;
+}

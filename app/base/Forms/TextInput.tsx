@@ -1,7 +1,7 @@
-import type { ComponentProps, ComponentPropsWithoutRef, FC, ReactNode } from 'react';
+import type { ComponentProps, ComponentPropsWithoutRef, FC, MutableRefObject, ReactNode } from 'react';
+import { ComponentRefType, component } from '~/utils/component';
 
 import { FormContext } from './Form.context';
-import { component } from '~/utils/component';
 import { useContextSelector } from 'use-context-selector';
 
 type InputColor = 'gray' | 'info' | 'failure' | 'warning' | 'success';
@@ -12,6 +12,7 @@ type Props = {
     icon?: FC<ComponentProps<'svg'>>;
     rightIcon?: FC<ComponentProps<'svg'>>;
     helperText?: ReactNode;
+    inputRef?: ComponentRefType<HTMLInputElement>
 } & ComponentPropsWithoutRef<'input'>;
 
 export const TextInput = component<Props, HTMLDivElement>(
@@ -24,6 +25,7 @@ export const TextInput = component<Props, HTMLDivElement>(
         rightIcon: RightIcon,
         helperText: userHelperText,
         myRef,
+        inputRef,
         name,
         ...inputProps
     }) {
@@ -50,6 +52,7 @@ export const TextInput = component<Props, HTMLDivElement>(
                             </div>
                         )}
                         <input
+                            ref={inputRef}
                             className={this.__('Input', {
                                 withAddon: !!addon,
                                 withIcon: !!Icon,

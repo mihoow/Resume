@@ -8,7 +8,8 @@ import { component } from '~/utils/component';
 import { useData } from '~/hooks/useData';
 import { useTranslation } from '~/hooks/useTranslation';
 import { useRootData } from '~/hooks/useRootData';
-import { Page, WEBSITE_URL } from '~/config';
+import { DEFAULT_LOCALE, Page, WEBSITE_URL } from '~/config';
+import { useLocale } from '~/hooks/useLocale';
 
 const AsideListLayout = component<PropsWithChildren<{ title: string }>>(
     'AsideListLayout',
@@ -47,13 +48,16 @@ const AsideList = component<{
 
 export default component('Aside', function ({ className }) {
     const t = useTranslation();
+    const locale = useLocale();
 
     const additionalSkills = useData(additionalSkillsData);
     const hobbies = useData(hobbiesData);
     const company = useRootData(({ company }) => company);
 
     const token = company?.token;
-    const resumeUrl = token ? `${WEBSITE_URL}${Page.RESUME}?token=${token}` : null;
+    const websiteURL = token
+        ? `${WEBSITE_URL}${locale === DEFAULT_LOCALE ? '' : `/${locale}`}${Page.RESUME}?token=${token}`
+        : null;
 
     return (
         <aside className={this.mcn(className)}>
@@ -84,11 +88,11 @@ export default component('Aside', function ({ className }) {
                         title={t('Interests', 'Zainteresowania')}
                         items={hobbies}
                     />
-                    {token && (
+                    {websiteURL && (
                         <p className={this.__('PrintNote')}>
                             {t(
-                                `You might also visit: ${resumeUrl} to see the interactive version of my CV`,
-                                `Możecie Państwo także odwiedzić: ${resumeUrl}, aby przejrzeć interaktywną wersję mojego CV`
+                                `You might also visit: ${websiteURL} to see the interactive version of my CV`,
+                                `Możecie Państwo także odwiedzić: ${websiteURL}, aby przejrzeć interaktywną wersję mojego CV`
                             )}
                         </p>
                     )}

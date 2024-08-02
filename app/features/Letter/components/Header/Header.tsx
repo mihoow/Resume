@@ -1,9 +1,10 @@
 import { EmailContact, GithubLink, LinkedinLink, PhoneContact } from '~/components/ContactItem/ContactItem';
-import { Link, useSearchParams } from '@remix-run/react';
+import { Link, useLocation, useSearchParams } from '@remix-run/react';
 
 import { CSSProperties } from 'react';
 import { EmailIcon } from '../../icons/Email';
 import { IMAGE_SIZES } from '../../config';
+import { Page } from '~/config';
 import { PhoneIcon } from '../../icons/Phone';
 import { component } from '~/utils/component';
 import { useIsAdmin } from '~/hooks/useRootData';
@@ -12,7 +13,18 @@ import { useTranslation } from '~/hooks/useTranslation';
 export const LetterHeader = component('LetterHeader', function ({ className }) {
     const t = useTranslation();
     const isAdmin = useIsAdmin();
+
     const [searchParams] = useSearchParams();
+    const { pathname } = useLocation();
+
+    const editPathname = (() => {
+        if (!isAdmin) return null;
+
+        const supportedPages: string[] = [Page.COVER_LETTER, Page.ABOUT_ME]
+        const supportedPathname = supportedPages.find((pagePathname) => pathname === pagePathname);
+
+        return supportedPathname || null;
+    })()
 
     return (
         <header
@@ -45,10 +57,10 @@ export const LetterHeader = component('LetterHeader', function ({ className }) {
                 height={IMAGE_SIZES.height}
                 className={this.__('MyImage')}
             />
-            {isAdmin && (
+            {editPathname && (
                 <Link
                     to={{
-                        pathname: './cover-letter/edit',
+                        pathname: `.${editPathname}/edit`,
                         search: searchParams.toString(),
                     }}
                     prefetch='viewport'

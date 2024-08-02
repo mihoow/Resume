@@ -35,6 +35,10 @@ export function getLinkToCoverLetter(pathname: string, currSearch: string) {
     return getLinkToPage(pathname, currSearch, 'cover-letter');
 }
 
+export function getLinkToAboutMe(pathname: string, currSearch: string) {
+    return getLinkToPage(pathname, currSearch, 'about-me');
+}
+
 export function getLinkToContact(pathname: string, currSearch: string) {
     const nextSearchParams = new URLSearchParams(currSearch);
     nextSearchParams.set('contact', 'open');

@@ -17,6 +17,8 @@ export const WEBSITE_URL = 'https://mwieczorek.me';
 
 export enum Page {
     RESUME = '/',
+    COVER_LETTER = '/cover-letter',
+    ABOUT_ME = '/about-me',
 }
 
 export const SUPPORTED_LOCALES: Readonly<Locale[]> = ['en', 'pl'];

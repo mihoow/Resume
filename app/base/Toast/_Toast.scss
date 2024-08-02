@@ -179,4 +179,8 @@
     @include tablet {
         width: auto;
     }
+
+    @include print {
+        display: none;
+    }
 }

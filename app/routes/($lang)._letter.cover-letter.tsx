@@ -10,6 +10,7 @@ import { Locale } from '~/types/global';
 import { component } from '~/utils/component';
 import { getFixedTFromPathname } from '~/utils/internationalization';
 import pageStyles from '~/styles/pages/cover-letter.css?url';
+import { useMemoized } from '~/hooks/useMemoized';
 
 export const loader = async ({ request: { url }, params: { lang = DEFAULT_LOCALE } }: LoaderFunctionArgs) => {
     const companyCode = getCompanyCodeFromUrl(url);
@@ -33,7 +34,11 @@ export const meta: MetaFunction = ({ location: { pathname } }) => {
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: pageStyles }];
 
 export default component('CoverLetterPage', function () {
-    const { coverLetter } = useLoaderData<typeof loader>();
+    const { coverLetter: nextCoverLetter } = useLoaderData<typeof loader>();
+    const coverLetter = useMemoized(
+        nextCoverLetter,
+        ({ updatedAt: currUpdatedAt }, { updatedAt: nextUpdatedAt }) => currUpdatedAt === nextUpdatedAt
+    );
 
     const { html } = coverLetter;
 

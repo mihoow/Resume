@@ -20,12 +20,14 @@ export type CoverLetterContacts = Nullable<{
 }>;
 
 export type CoverLetterTemplate = {
+    updatedAt: number;
     name: string;
     language: Locale;
     html: string;
 };
 
 export type CoverLetterDocument = {
+    updatedAt: number;
     companyCode: string;
     language: Locale;
     html: string;

@@ -137,6 +137,7 @@ export async function getTemplate(name: string, language: Locale): Promise<Cover
 
     if (name === 'empty') {
         return {
+            updatedAt: 1,
             name: 'empty',
             language,
             html: '',
@@ -190,6 +191,7 @@ export async function saveCoverLetter(request: Request): Promise<TypedResponse<T
 
         const language = untypedLanguage as Locale;
         const saveAs = untypedSaveAs as EditTextFormData['saveAs'];
+        const timestamp = Date.now()
 
         async function updateTemplate(session?: ClientSession) {
             if (!nameAsTemplate) {
@@ -200,10 +202,11 @@ export async function saveCoverLetter(request: Request): Promise<TypedResponse<T
                 { name: nameAsTemplate, language },
                 {
                     $set: {
+                        updatedAt: timestamp,
                         name: nameAsTemplate,
                         language,
                         html,
-                    },
+                    } satisfies CoverLetterTemplate,
                 },
                 { upsert: true, session }
             );
@@ -226,6 +229,7 @@ export async function saveCoverLetter(request: Request): Promise<TypedResponse<T
                 { companyCode },
                 {
                     $set: {
+                        updatedAt: timestamp,
                         companyCode,
                         language,
                         html,
@@ -234,7 +238,7 @@ export async function saveCoverLetter(request: Request): Promise<TypedResponse<T
                         company,
                         contacts,
                         showRecipient: showRecipient === 'on',
-                    },
+                    } satisfies CoverLetterDocument,
                 },
                 { upsert: true, session }
             );

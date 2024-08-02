@@ -7,7 +7,6 @@ import pageStyles from '~/styles/pages/cv.css?url';
 
 export const links: LinksFunction = () => [
     { rel: 'stylesheet', href: pageStyles },
-    { rel: 'preload', as: 'image', href: '/images/profi-opt.jpg' },
 ];
 
 export const meta: MetaFunction = ({ location: { pathname } }) => {

@@ -151,7 +151,6 @@ export const hobbiesData = ({ t }: DataFunctionArgs) => [
 
 export const certificatesData = (): Certificate[] => [
     { name: 'MongoDB Certified Associate Developer', link: 'https://drive.google.com/file/d/16whD5VznD9OYSVKkqFPAKyKrAp8Wv-NB/view?usp=sharing' },
-    { name: 'Introduction to Redis Data Structures', link: 'https://drive.google.com/file/d/1w53D8CUU-gi52S9L0uGUDKGOtBOxhXsZ/view?usp=sharing' },
-    { name: 'Redis Streams', link: 'https://drive.google.com/file/d/1hctpEkKL-mfZsPpqFwERb0OAU-xxyCCp/view?usp=sharing' },
+    { name: 'Redis (3)', link: 'https://drive.google.com/file/d/1AV7yO_OdNUIHbekVX1tztv0nbypPQUDD/view?usp=sharing' },
     { name: 'Progressive Web Apps (PWA) - The Complete Guide', link: 'https://drive.google.com/file/d/1wdaOvsIvNrR-bEP_sSLPvXl63FaCj8p3/view?usp=sharing' }
 ]

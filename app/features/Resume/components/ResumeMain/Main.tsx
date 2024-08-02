@@ -8,6 +8,7 @@ import A4 from '../../../../components/A4/A4';
 import type { Experience } from '~/features/Resume/type';
 import { useData } from '~/hooks/useData';
 import { aboutMeData, scandiwebExperienceData } from '~/features/Resume/data';
+import { useRootData } from '~/hooks/useRootData';
 
 const SubsectionSubject = component<{
     subject: Experience['subject'];
@@ -121,6 +122,7 @@ export default component<{
 }>('Main', function ({ className }) {
     const t = useTranslation();
 
+    const jobPosition = useRootData(({ company }) => company?.jobPosition) || t('Web developer');
     const aboutMe = useData(aboutMeData);
     const scandiwebExperience = useData(scandiwebExperienceData);
 
@@ -132,7 +134,7 @@ export default component<{
                         <span className={this.__('Name')}>Michał</span>
                         <span className={this.__('Surname')}>Wieczorek</span>
                     </h1>
-                    <em className={this.__('Position')}>{t('Web developer')}</em>
+                    <em className={this.__('Position')}>{jobPosition}</em>
                     <p className={this.__('AboutMe')}>{aboutMe}</p>
                 </header>
                 <div className={this.__('Categories')}>

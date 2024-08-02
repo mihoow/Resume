@@ -26,6 +26,7 @@ export type DbCompanyData = {
     expiresAt: Date;
     code: string;
     name?: string;
+    jobPosition?: string;
     password: string;
 }
 
@@ -33,6 +34,7 @@ export type CompanyData = {
     isExpired: boolean;
     code: string;
     name?: string;
+    jobPosition?: string;
     token: string;
 }
 

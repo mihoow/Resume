@@ -9,7 +9,7 @@ import { connectToDatabase } from './db.server';
 import { getUserSession } from './userSession';
 
 type Validation =
-    | { ok: true; fields: { companyCode: string; companyName: string } }
+    | { ok: true; fields: { companyCode: string; companyName: string; jobPosition: string | null } }
     | { ok: false; errors: ValidationErrorData['validationErrors'] };
 
 async function getCompaniesCollection() {
@@ -20,6 +20,8 @@ async function getCompaniesCollection() {
 function validateCompanyFields(formData: FormData): Validation {
     const code = formData.get('code');
     const name = formData.get('name');
+    const jobPosition = formData.get('jobPosition');
+
     const errors: ValidationErrorData['validationErrors'] = {};
 
     if (typeof code !== 'string') {
@@ -38,6 +40,7 @@ function validateCompanyFields(formData: FormData): Validation {
             fields: {
                 companyCode: (code as string).trim(),
                 companyName: (name as string).trim(),
+                jobPosition: jobPosition ? String(jobPosition).trim() : null
             },
         };
 
@@ -55,7 +58,7 @@ export async function authorizeCompany(request: Request, formData: FormData) {
     }
 
     const {
-        fields: { companyCode, companyName },
+        fields: { companyCode, companyName, jobPosition },
     } = validation;
 
     try {
@@ -68,6 +71,10 @@ export async function authorizeCompany(request: Request, formData: FormData) {
 
         if (companyName) {
             companyData.name = companyName;
+        }
+
+        if (jobPosition) {
+            companyData.jobPosition = jobPosition;
         }
 
         const [collection, userSession] = await Promise.all([getCompaniesCollection(), getUserSession(request)]);
@@ -132,7 +139,7 @@ export async function fetchCompany({ url }: Request): Promise<{ status: AuthStat
                 data: null,
             };
 
-        const { code, name } = companyData;
+        const { code, name, jobPosition } = companyData;
         const isExpired = isCompanyExpired(companyData);
 
         if (isExpired)
@@ -147,6 +154,7 @@ export async function fetchCompany({ url }: Request): Promise<{ status: AuthStat
                 isExpired: false,
                 code,
                 name,
+                jobPosition,
                 token,
             },
         };

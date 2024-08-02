@@ -45,6 +45,13 @@ export const AdminModal = component<{ handle: ModalHandle }>('AdminModal', funct
                             type='text'
                         />
                     </Label>
+                    <Label value='Job position:'>
+                        <TextInput
+                            form={authorizationFormId}
+                            name='jobPosition'
+                            type='text'
+                        />
+                    </Label>
                 </Modal.Body>
             </FormContext.Provider>
             <Modal.Footer className={this.__('Footer')}>

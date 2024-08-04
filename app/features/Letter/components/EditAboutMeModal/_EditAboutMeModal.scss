@@ -1,0 +1,25 @@
+@use '../../../../styles/index' as *;
+
+.EditAboutMeFooter {
+    padding-block: 16px;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+
+    @include tablet {
+        flex-direction: row;
+    }
+
+    & > * + * {
+        margin-inline: 0;
+    }
+
+    button {
+        width: 100%;
+
+        @include tablet {
+            width: auto;
+            min-width: 200px;
+        }
+    }
+}

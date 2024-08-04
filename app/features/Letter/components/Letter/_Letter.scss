@@ -1,0 +1,78 @@
+@use '../../../../styles/index' as *;
+
+@font-face {
+    font-family: 'Dancing Script';
+    src: url('/font/Dancing-Script-Medium.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+.LetterGreeting {
+    display: block;
+    margin-block: 16px var(--line-height);
+    font-weight: 500;
+}
+
+.LetterContent {
+    @include prose($size-modification: 1px);
+    @include flex-column;
+    gap: 20px;
+
+    @include tablet {
+        @include prose($size-modification: 3px);
+    }
+
+    @include print {
+        @include prose($size-modification: -2px);
+    }
+
+    ul {
+        list-style: none !important;
+
+        @include print {
+            gap: 2px;
+        }
+
+        > li {
+            display: flex;
+            gap: 10px;
+
+            &::before {
+                transform: translateY(1px);
+                content: '\2756';
+                display: block;
+            }
+        }
+    }
+}
+
+.LetterFarewell {
+    margin-block-start: var(--line-height);
+    @include flex-column;
+
+    &_Signature {
+        font-family: 'Dancing Script', Roboto, sans-serif;
+        @include font-size(20, 30);
+
+        @include print {
+            @include font-size(15, 22);
+        }
+    }
+}
+
+.Letter {
+    --font-size: 14px;
+    --line-height: calc(var(--font-size) * 1.5);
+
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+
+    @include tablet {
+        --font-size: 16px;
+    }
+
+    @include print {
+        --font-size: 11px;
+    }
+}

@@ -1,0 +1,50 @@
+@use '../../../../styles/index' as *;
+
+@forward '../Letter/Letter';
+
+.CoverLetter {
+    --image-width: 0px;
+
+    &-hasRecipient {
+        @include a4OrPrint {
+            transform: translateY(-60px);
+        }
+    }
+
+    &_Header {
+        &::after {
+            content: '';
+            display: block;
+            margin-block: 16px 24px;
+            height: 8px;
+            width: max(235px, 45%);
+            background: linear-gradient(to right, rgb(33, 71, 97), $primary);
+            border-radius: 8px;
+        }
+    }
+
+    &_Recipient {
+        margin-block-end: 12px;
+        // to ensure the text will not be over the image
+        max-width: calc(((21cm - 180px) / 2) - (var(--image-width) / 2) - 4px);
+
+        span {
+            display: block;
+        }
+    }
+
+    &_To {
+        margin-block-end: 4px;
+        color: #7c7c7c;
+        @include font-size(13, 13);
+
+        @include print {
+            @include font-size(10, 10);
+        }
+    }
+
+    &_Date {
+        display: block;
+        color: #7c7c7c;
+    }
+}

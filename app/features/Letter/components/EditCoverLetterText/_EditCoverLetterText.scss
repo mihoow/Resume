@@ -1,8 +1,8 @@
 @use '../../../../styles/index' as *;
 
-@forward '../../../RichTextEditor/components/EditorModal/EditorModal';
+@forward '../../../RichTextEditor/components/RichTextModal/RichTextModal';
 
-.EditTextStep {
+.EditCoverLetterText {
     overflow-y: auto;
 
     &_Editor {

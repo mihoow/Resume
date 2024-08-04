@@ -5,15 +5,15 @@ import type {
     EditTextFormData,
     TemplatesByLanguage,
     TemplatesListItem,
-} from './type';
+} from '../type';
 import type { Locale } from '~/types/global';
 import { ValidationError, object, string } from 'yup';
 
 import { connectToDatabase } from '~/services/db.server';
 import { isCompanyExpired } from '~/services/companies.server';
 import { readToken } from '~/services/authToken.server';
-import { isLetterDocument, isLetterTemplate } from './utils';
-import { DEFAULT_TEMPLATE_NAME } from './config';
+import { isLetterDocument, isLetterTemplate } from '../utils';
+import { DEFAULT_TEMPLATE_NAME } from '../config';
 import type { ToastData } from '~/base/Toast/Toast.type';
 import { json } from '@remix-run/react';
 import { TypedResponse } from '@remix-run/node';

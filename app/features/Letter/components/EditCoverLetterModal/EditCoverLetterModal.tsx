@@ -1,22 +1,22 @@
 import type { CoverLetterDocument, CoverLetterTemplate, EditTextFormData, TemplatesByLanguage } from '../../type';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { useFetcher, useSubmit } from '@remix-run/react';
 
-import { EditHeadersStep } from '../EditHeadersStep/EditHeadersStep';
-import { EditTextStep } from '../EditTextStep/EditTextStep';
+import { EditCoverLetterHeaders } from '../EditCoverLetterHeaders/EditCoverLetterHeaders';
+import { EditCoverLetterText } from '../EditCoverLetterText/EditCoverLetterText';
 import Modal from '~/base/Modal';
 import type { ModalHandle } from '~/types/global';
 import { ModalHeader } from '~/base/Modal/ModalHeader';
 import { component } from '~/utils/component';
 import { noopFn } from '~/utils/misc';
 import { useRootData } from '~/hooks/useRootData';
+import { useSubmit } from '@remix-run/react';
 
-export const EditModal = component<{
+export const EditCoverLetterModal = component<{
     data: CoverLetterTemplate | CoverLetterDocument;
     templates: TemplatesByLanguage;
     currentTemplate: CoverLetterTemplate | null;
     onClose: VoidFunction;
-}>('EditModal', function ({ className, data, templates, currentTemplate, onClose }) {
+}>('EditCoverLetterModal', function ({ className, data, templates, currentTemplate, onClose }) {
     const companyCode = useRootData(({ company }) => company?.code ?? null);
 
     const accumulatedFormData = useRef<Record<string, string | null>>({});
@@ -75,14 +75,14 @@ export const EditModal = component<{
                 <span>Edit cover letter</span>
             </ModalHeader>
             {currentStep === 1 && companyCode && (
-                <EditHeadersStep
+                <EditCoverLetterHeaders
                     companyCode={companyCode}
                     data={data}
                     onSubmit={handleFirstStepSubmit}
                 />
             )}
             {currentStep === 2 && (
-                <EditTextStep
+                <EditCoverLetterText
                     companyCode={companyCode}
                     initialHTML={html}
                     handle={modalHandle}

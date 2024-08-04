@@ -4,10 +4,10 @@ import type { Locale, ModalHandle } from '~/types/global';
 import { TEMPLATE_LANGUAGE_QUERY_PARAM, TEMPLATE_QUERY_PARAM } from '../../config';
 
 import { Button } from '~/base/Button/Button';
-import EditorModal from '~/features/RichTextEditor/components/EditorModal/EditorModal';
 import { EditorModalContext } from '~/features/RichTextEditor/context';
 import { Label } from '~/base/Forms/Label';
 import Modal from '~/base/Modal/Modal';
+import RichTextModal from '~/features/RichTextEditor/components/RichTextModal/RichTextModal';
 import { RichTextProvider } from '~/features/RichTextEditor/components/RichTextProvider/RichTextProvider';
 import { Select } from '~/base/Forms/Select';
 import { TextInput } from '~/base/Forms/TextInput';
@@ -25,10 +25,10 @@ type Props = {
     onSubmit: (data: EditTextFormData) => void;
 };
 
-const EditTextStepContent = component<
+const Content = component<
     Props & { currentTemplateName: string; onTemplateChange: (name: string, lang: Locale) => void }
 >(
-    'EditTextStep',
+    'EditCoverLetterText',
     function ({ className, handle, language, templates, onPrev, onSubmit, currentTemplateName, onTemplateChange }) {
         const richTextModalCtx = useRichTextModal(handle);
 
@@ -93,7 +93,7 @@ const EditTextStepContent = component<
                     onSubmit={handleSubmit}
                     className={this.mcn(className)}
                 >
-                    <EditorModal.Body
+                    <RichTextModal.Body
                         className={this.__('Editor')}
                         editorClassName={this.__('RichText')}
                     >
@@ -130,7 +130,7 @@ const EditTextStepContent = component<
                                 </Select>
                             </Label>
                         </fieldset>
-                    </EditorModal.Body>
+                    </RichTextModal.Body>
                     <Modal.Footer className={this.__('Footer')}>
                         {onPrev && (
                             <Button
@@ -169,8 +169,8 @@ const EditTextStepContent = component<
     }
 );
 
-export const EditTextStep = component<Props & { initialHTML: string; companyCode: string | null }>(
-    'EditTextStepProvider',
+export const EditCoverLetterText = component<Props & { initialHTML: string; companyCode: string | null }>(
+    'EditCoverLetterTextProvider',
     function ({ className, initialHTML, companyCode, ...props }) {
         const [searchParams, setSearchParams] = useSearchParams();
         const currentTemplateName = searchParams.get(TEMPLATE_QUERY_PARAM) || 'none';
@@ -193,7 +193,7 @@ export const EditTextStep = component<Props & { initialHTML: string; companyCode
                 storageKeyPrefix={storagePrefix}
                 initialContent={initialHTML}
             >
-                <EditTextStepContent
+                <Content
                     className={className}
                     currentTemplateName={currentTemplateName}
                     onTemplateChange={handleTemplateChange}

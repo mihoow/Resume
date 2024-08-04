@@ -1,17 +1,17 @@
-import { Context, useContext } from 'use-context-selector';
-import { EditorModalContext, RichTextContext } from '../../context';
-import { EditorModalContextType, RichTextContextType } from '../../type';
 import type { FormEvent, PropsWithChildren } from 'react';
+import { act, useCallback } from 'react';
 
 import { ActionType } from '~/config';
 import { EditorContent } from '@tiptap/react';
+import { EditorModalContext } from '../../context';
+import { EditorModalContextType } from '../../type';
 import { Form } from '~/base/Forms/Form';
 import Modal from '~/base/Modal';
 import type { ModalHandle } from '~/types/global';
 import { RichTextProvider } from '../RichTextProvider/RichTextProvider';
 import { Toolbar } from '../Toolbar/Toolbar';
 import { component } from '~/utils/component';
-import { useCallback } from 'react';
+import { useContext } from 'use-context-selector';
 import { useRichTextModal } from '../../hooks/useRichTextModal';
 import { useSubmit } from '@remix-run/react';
 
@@ -56,18 +56,14 @@ const EditorModalContent = component<
     PropsWithChildren<{
         handle: ModalHandle;
         intent: ActionType;
+        action?: string | null;
     }>
 >(
-    'EditorModal',
-    function ({ className, handle, intent, children }) {
+    'RichTextModal',
+    function ({ className, handle, intent, action = '/action', children }) {
         const modalCtx = useRichTextModal(handle);
 
-        const {
-            editor,
-            flushAndClose,
-            saveAndClose,
-            getHTML
-        } = modalCtx;
+        const { editor, flushAndClose, saveAndClose, getHTML } = modalCtx;
 
         const submit = useSubmit();
 
@@ -84,10 +80,10 @@ const EditorModalContent = component<
 
                 submit(formData, {
                     method: 'POST',
-                    action: '/action',
+                    action: action || undefined,
                 });
             },
-            [getHTML, editor, submit]
+            [getHTML, editor, submit, action]
         );
 
         if (!editor) return null;
@@ -102,42 +98,44 @@ const EditorModalContent = component<
                 onSuccess={flushAndClose}
                 className={this.mcn(className)}
             >
-                <EditorModalContext.Provider
-                    value={modalCtx}
-                >
-                    {children}
-                </EditorModalContext.Provider>
+                <EditorModalContext.Provider value={modalCtx}>{children}</EditorModalContext.Provider>
             </Modal>
         );
     },
-    // EditorModal has the same props and is already memoized
+    // RichTextModal has the same props and is already memoized
     () => false
 );
 
-const EditorModal = component<
+const RichTextModal = component<
     PropsWithChildren<{
         handle: ModalHandle;
         intent: ActionType;
+        storageKeyPrefix?: string;
         content?: string;
         addInlineStyles?: boolean;
+        action?: string | null;
     }>
->('EditorModalContainer', function ({ className, handle, content, addInlineStyles, ...props }) {
-    if (!handle.isOpen) return null;
+>(
+    'EditorModalContainer',
+    function ({ className, handle, storageKeyPrefix = 'rich-text', content, addInlineStyles, ...props }) {
+        if (!handle.isOpen) return null;
 
-    return (
-        <RichTextProvider
-            initialContent={content}
-            addInlineStyles={addInlineStyles}
-        >
-            <EditorModalContent
-                handle={handle}
-                {...props}
-            />
-        </RichTextProvider>
-    );
-});
+        return (
+            <RichTextProvider
+                storageKeyPrefix={storageKeyPrefix}
+                initialContent={content}
+                addInlineStyles={addInlineStyles}
+            >
+                <EditorModalContent
+                    handle={handle}
+                    {...props}
+                />
+            </RichTextProvider>
+        );
+    }
+);
 
-export default Object.assign(EditorModal, {
+export default Object.assign(RichTextModal, {
     Header: EditorModalHeader,
     Body: EditorModalBody,
     Footer: Modal.Footer,

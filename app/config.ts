@@ -34,6 +34,7 @@ export enum ActionType {
     FIND_COMPANY = 'find-company',
     SEND_EMAIL = 'send-email',
     EDIT_COVER_LETTER = 'edit-cover-letter',
+    EDIT_ABOUT_ME = 'edit-about-me'
 }
 
 export const AUTHOR: Readonly<Author> = {

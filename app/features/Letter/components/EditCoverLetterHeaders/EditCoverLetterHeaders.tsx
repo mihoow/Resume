@@ -81,11 +81,11 @@ const Input = Object.assign(PreInput, {
     Option: Select.Option,
 });
 
-export const EditHeadersStep = component<{
+export const EditCoverLetterHeaders = component<{
     companyCode: string;
     data: CoverLetterTemplate | CoverLetterDocument;
     onSubmit: (inputs: Record<string, string>) => void;
-}>('EditHeadersStep', function ({ className, companyCode, data, onSubmit }) {
+}>('EditCoverLetterHeaders', function ({ className, companyCode, data, onSubmit }) {
     const allInputsRef = useRef<Record<string, HTMLInputElement | HTMLSelectElement | null>>({});
     const preservedStateController = usePreservedStateController(`clheaders-${companyCode}`);
 

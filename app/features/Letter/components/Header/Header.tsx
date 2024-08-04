@@ -21,7 +21,7 @@ export const LetterHeader = component('LetterHeader', function ({ className }) {
         if (!isAdmin) return null;
 
         const supportedPages: string[] = [Page.COVER_LETTER, Page.ABOUT_ME]
-        const supportedPathname = supportedPages.find((pagePathname) => pathname === pagePathname);
+        const supportedPathname = supportedPages.find((pagePathname) => pathname.includes(pagePathname));
 
         return supportedPathname || null;
     })()

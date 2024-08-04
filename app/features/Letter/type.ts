@@ -51,3 +51,10 @@ export type TemplatesListItem = {
 };
 
 export type TemplatesByLanguage = Record<Locale, TemplatesListItem[]>;
+
+export type AboutMeDocument = {
+    updatedAt: number;
+    identifier: string;
+    language: Locale;
+    html: string;
+}

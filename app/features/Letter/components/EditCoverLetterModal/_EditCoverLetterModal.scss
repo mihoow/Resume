@@ -1,7 +1,7 @@
 @use '../../../../styles/index' as *;
 
-@forward '../EditHeadersStep/EditHeadersStep';
-@forward '../EditTextStep/EditTextStep';
+@forward '../EditCoverLetterHeaders/EditCoverLetterHeaders';
+@forward '../EditCoverLetterText/EditCoverLetterText';
 
 .EditCoverLetterModal {
     &_ModalContent {

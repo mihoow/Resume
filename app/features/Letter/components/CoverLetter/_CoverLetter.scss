@@ -6,6 +6,12 @@
     margin-block: 0;
 }
 
+.LetterLayout {
+    @include print {
+        max-height: 29.7cm;
+    }
+}
+
 .CoverLetter {
     --image-width: 0px;
 

@@ -1,10 +1,9 @@
 /* Error: Can't find stylesheet to import.
  *   ,
- * 3 | @forward '../EditHeadersStep/EditHeadersStep';
- *   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ * 1 | @forward '../../features/Letter/components/EditCoverLetterModal/EditCoverLetterModal';
+ *   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
  *   '
- *   app/features/Letter/components/EditCoverLetterModal/_EditCoverLetterModal.scss 3:1  @forward
- *   app/styles/pages/letter-edit.scss 1:1                                               root stylesheet */
+ *   app/styles/pages/letter-edit.scss 1:1  root stylesheet */
 
 body::before {
   font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
@@ -14,5 +13,5 @@ body::before {
   padding: 1em;
   margin-bottom: 1em;
   border-bottom: 2px solid black;
-  content: "Error: Can't find stylesheet to import.\a   \2577 \a 3 \2502  @forward '../EditHeadersStep/EditHeadersStep';\a   \2502  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a   \2575 \a   app/features/Letter/components/EditCoverLetterModal/_EditCoverLetterModal.scss 3:1  @forward\a   app/styles/pages/letter-edit.scss 1:1                                               root stylesheet";
+  content: "Error: Can't find stylesheet to import.\a   \2577 \a 1 \2502  @forward '../../features/Letter/components/EditCoverLetterModal/EditCoverLetterModal';\a   \2502  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a   \2575 \a   app/styles/pages/letter-edit.scss 1:1  root stylesheet";
 }

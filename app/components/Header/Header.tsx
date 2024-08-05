@@ -117,7 +117,7 @@ const Navbar = component('Navbar', function ({ className }) {
                         prefetch='intent'
                         className={({ isActive }) => this.__('Link', { isActive })}
                     >
-                        {t('Cover letter', 'List motywacyjny')}
+                        {t('Cover letter', 'List przewodni')}
                     </NavLink>
                 </li>
                 <li>

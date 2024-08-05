@@ -38,9 +38,13 @@
     }
 
     &_Logo {
+        display: inline;
         margin-right: 0.125em;
+        height: unset;
+        vertical-align: baseline;
 
         &-reversed {
+            height: 40px;
             transform-origin: center;
             transform: rotate(180deg);
         }
@@ -50,6 +54,7 @@
         @include font-size(24, 1.5, 1);
         color: $neutral-contrast;
         text-align: end;
+        font-weight: normal;
 
         @include small-mobile {
             font-size: 16px;

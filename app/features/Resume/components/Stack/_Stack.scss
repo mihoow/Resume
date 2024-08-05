@@ -22,6 +22,10 @@
 
     &_Rating {
         margin-block-end: 4px;
+
+        svg {
+            display: inline;
+        }
     }
 
     &_Note {

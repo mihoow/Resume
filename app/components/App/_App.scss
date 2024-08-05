@@ -1,10 +1,6 @@
 @use '../../styles/index' as *;
 
 @forward '../Header/Header';
-@forward '../AuthAlert/AuthAlert';
-@forward '../FindCompany/FindCompany';
-@forward '../DocumentTabs/DocumentTabs';
-@forward '../Actions/Actions';
 @forward '../Footer/Footer';
 
 .App {
@@ -22,90 +18,13 @@
         margin-block-end: 32px;
     }
 
-    &_AuthAlert {
-        margin-inline: 16px;
-
-        @include wide-mobile {
-            margin-inline: 0;
-        }
-    }
-
-    &_Main {
-        margin-inline: auto;
-        width: calc(100% - 32px);
-        padding-block: 20px;
-
-        @include wide-mobile {
-            width: 100%;
-        }
-
-        @include desktop {
-            padding-block: 30px;
-        }
-
-        @include print {
-            padding-block: 0;
-        }
-    }
-
-    &_CompanySearchSkeleton {
-        height: 44px;
-        --height: 44px;
-        --radius: 8px;
-        overflow: hidden;
-    }
-
-    &_CompanySearch,
-    &_CompanySearchSkeleton {
-        margin-block-end: 32px;
-        max-width: 400px;
-    }
-
-    &_DocumentTabs {
-        margin-block-end: 24px;
-    }
-
-    &_Actions {
-        margin-inline: auto;
-        width: 100%;
-
-        @include tablet {
-            padding-inline-end: 16px;
-        }
-
-        @include desktop {
-            padding-inline-end: unset;
-            width: 21cm;
-        }
-    }
-
-    .Actions {
-        position: relative;
-
-        &_ActionBar {
-            margin-block-end: 16px;
-
-            @include desktop {
-                flex-direction: column;
-                gap: 24px;
-                position: absolute;
-                inset-inline-start: calc(100% + 16px);
-            }
-        }
-    }
-
     @include print {
         width: 100%;
         padding: 0 !important;
         margin: 0 !important;
 
         &_Header,
-        &_AuthAlert,
-        &_Footer,
-        &_DocumentTabs,
-        &_Actions,
-        &_CompanySearch,
-        &_CompanySearchSkeleton {
+        &_Footer {
             display: none;
         }
     }

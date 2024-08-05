@@ -1,1 +1,11 @@
+@use '../../../../styles/index' as *;
+
 @forward '../Letter/Letter';
+
+.AboutMe {
+    &_Content {
+        @include print {
+            @include prose($size-modification: 0px);
+        }
+    }
+}

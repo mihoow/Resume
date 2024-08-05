@@ -21,8 +21,8 @@ export const LetterErrorBoundary = component('LetterErrorBoundary', function ({ 
         <div className={this.mcn(className)}>
             <p>
                 {t(
-                    "Something went wrong and we couldn't download a cover letter. Please try refreshing the page or come back later.",
-                    'Coś poszło nie tak i nie byliśmy w stanie pobrać listu motywacyjnego. Spróbuj odświeżyć stronę lub wróć później.'
+                    "Something went wrong and we couldn't download a content. Please try refreshing the page or come back later.",
+                    'Coś poszło nie tak i nie byliśmy w stanie pobrać zawartości. Spróbuj odświeżyć stronę lub wróć później.'
                 )}
             </p>
             <Button

@@ -1,7 +1,8 @@
-import { CSSProperties, PropsWithChildren, useMemo } from 'react';
+import { CSSProperties, useMemo } from 'react';
 import type { CoverLetterDocument, CoverLetterTemplate } from '../../type';
 
 import { IMAGE_SIZES } from '../../config';
+import Letter from '../Letter/Letter';
 import type { TFunction } from '~/types/global';
 import { component } from '~/utils/component';
 import { isLetterDocument } from '../../utils';
@@ -81,9 +82,9 @@ function getGreeting(document: CoverLetterDocument | null, t: TFunction) {
     );
 }
 
-export const LetterContent = component<PropsWithChildren<{ data: CoverLetterTemplate | CoverLetterDocument }>>(
-    'LetterContent',
-    function ({ className, data, children }) {
+export const CoverLetter = component<{ data: CoverLetterTemplate | CoverLetterDocument; html: string; }>(
+    'CoverLetter',
+    function ({ className, data, html }) {
         const { language } = data;
         const t = useTranslation(language); // we use language set in cover-letter as it might be different from global locale
 
@@ -99,7 +100,7 @@ export const LetterContent = component<PropsWithChildren<{ data: CoverLetterTemp
         );
 
         return (
-            <div
+            <Letter
                 className={this.mcn(this.__({ hasRecipient: recipientLines.length > 0 }), className)}
                 style={{ '--image-width': `${IMAGE_SIZES.width}px` } as CSSProperties}
             >
@@ -123,13 +124,10 @@ export const LetterContent = component<PropsWithChildren<{ data: CoverLetterTemp
                         )}
                     </header>
                 )}
-                <strong className={this.__('Greeting')}>{greeting},</strong>
-                <article className={this.__('Content')}>{children}</article>
-                <footer className={this.__('Farewell')}>
-                    <span>{t('Sincerely', 'Z poważaniem')},</span>
-                    <span className={this.__('Signature')}>Michał Wieczorek</span>
-                </footer>
-            </div>
+                <Letter.Greeting className={this.__('Greeting')}>{greeting},</Letter.Greeting>
+                <Letter.Content html={html} className={this.__('Content')} />
+                <Letter.Farewell lang={language} />
+            </Letter>
         );
     }
 );

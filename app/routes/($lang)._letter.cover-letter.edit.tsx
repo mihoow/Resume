@@ -1,12 +1,12 @@
 import { ActionFunctionArgs, LinksFunction, LoaderFunctionArgs, redirect } from '@remix-run/node';
 import { ActionType, DEFAULT_LOCALE } from '~/config';
-import { CoverLetterDocument, CoverLetterTemplate } from '~/features/Letter/type';
-import { TEMPLATE_LANGUAGE_QUERY_PARAM, TEMPLATE_QUERY_PARAM } from '~/features/Letter/config';
-import { getListOfTemplates, getTemplate, saveCoverLetter } from '~/features/Letter/service.server';
+import type { CoverLetterDocument, CoverLetterTemplate } from '@letter/type';
+import { TEMPLATE_LANGUAGE_QUERY_PARAM, TEMPLATE_QUERY_PARAM } from '@letter/config';
+import { getListOfTemplates, getTemplate, saveCoverLetter } from '@letter/services/coverLetter.server';
 import { json, useActionData, useLoaderData, useNavigate, useOutletContext, useSearchParams } from '@remix-run/react';
 import { useCallback, useEffect } from 'react';
 
-import { EditModal } from '@letter/components/EditModal/EditModal';
+import { EditCoverLetterModal } from '~/features/Letter/components/EditCoverLetterModal/EditCoverLetterModal';
 import { ToastsListContext } from '~/base/Toast/ToastList.context';
 import { component } from '~/utils/component';
 import { getUserSession } from '~/services/userSession';
@@ -63,12 +63,12 @@ export default component('EditCoverLetter', function () {
         navigate({ pathname: '..', search: newSearchParams.toString() }, { preventScrollReset: true });
     }, [clearFailureMessages, searchParams]);
 
-    const effectArgs = useMirrorRef({ showToast })
+    const effectArgs = useMirrorRef({ showToast });
 
     useEffect(() => {
         if (!actionData) return;
 
-        const { showToast } = effectArgs.current
+        const { showToast } = effectArgs.current;
         const { type, message, messageBody } = actionData;
 
         showToast({
@@ -76,12 +76,12 @@ export default component('EditCoverLetter', function () {
             type,
             message,
             messageBody,
-            autoClose: type === 'success'
+            autoClose: type === 'success',
         });
     }, [actionData]);
 
     return (
-        <EditModal
+        <EditCoverLetterModal
             data={letter}
             templates={templates}
             currentTemplate={currentTemplate}

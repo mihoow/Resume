@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation, useSearchParams } from '@remix-run/react';
-import { getLinkToContact, getLinkToCoverLetter, getLinkToResume } from '~/utils/navigation';
+import { getLinkToAboutMe, getLinkToContact, getLinkToCoverLetter, getLinkToResume } from '~/utils/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import LanguageSwitch from '../LanguageSwitch/LanguageSwitch';
@@ -117,7 +117,17 @@ const Navbar = component('Navbar', function ({ className }) {
                         prefetch='intent'
                         className={({ isActive }) => this.__('Link', { isActive })}
                     >
-                        {t('Cover letter', 'List motywacyjny')}
+                        {t('Cover letter', 'List przewodni')}
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink
+                        to={getLinkToAboutMe(pathname, search)}
+                        preventScrollReset
+                        prefetch='intent'
+                        className={({ isActive }) => this.__('Link', { isActive })}
+                    >
+                        {t('About me', 'O mnie')}
                     </NavLink>
                 </li>
                 <li>

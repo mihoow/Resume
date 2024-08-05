@@ -1,6 +1,6 @@
 import { ActionType } from '~/config';
-import EditorModal from '../EditorModal/EditorModal';
 import { Footer } from '../Footer/Footer';
+import RichTextModal from '../RichTextModal/RichTextModal';
 import { SendEmailFields } from '../SendEmailFields/SendEmailFields';
 import { SendIcon } from '../../icons/Send';
 import { Submit } from '~/base/Forms/Submit';
@@ -15,7 +15,7 @@ const SendEmailHeader = component('SendEmailHeader', function ({ className }) {
     const breakpoint = useEditorModal(({ breakpoint }) => breakpoint);
 
     return (
-        <EditorModal.Header
+        <RichTextModal.Header
             title={t('Contact me', 'Skontaktuj się')}
             className={this.mcn(className)}
         >
@@ -28,7 +28,7 @@ const SendEmailHeader = component('SendEmailHeader', function ({ className }) {
                     <SendIcon />
                 </Submit>
             )}
-        </EditorModal.Header>
+        </RichTextModal.Header>
     );
 });
 
@@ -38,7 +38,7 @@ const SendEmailBody = component('SendEmailBody', function ({ className }) {
     const [topic, onTopicChange] = usePreservedState(stateController, { key: 'topic' });
 
     return (
-        <EditorModal.Body
+        <RichTextModal.Body
             className={this.mcn(className)}
             editorClassName={this.__('Editor')}
         >
@@ -49,7 +49,7 @@ const SendEmailBody = component('SendEmailBody', function ({ className }) {
                 onTopicChange={onTopicChange}
                 className={this.__('Inputs')}
             />
-        </EditorModal.Body>
+        </RichTextModal.Body>
     );
 });
 
@@ -60,9 +60,9 @@ const SendEmailFooter = component('SendEmailFooter', function ({ className }) {
     if (breakpoint !== 'desktop') return null;
 
     return (
-        <EditorModal.Footer className={this.mcn(className)}>
+        <RichTextModal.Footer className={this.mcn(className)}>
             <Footer onDismiss={flushAndClose} />
-        </EditorModal.Footer>
+        </RichTextModal.Footer>
     );
 });
 
@@ -70,7 +70,7 @@ export const SendEmailModal = component('SendEmailModal', function ({ className 
     const contactModalHandler = useContactHandle();
 
     return (
-        <EditorModal
+        <RichTextModal
             handle={contactModalHandler}
             intent={ActionType.SEND_EMAIL}
             addInlineStyles
@@ -79,7 +79,7 @@ export const SendEmailModal = component('SendEmailModal', function ({ className 
             <SendEmailHeader />
             <SendEmailBody />
             <SendEmailFooter />
-        </EditorModal>
+        </RichTextModal>
     );
 });
 

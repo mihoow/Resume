@@ -2,6 +2,14 @@
 
 @forward '../Header/Header';
 
+@page {
+    margin-block: 30px;
+}
+
+@page :first {
+    margin-block-start: 0;
+}
+
 .LetterLayout {
     position: relative;
     inset-inline-start: -16px;
@@ -25,7 +33,8 @@
     }
 
     @include print {
-        max-height: 29.7cm;
+        height: 100%;
+        box-shadow: none;
     }
 
     &_Content {
@@ -37,7 +46,7 @@
         }
 
         @include print {
-            padding-block-start: 0;
+            padding-block: 0;
         }
     }
 

@@ -8,3 +8,5 @@ export const IMAGE_SIZES = {
     width: 175,
     height: 225,
 } as const;
+
+export const ABOUT_ME_IDENTIFIER = 'about-me';

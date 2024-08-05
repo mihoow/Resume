@@ -1,11 +1,10 @@
 import { LinksFunction, LoaderFunctionArgs, MetaFunction, json } from '@remix-run/node';
 import { Outlet, useLoaderData } from '@remix-run/react';
-import { getCompanyCodeFromUrl, getCoverLetter } from '@letter/service.server';
+import { getCompanyCodeFromUrl, getCoverLetter } from '@letter/services/coverLetter.server';
 
+import { CoverLetter } from '@letter/components/CoverLetter/CoverLetter';
 import { DEFAULT_LOCALE } from '~/config';
-import HTMLParser from '~/base/HTMLParser';
-import { LetterContent } from '@letter/components/Content/Content';
-import { LetterErrorBoundary } from '~/features/Letter/components/ErrorBoundary/ErrorBoundary';
+import { LetterErrorBoundary } from '@letter/components/ErrorBoundary/ErrorBoundary';
 import { Locale } from '~/types/global';
 import { component } from '~/utils/component';
 import { getFixedTFromPathname } from '~/utils/internationalization';
@@ -37,16 +36,18 @@ export default component('CoverLetterPage', function () {
     const { coverLetter: nextCoverLetter } = useLoaderData<typeof loader>();
     const coverLetter = useMemoized(
         nextCoverLetter,
-        ({ updatedAt: currUpdatedAt }, { updatedAt: nextUpdatedAt }) => currUpdatedAt === nextUpdatedAt
+        ({ updatedAt: currUpdatedAt, language: currLanguage }, { updatedAt: nextUpdatedAt, language: nextLanguage }) =>
+            currUpdatedAt === nextUpdatedAt && currLanguage === nextLanguage
     );
 
     const { html } = coverLetter;
 
     return (
         <>
-            <LetterContent data={coverLetter}>
-                <HTMLParser content={html} />
-            </LetterContent>
+            <CoverLetter
+                data={coverLetter}
+                html={html}
+            />
             <Outlet context={coverLetter} />
         </>
     );

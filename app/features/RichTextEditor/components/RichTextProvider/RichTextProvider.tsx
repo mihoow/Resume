@@ -10,8 +10,8 @@ import { useEditor } from '@tiptap/react';
 import { useMirrorRef } from '~/hooks/useMirrorRef';
 
 export const RichTextProvider = component<
-    PropsWithChildren<{ storageKeyPrefix?: string; initialContent?: string; addInlineStyles?: boolean }>
->('RichTextProvider', function ({ storageKeyPrefix = 'rich-text', initialContent, addInlineStyles = false, children }) {
+    PropsWithChildren<{ storageKeyPrefix: string; initialContent?: string; addInlineStyles?: boolean }>
+>('RichTextProvider', function ({ storageKeyPrefix, initialContent, addInlineStyles = false, children }) {
     const preservedStateController = usePreservedStateController(storageKeyPrefix);
     const [content, onContentChange] = usePreservedState(preservedStateController, {
         key: 'content',

@@ -20,6 +20,10 @@ body {
     background: radial-gradient(circle at 10% 20%, rgb(90, 92, 106) 0%, rgb(32, 45, 58) 81.3%);
     color: $neutral-contrast;
     scroll-behavior: smooth;
+
+    @include print {
+        background: $neutral;
+    }
 }
 
 main {

@@ -1,6 +1,6 @@
+import { DEFAULT_LOCALE, Page } from '~/config';
 import { getLocaleFromPathname, isSupportedLocale } from './internationalization';
 
-import { DEFAULT_LOCALE } from '~/config';
 import type { Locale } from '~/types/global';
 import { pipe } from './pipe';
 
@@ -28,15 +28,15 @@ export function getLinkToPage(pathname: string, currSearch: string, page: string
 }
 
 export function getLinkToResume(pathname: string, currSearch: string) {
-    return getLinkToPage(pathname, currSearch, '');
+    return getLinkToPage(pathname, currSearch, Page.RESUME);
 }
 
 export function getLinkToCoverLetter(pathname: string, currSearch: string) {
-    return getLinkToPage(pathname, currSearch, 'cover-letter');
+    return getLinkToPage(pathname, currSearch, Page.COVER_LETTER);
 }
 
 export function getLinkToAboutMe(pathname: string, currSearch: string) {
-    return getLinkToPage(pathname, currSearch, 'about-me');
+    return getLinkToPage(pathname, currSearch, Page.ABOUT_ME);
 }
 
 export function getLinkToContact(pathname: string, currSearch: string) {

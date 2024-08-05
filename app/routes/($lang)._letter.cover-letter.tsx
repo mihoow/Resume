@@ -36,7 +36,8 @@ export default component('CoverLetterPage', function () {
     const { coverLetter: nextCoverLetter } = useLoaderData<typeof loader>();
     const coverLetter = useMemoized(
         nextCoverLetter,
-        ({ updatedAt: currUpdatedAt }, { updatedAt: nextUpdatedAt }) => currUpdatedAt === nextUpdatedAt
+        ({ updatedAt: currUpdatedAt, language: currLanguage }, { updatedAt: nextUpdatedAt, language: nextLanguage }) =>
+            currUpdatedAt === nextUpdatedAt && currLanguage === nextLanguage
     );
 
     const { html } = coverLetter;

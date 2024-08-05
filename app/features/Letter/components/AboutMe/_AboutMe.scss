@@ -3,9 +3,22 @@
 @forward '../Letter/Letter';
 
 .AboutMe {
+    @include print {
+        min-height: calc(29.7cm * 1.5);
+        --font-size: 13px;
+    }
+
     &_Content {
         @include print {
             @include prose($size-modification: 0px);
+        }
+    }
+
+    .LetterFarewell {
+        &_Signature {
+            @include print {
+                @include font-size(18, 27);
+            }
         }
     }
 }

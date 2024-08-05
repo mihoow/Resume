@@ -3,11 +3,11 @@
 @forward '../Header/Header';
 
 @page {
-    margin-top: 30px;
+    margin-block: 30px;
 }
 
 @page :first {
-    margin-top: 0;
+    margin-block-start: 0;
 }
 
 .LetterLayout {
@@ -33,6 +33,7 @@
     }
 
     @include print {
+        height: 100%;
         box-shadow: none;
     }
 
@@ -45,7 +46,7 @@
         }
 
         @include print {
-            padding-block-start: 0;
+            padding-block: 0;
         }
     }
 

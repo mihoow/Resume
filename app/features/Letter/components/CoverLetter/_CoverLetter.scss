@@ -2,6 +2,10 @@
 
 @forward '../Letter/Letter';
 
+@page :first {
+    margin-block: 0;
+}
+
 .CoverLetter {
     --image-width: 0px;
 

@@ -9,7 +9,7 @@ export const AboutMe = component<{ html: string }>('AboutMe', function ({ classN
         <Letter className={this.mcn(className)}>
             <Letter.Greeting>{t('Dear Reader,', 'Szanowny Czytelniku,')}</Letter.Greeting>
             <Letter.Content className={this.__('Content')} html={html} />
-            <Letter.Farewell />
+            <Letter.Farewell className={this.__('Farewell')} />
         </Letter>
     );
 });

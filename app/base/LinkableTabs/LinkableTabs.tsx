@@ -27,12 +27,15 @@ const LinkableTabs = component<TabsProps>('LinkableTabs', function ({ className,
 
     const t = useTranslation();
     const navigate = useNavigate();
-    const { pathname } = useLocation();
+    const { pathname, search } = useLocation();
     const isTablet = !!useBreakpoints({ min: 'tablet' });
 
     const tabs = useMemo(
-        () => Children.map(Children.toArray(children) as ReactElement<TabLinkProps>[], ({ props }) => props),
-        [children]
+        () => Children.map(Children.toArray(children) as ReactElement<TabLinkProps>[], ({ props }) => ({
+            ...props,
+            link: getLinkToPage(pathname, search, props.page)
+        })),
+        [children, pathname, search]
     );
 
     const activeTabIndex = useMemo(() => {
@@ -67,12 +70,12 @@ const LinkableTabs = component<TabsProps>('LinkableTabs', function ({ className,
             return naiveIndex;
         })();
 
-        const nextPage = tabs[nextIndex]?.page;
+        const nextPageLink = tabs[nextIndex]?.link;
 
-        if (!nextPage) return;
+        if (!nextPageLink) return;
 
         updateNavigationDirection(deltaIndex);
-        navigate(getLinkToPage(pathname, search, nextPage), { preventScrollReset: true });
+        navigate(nextPageLink, { preventScrollReset: true });
     };
 
     const handleLinkClick = (index: number) => {
@@ -91,7 +94,7 @@ const LinkableTabs = component<TabsProps>('LinkableTabs', function ({ className,
             {...props}
         >
             <div className={this.__('Track')}>
-                {tabs.map(({ page, children: title }, index) => {
+                {tabs.map(({ page, link, children: title }, index) => {
                     const sharedProps = {
                         className: this.__('Tab', { isActive: activeTabIndex === index }),
                         children: title,
@@ -101,7 +104,7 @@ const LinkableTabs = component<TabsProps>('LinkableTabs', function ({ className,
                     if (!isTablet) {
                         return (
                             <span
-                                key={index}
+                                key={page}
                                 {...sharedProps}
                             />
                         );
@@ -109,8 +112,8 @@ const LinkableTabs = component<TabsProps>('LinkableTabs', function ({ className,
 
                     return (
                         <NavLink
-                            key={index}
-                            to={page}
+                            key={page}
+                            to={link}
                             preventScrollReset
                             onClick={() => handleLinkClick(index)}
                             {...sharedProps}

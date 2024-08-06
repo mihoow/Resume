@@ -137,6 +137,25 @@
     gap: 32px;
     background-color: #f3f4f6;
 
+    &-isWide {
+        margin-inline: auto;
+        width: 100%;
+        box-shadow: 0 3px 6px 0 #214761;
+
+        @include wide-mobile {
+            width: calc(100% - 64px);
+            box-shadow: none;
+            border: 2px solid #214761;
+            border-block-start: none;
+            border-radius: 0 0 8px 8px;
+        }
+
+        @include a4 {
+            width: calc(21cm + 64px);
+            padding-inline: 32px;
+        }
+    }
+
     &_Heading {
         margin-inline: auto;
         width: fit-content;

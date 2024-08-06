@@ -4,7 +4,7 @@ import { getAttributions } from '~/data/global';
 import { useData } from '~/hooks/useData';
 import { useTranslation } from '~/hooks/useTranslation';
 
-export const Footer = component('Footer', function ({ className }) {
+export const Footer = component<{ isWide?: boolean; }>('Footer', function ({ className, isWide = false }) {
     const t = useTranslation();
     const attributions = useData(getAttributions);
 
@@ -12,7 +12,7 @@ export const Footer = component('Footer', function ({ className }) {
         <footer className={this.mcn(className)}>
             <BeneathTheMoonlight />
             <div className={this.__('Content')}>
-                <ul className={this.__('AttributionList')}>
+                <ul className={this.__('AttributionList', { isWide })}>
                     {attributions.map(({ text, link: { href, text: linkText } }) => (
                         <li
                             key={href}

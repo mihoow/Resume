@@ -14,6 +14,11 @@
         width: 21cm;
     }
 
+    &-isWide {
+        margin-inline: unset;
+        width: auto;
+    }
+
     &_Header {
         margin-block-end: 32px;
     }

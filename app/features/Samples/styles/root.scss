@@ -1,0 +1,10 @@
+@use '../../../styles/index' as *;
+
+body {
+    background: unset;
+    background-color: #f5f5fa;
+}
+
+.SamplesLayout {
+    min-height: calc(100vh - var(--header-height));
+}

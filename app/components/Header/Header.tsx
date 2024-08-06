@@ -144,9 +144,9 @@ const Navbar = component('Navbar', function ({ className }) {
     );
 });
 
-export const Header = component('Header', function ({ className }) {
+export const Header = component<{ isWide?: boolean; }>('Header', function ({ className, isWide = false }) {
     return (
-        <header className={this.mcn(className)}>
+        <header className={this.cn(className, this.__({ isWide }))}>
             <Heading className={this.__('Heading')} />
             <div className={this.__('Bar')}>
                 <LanguageSwitch />

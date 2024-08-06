@@ -2,7 +2,11 @@ import type { ServerMessageKey } from "~/data/serverMessages";
 
 export type Locale = 'en' | 'pl';
 
-export type Namespace = 'base' | 'cv';
+export type AppLayout = 'a4' | 'wide';
+
+export type RouteHandle = {
+    appLayout?: AppLayout;
+};
 
 export type Author = {
     profileImage: string;

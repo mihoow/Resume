@@ -2,11 +2,22 @@
 @use '../base/util' as *;
 @use '../base/text' as *;
 
+:root {
+    --header-height: 208.5px;
+
+    @include small-mobile {
+        --header-height: 208px;
+    }
+
+    @include wide-mobile {
+        --header-height: 204.5px;
+    }
+}
+
 @page {
     size: a4 portrait;
     margin: 0;
 }
-
 
 html {
     @include text-body();

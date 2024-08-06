@@ -20,6 +20,12 @@
         @include flex-column;
         gap: 12px;
         @include font-size(14, 20);
+
+        &-isWide {
+            @include tablet {
+                align-items: center;
+            }
+        }
     }
 
     &_AttributionText {

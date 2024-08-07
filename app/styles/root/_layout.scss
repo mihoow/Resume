@@ -3,14 +3,14 @@
 @use '../base/text' as *;
 
 :root {
-    --header-height: 208.5px;
+    --header-height: 176.5px;
 
     @include small-mobile {
-        --header-height: 208px;
+        --header-height: 176px;
     }
 
     @include wide-mobile {
-        --header-height: 204.5px;
+        --header-height: 172.5px;
     }
 }
 

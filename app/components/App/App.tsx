@@ -24,7 +24,7 @@ export const App = component<PropsWithChildren>('App', function ({ children }) {
         <div className={this.__({ isWide })}>
             <Header
                 isWide={isWide}
-                className={this.__('Header')}
+                className={this.__('Header', { isWide })}
             />
             {children}
             <Footer

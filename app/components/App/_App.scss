@@ -21,6 +21,10 @@
 
     &_Header {
         margin-block-end: 32px;
+
+        &-isWide {
+            margin-block-end: 0;
+        }
     }
 
     @include print {
